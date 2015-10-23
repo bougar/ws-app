@@ -1,7 +1,3 @@
--- ----------------------------------------------------------------------------
--- Offers Model
--- -----------------------------------------------------------------------------
-
 -- ---------- Table for validation queries from the connection pool -----------
 
 
@@ -11,7 +7,6 @@
 -- the tables having columns acting as foreign keys of the table to be dropped,
 -- must be dropped first (otherwise, the corresponding checks on those tables
 -- could not be done).
-
 
 DROP TABLE Reservation;
 DROP TABLE Offer;
