@@ -114,8 +114,9 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			for (int i = 0;i<words.length;i++) {
 				if (i > 0)
 					queryString+= " AND ";
+				queryString+= "LOWER(description) LIKE LOWER(?)";
 			}
-			queryString+= "LOWER(description) LIKE LOWER(?)";
+			
 		}
 		if ( isValid ) {
 			queryString +=" AND valid=1";

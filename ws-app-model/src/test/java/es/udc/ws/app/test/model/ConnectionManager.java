@@ -1,4 +1,4 @@
-package es.udc.ws.app.model.offer.test;
+package es.udc.ws.app.test.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectionManager {
 
     private final static String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
-    private final static String DRIVER_URL = "jdbc:mysql://localhost/ws";
+    private final static String DRIVER_URL = "jdbc:mysql://localhost/wstest";
     private final static String USER = "ws";
     private final static String PASSWORD = "ws";
 
