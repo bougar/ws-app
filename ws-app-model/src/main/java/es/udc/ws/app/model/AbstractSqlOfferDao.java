@@ -118,7 +118,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			queryString+= "LOWER(description) LIKE LOWER(?)";
 		}
 		if ( isValid ) {
-			queryString +=" AND isValid=1";
+			queryString +=" AND valid=1";
 		}
 		queryString += " ORDER BY name";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
