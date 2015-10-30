@@ -18,7 +18,7 @@ public interface SqlOfferDao {
 	public Offer find(Connection connection, long offerId)
 			throws InstanceNotFoundException;
 	
-	public List<Offer> advancedFilter(String keywords,boolean isValid, Calendar data); 
+	public List<Offer> advancedFilter(Connection connection,String keywords,boolean isValid, Calendar data); 
 	
 	
 }

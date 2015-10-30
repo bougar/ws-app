@@ -35,7 +35,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			preparedStatement.setFloat(i++,o.getRealPrice());
 			preparedStatement.setFloat(i++,o.getDiscountedPrice());
 			preparedStatement.setFloat(i++,o.getFee());
-			preparedStatement.setBoolean(i++,o.isValid());
+			preparedStatement.setBoolean(i++,o.());
 			
 			int updatedRows = preparedStatement.executeUpdate();
 			
@@ -104,7 +104,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 	}
 
 	@Override
-	public List<Offer> advancedFilter(String keywords, boolean isValid,
+	public List<Offer> advancedFilter(Connection connection,String keywords, boolean isValid,
 			Calendar data) {
 		String[] words = keywords != null ? keywords.split(" ") : null;
 		String queryString = "SELECT offerId, name, description, limitReservationDate, limitApplicationDate, "
@@ -117,8 +117,41 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			}
 			queryString+= "LOWER(description) LIKE LOWER(?)";
 		}
-		
-		return null;
+		if ( isValid ) {
+			queryString +=" AND isValid=1";
+		}
+		queryString += " ORDER BY name";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
+			if (words != null){
+				for(int i = 0; i<words.length;i++){
+					preparedStatement.setString(i + 1, "%" + words[i] + "%" );
+				}
+			}
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			List<Offer> offers= new ArrayList<Offer>();
+			
+			while (resultSet.next()){
+				int i = 1;
+				long offerId = resultSet.getLong(i++);
+				String name = resultSet.getString(i++);
+				String description = resultSet.getString(i++);
+				Calendar limitReservationDate = Calendar.getInstance();
+				limitReservationDate.setTime(resultSet.getTimestamp(i++));
+				Calendar limitApplicationDate = Calendar.getInstance();
+				limitApplicationDate.setTime(resultSet.getTimestamp(i++));
+				float realPrice = resultSet.getFloat(i++);
+				float discountedPrice = resultSet.getFloat(i++);
+				float fee = resultSet.getFloat(i++);
+				boolean valid = resultSet.getBoolean(i++);
+				offers.add( new Offer(offerId,name,description,limitReservationDate,limitApplicationDate,
+						realPrice,discountedPrice,fee,valid));
+			}
+			return offers;
+		}catch (SQLException e){
+			throw new RuntimeException(e);
+		}
 	}
 	
 }
