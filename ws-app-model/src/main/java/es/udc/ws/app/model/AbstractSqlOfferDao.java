@@ -35,7 +35,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			preparedStatement.setFloat(i++,o.getRealPrice());
 			preparedStatement.setFloat(i++,o.getDiscountedPrice());
 			preparedStatement.setFloat(i++,o.getFee());
-			preparedStatement.setBoolean(i++,o.());
+			preparedStatement.setBoolean(i++,o.isValid());
 			
 			int updatedRows = preparedStatement.executeUpdate();
 			
