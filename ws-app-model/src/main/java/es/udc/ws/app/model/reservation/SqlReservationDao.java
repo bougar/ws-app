@@ -8,7 +8,7 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public interface SqlReservationDao {
 
-	public Offer create(Connection connection,Reservation r);
+	public Reservation create(Connection connection,Reservation r);
 	
 	public void update(Connection connection,Reservation r)
 			throws InstanceNotFoundException;
