@@ -1,4 +1,4 @@
-package es.udc.ws.app.model;
+package es.udc.ws.app.model.offer;
 
 import java.sql.Connection;
 import java.util.List;
