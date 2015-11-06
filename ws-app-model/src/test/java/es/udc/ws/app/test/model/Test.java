@@ -18,7 +18,7 @@ public class Test {
 			Offer aux = dao.create(connection, o);
 			//Reservation r = new Reservation("mail@mail",1, EnumState.CLAIMED, date, "34632140"); 
 			//daor.create(connection, r);
-			List<Reservation> reservations = daor.findByUserId(connection, "user@mail", false);
+			List<Reservation> reservations = daor.findByOfferId(connection, 2);
 			for (Reservation raus:reservations)
 				System.out.println(raus);
 			//List<Offer> offers=dao.advancedFilter(connection,"vilariño puede",false,null);
