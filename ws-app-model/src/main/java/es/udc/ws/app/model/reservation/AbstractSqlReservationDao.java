@@ -48,7 +48,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 				+ "reservationId, creditCardNumber FROM Reservation WHERE email = ?";
 		
 		if(!isValid){
-			queryString += " AND state = 'INVALID'";
+			queryString += " AND state = INVALID";
 		}
 		queryString += " ORDER BY reservationId";
 
@@ -79,12 +79,11 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 	@Override
 	public List<Reservation> findByOfferId(Connection connection , long offerId){
 		String queryString = "SELECT email, offerId, state, requestDate, "
-				+ "reservationId, creditCardNumber FROM Reservation WHERE offerId = ?";
+				+ "reservationId, creditCardNumber FROM WHERE offerId = ?";
 		
 		queryString += " ORDER BY reservationId";
 		
 		try(PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
-			preparedStatement.setLong(1, offerId);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Reservation> reservations= new ArrayList<Reservation>();
 			
@@ -114,8 +113,8 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		queryString += " WHERE offerId = ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 			int i = 1;
-			preparedStatement.setLong(i++,offerId);
 			preparedStatement.setString(i++,state.name());
+			preparedStatement.setLong(i++,offerId);
 			
 			int updatedRows = preparedStatement.executeUpdate();
 			
