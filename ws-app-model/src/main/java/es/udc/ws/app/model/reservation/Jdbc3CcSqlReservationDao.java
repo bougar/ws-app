@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Calendar;
+
 
 public class Jdbc3CcSqlReservationDao extends AbstractSqlReservationDao {
 

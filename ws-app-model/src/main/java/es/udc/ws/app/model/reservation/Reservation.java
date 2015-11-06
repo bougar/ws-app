@@ -11,7 +11,7 @@ public class Reservation {
 	private String creditCardNumber;
 	
 	public Reservation(String email, long offerId, EnumState state,
-			Calendar requestDate, long reservationId, String creditCardNumber) {
+			Calendar requestDate, String creditCardNumber) {
 		super();
 		this.email = email;
 		this.offerId = offerId;
@@ -19,8 +19,14 @@ public class Reservation {
 		this.requestDate = requestDate;
 		if (requestDate != null)
 			this.requestDate.set(Calendar.MILLISECOND,0);
-		this.reservationId = reservationId;
 		this.creditCardNumber = creditCardNumber;
+	}
+	
+	public Reservation(String email, long offerId, EnumState state,
+			Calendar requestDate, long reservationId,
+			String creditCardNumber) {
+		this (email,offerId,state, requestDate, creditCardNumber);
+		this.reservationId=reservationId;
 	}
 
 	public String getEmail() {
@@ -121,6 +127,14 @@ public class Reservation {
 		if (state != other.state)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Reservation [email=" + email + ", offerId=" + offerId
+				+ ", state=" + state + ", requestDate=" + requestDate
+				+ ", reservationId=" + reservationId + ", creditCardNumber="
+				+ creditCardNumber + "]";
 	}
 	
 	

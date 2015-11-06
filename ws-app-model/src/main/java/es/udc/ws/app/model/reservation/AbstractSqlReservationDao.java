@@ -45,7 +45,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 	public List<Reservation> findByUserId(Connection connection, String email,
 			boolean isValid) {
 		String queryString = "SELECT email, offerId, state, requestDate, "
-				+ "reservationId, creditCardNumber WHERE email = ?";
+				+ "reservationId, creditCardNumber FROM Reservation WHERE email = ?";
 		
 		if(!isValid){
 			queryString += " AND state = INVALID";
@@ -53,11 +53,12 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		queryString += " ORDER BY reservationId";
 
 		try(PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
+			preparedStatement.setString(1, email);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Reservation> reservations= new ArrayList<Reservation>();
 			
 			while(resultSet.next()) {
-				int i = 1;
+				int i = 2;
 				long offerId = resultSet.getLong(i++);
 				EnumState state = EnumState.valueOf(resultSet.getString(i++));
 				Calendar requestDate = Calendar.getInstance();
