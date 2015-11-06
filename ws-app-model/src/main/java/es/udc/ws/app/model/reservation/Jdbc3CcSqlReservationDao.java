@@ -43,7 +43,7 @@ public class Jdbc3CcSqlReservationDao extends AbstractSqlReservationDao {
 	            }
 	            Long reservationId = resultSet.getLong(1);
 
-	            /* Return movie. */
+	            /* Return Reservation. */
 	            return new Reservation(r.getEmail(), r.getOfferId(), r.getState(),
 	        			r.getRequestDate(),reservationId, r.getCreditCardNumber());
 
