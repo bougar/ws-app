@@ -24,7 +24,7 @@ public class Offer {
 				this.limitReservationDate.set(Calendar.MILLISECOND,0);
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
 		this.realPrice = realPrice;
 		this.discountedPrice = discountedPrice;
 		this.fee = fee;

@@ -141,7 +141,7 @@ public class OfferServiceTest {
 		addedOffer = offerService.addOffer(offer);
 		Offer foundOffer = offerService.findOffer(addedOffer.getOfferId());
 
-		assertEquals(addedOffer, foundOffer);
+		assertTrue(addedOffer.equals(foundOffer));
 
 		// Clear Database
 		removeOffer(addedOffer.getOfferId());
