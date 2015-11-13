@@ -213,7 +213,7 @@ public class OfferServiceTest {
 			}
 
 			assertTrue(exceptionCatched);
-			
+
 			// Check limitReservationDate not null
 			exceptionCatched = false;
 			offer = getValidOffer();
@@ -225,7 +225,7 @@ public class OfferServiceTest {
 			}
 
 			assertTrue(exceptionCatched);
-						
+
 			// Check limitApplicationDate not null
 			exceptionCatched = false;
 			offer = getValidOffer();
@@ -238,80 +238,57 @@ public class OfferServiceTest {
 
 			assertTrue(exceptionCatched);
 
-			// Check movie runtime <= MAX_RUNTIME
+			// Check movie realprice >= 0
 			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setRuntime((short) (MAX_RUNTIME + 1));
+			offer = getValidOffer();
+			offer.setRealPrice(-1);
 			try {
-				addedMovie = movieService.addMovie(movie);
+				addedOffer = offerService.addOffer(offer);
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
 			assertTrue(exceptionCatched);
 
-			// Check movie description not null
+			// Check movie discountedprice >= 0
 			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setDescription(null);
+			offer = getValidOffer();
+			offer.setDiscountedPrice(-1);
 			try {
-				addedMovie = movieService.addMovie(movie);
+				addedOffer = offerService.addOffer(offer);
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
 			assertTrue(exceptionCatched);
 
-			// Check movie description not null
+			// Check movie fee >= 0 && fee <=100
 			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setDescription("");
+			offer = getValidOffer();
+			offer.setFee(-1);
 			try {
-				addedMovie = movieService.addMovie(movie);
+				addedOffer = offerService.addOffer(offer);
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
 			assertTrue(exceptionCatched);
 
-			// Check movie price >= 0
+			// Check movie fee >= 0 && fee <=100
 			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setPrice((short) -1);
+			offer = getValidOffer();
+			offer.setFee(101);
 			try {
-				addedMovie = movieService.addMovie(movie);
+				addedOffer = offerService.addOffer(offer);
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
 			assertTrue(exceptionCatched);
-
-			// Check movie price <= MAX_PRICE
+			
+			//Check Discountedprice <= realprice
 			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setRuntime((short) (MAX_PRICE + 1));
+			offer = getValidOffer();
+			offer.setDiscountedPrice(8);
+			offer.setRealPrice(5);
 			try {
-				addedMovie = movieService.addMovie(movie);
-			} catch (InputValidationException e) {
-				exceptionCatched = true;
-			}
-			assertTrue(exceptionCatched);
-
-			// Check movie creationDate not null
-			exceptionCatched = false;
-			movie = getValidMovie();
-			movie.setCreationDate(null);
-			try {
-				addedMovie = movieService.addMovie(movie);
-			} catch (InputValidationException e) {
-				exceptionCatched = true;
-			}
-			assertTrue(exceptionCatched);
-
-			// Check movie creationDate in the past
-			exceptionCatched = false;
-			movie = getValidMovie();
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.MINUTE, 1);
-			movie.setCreationDate(calendar);
-			try {
-				addedMovie = movieService.addMovie(movie);
+				addedOffer = offerService.addOffer(offer);
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
@@ -320,7 +297,7 @@ public class OfferServiceTest {
 		} finally {
 			if (!exceptionCatched) {
 				// Clear Database
-				removeMovie(addedMovie.getMovieId());
+				removeOffer(addedOffer.getOfferId());
 			}
 		}
 
