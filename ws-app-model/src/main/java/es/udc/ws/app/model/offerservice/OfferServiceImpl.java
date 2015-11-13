@@ -358,7 +358,10 @@ public class OfferServiceImpl implements OfferService {
 		try (Connection connection = dataSource.getConnection()) {
 
 			try {
-
+				connection
+						.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+				connection.setAutoCommit(false);
+				
 				Offer offer = offerDao.find(connection, offerId);
 				/* Offer is invalid already */
 				if (!offer.isValid())

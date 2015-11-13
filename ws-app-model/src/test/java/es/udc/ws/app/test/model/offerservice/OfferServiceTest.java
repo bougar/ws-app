@@ -94,7 +94,7 @@ public class OfferServiceTest {
 		}
 	}
 
-	private void updateRervation(Reservation reservation) {
+	private void updateReservation(Reservation reservation) {
 
 		DataSource dataSource = DataSourceLocator
 				.getDataSource(OFFER_DATA_SOURCE);
@@ -342,7 +342,71 @@ public class OfferServiceTest {
 		}
 
 	}
-
+	
+	@Test(expected = InputValidationException.class)
+	public void testUpdateInvalidOffer() throws InputValidationException,
+	InstanceNotFoundException, NotModifiableOfferException{
+		Offer offer = createOffer(getValidOffer());
+		try {
+			offer = offerService.findOffer(offer.getOfferId());
+			offer.setName(null);
+			offerService.updateOffer(offer);
+		}finally{
+			removeOffer(offer.getOfferId());
+		}
+	}
+	
+	@Test
+	public void testNotModifiableOffer() throws InstanceNotFoundException,InputValidationException{
+		Offer offer = getValidOffer();
+		Offer addedOffer = null;
+		boolean exceptionCatched = false;
+		try{
+			try{
+				addedOffer = createOffer(offer);
+				addedOffer.setDiscountedPrice(addedOffer.getDiscountedPrice()+1);
+				offerService.updateOffer(addedOffer);
+			}catch (NotModifiableOfferException e){
+				exceptionCatched=true;
+			}
+			assertTrue(exceptionCatched);
+			
+			}finally{
+			
+		}
+		
+	}
+	
+	@Test
+	public void testInvalidateOffer() throws InstanceNotFoundException,AlreadyInvalidatedException {
+		Offer offer = getValidOffer();
+		Offer addedOffer = null;
+		try {
+			addedOffer = createOffer(offer);
+			offerService.offerInvalidation(addedOffer.getOfferId());
+			offer = offerService.findOffer(addedOffer.getOfferId());
+			assertTrue(!(offer.isValid()));
+		}finally{
+			removeOffer(addedOffer.getOfferId());
+		}
+	
+	}
+	
+	@Test(expected = AlreadyInvalidatedException.class)
+	public void testAlreadyInvalidatedOffer() throws InstanceNotFoundException,AlreadyInvalidatedException{
+		Offer offer = getValidOffer();
+		Offer addedOffer = createOffer(offer);
+		try {
+			offerService.offerInvalidation(addedOffer.getOfferId());
+			offer = offerService.findOffer(addedOffer.getOfferId());
+			offerService.offerInvalidation(addedOffer.getOfferId());
+		}finally{
+			removeOffer(addedOffer.getOfferId());
+		}
+		removeOffer(addedOffer.getOfferId());
+	}
+	
+	
 
 
 }
