@@ -111,8 +111,14 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 		String[] words = keywords != null ? keywords.split(" ") : null;
 		String queryString = "SELECT offerId, name, description, limitReservationDate, limitApplicationDate, "
 				+ "realPrice, discountedPrice, fee, valid FROM Offer ";
+		
+		if ( isValid ) {
+			queryString +="WHERE valid=1";
+		}else{
+			queryString +="WHERE valid=0";
+		}
 		if (words != null && words.length > 0) {
-			queryString+= "WHERE ";
+			queryString+= " AND ";
 			for (int i = 0;i<words.length;i++) {
 				if (i > 0)
 					queryString+= " AND ";
@@ -120,23 +126,30 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			}
 			
 		}
-		if ( isValid ) {
-			queryString +=" AND valid=1";
+		
+		if (data != null){
+			if (words == null)
+				queryString+= " AND";
+			queryString +=" limitReservationDate <= ?";
 		}
 		queryString += " ORDER BY name";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
+			int i = 0;
 			if (words != null){
-				for(int i = 0; i<words.length;i++){
+				
+				for(i = 0; i<words.length;i++){
 					preparedStatement.setString(i + 1, "%" + words[i] + "%" );
 				}
 			}
+			if (data!=null)
+				preparedStatement.setTimestamp(i+1, new Timestamp(data.getTime().getTime()));
 			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			
 			List<Offer> offers= new ArrayList<Offer>();
 			
 			while (resultSet.next()){
-				int i = 1;
+				i = 1;
 				long offerId = resultSet.getLong(i++);
 				String name = resultSet.getString(i++);
 				String description = resultSet.getString(i++);

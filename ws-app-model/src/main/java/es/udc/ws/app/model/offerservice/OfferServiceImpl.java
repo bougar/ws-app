@@ -17,7 +17,8 @@ import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offer.SqlOfferDao;
 import es.udc.ws.app.model.offer.SqlOfferDaoFactory;
-import es.udc.ws.app.model.reservation.EnumState;
+import es.udc.ws.app.model.util.ModelConstants;
+import es.udc.ws.app.model.util.ModelConstants.*;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.model.reservation.SqlReservationDao;
 import es.udc.ws.app.model.reservation.SqlReservationDaoFactory;
@@ -119,11 +120,11 @@ public class OfferServiceImpl implements OfferService {
 				if (reservations.size() != 0) {
 
 					if (offer.getLimitApplicationDate().compareTo(
-							baseOffer.getLimitApplicationDate()) <= 0)
+							baseOffer.getLimitApplicationDate()) < 0)
 						throw new NotModifiableOfferException(
 								offer.getOfferId());
 
-					if (offer.getDiscountedPrice() >= baseOffer
+					if (offer.getDiscountedPrice() > baseOffer
 							.getDiscountedPrice())
 						throw new NotModifiableOfferException(
 								offer.getOfferId());
@@ -251,7 +252,7 @@ public class OfferServiceImpl implements OfferService {
 
 				Calendar requestDate = Calendar.getInstance();
 				Reservation base = new Reservation(email, offer.getOfferId(),
-						EnumState.NOT_CLAIMED, requestDate, creditCardNumber);
+						ModelConstants.NOT_CLAIMED, requestDate, creditCardNumber);
 				Reservation reservation = reservationDao.create(connection,
 						base);
 
@@ -372,9 +373,9 @@ public class OfferServiceImpl implements OfferService {
 
 				/* Loop sets reservations state to INVALID if NOT_CALIMED */
 				for (Reservation r : reservations) {
-					if (r.getState().toString().equals("NOT_CLAIMED"))
+					if (r.getState().equals("NOT_CLAIMED"))
 						reservationDao.stateUpdate(connection,
-								r.getReservationId(), EnumState.INVALID);
+								r.getReservationId(), ModelConstants.INVALID);
 				}
 
 				/* Offer is not longer valid */

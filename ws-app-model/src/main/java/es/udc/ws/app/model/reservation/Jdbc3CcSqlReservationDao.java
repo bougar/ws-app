@@ -25,7 +25,7 @@ public class Jdbc3CcSqlReservationDao extends AbstractSqlReservationDao {
 	            int i = 1;
 	            preparedStatement.setLong(i++, r.getOfferId());
 	            preparedStatement.setString(i++, r.getEmail());
-	            preparedStatement.setString(i++, r.getState().name());
+	            preparedStatement.setString(i++, r.getState());
 	            Timestamp date = r.getRequestDate() != null ? new Timestamp(
 	                    r.getRequestDate().getTime().getTime()) : null;
 	            preparedStatement.setTimestamp(i++, date);

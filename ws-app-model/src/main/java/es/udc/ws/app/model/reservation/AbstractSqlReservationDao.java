@@ -19,13 +19,12 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		/*Create string query*/
 		String queryString = "UPDATE Reservation "
 				+ "SET email = ?, state = ?, requestDate = ?, "
-				+ "creditCardNumber = ?, "
+				+ "creditCardNumber = ? "
 				+ "WHERE reservationId = ? ";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 			int i = 1;
-			preparedStatement.setLong(i++,r.getOfferId());
 			preparedStatement.setString(i++,r.getEmail());
-			preparedStatement.setString(i++,r.getState().name());
+			preparedStatement.setString(i++,r.getState());
 			Timestamp date = r.getRequestDate() != null ? 
 					new Timestamp(r.getRequestDate().getTime().getTime()) : null;
 			preparedStatement.setTimestamp(i++,date);	
@@ -62,7 +61,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 			while(resultSet.next()) {
 				int i = 2;
 				long offerId = resultSet.getLong(i++);
-				EnumState state = EnumState.valueOf(resultSet.getString(i++));
+				String state = resultSet.getString(i++);
 				Calendar requestDate = Calendar.getInstance();
 				requestDate.setTime(resultSet.getTimestamp(i++));
 				long reservationId = resultSet.getLong(i++);
@@ -80,7 +79,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 	
 	@Override
 	public List<Reservation> findByOfferId(Connection connection , long offerId){
-		String queryString = "SELECT email, offerId, state, requestDate, "
+		String queryString = "SELECT email, state, requestDate, "
 				+ "reservationId, creditCardNumber FROM Reservation WHERE offerId = ?";
 		
 		queryString += " ORDER BY reservationId";
@@ -93,7 +92,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 			while(resultSet.next()) {
 				int i = 1;
 				String email = resultSet.getString(i++);
-				EnumState state = EnumState.valueOf(resultSet.getString(i++));
+				String state = resultSet.getString(i++);
 				Calendar requestDate = Calendar.getInstance();
 				requestDate.setTime(resultSet.getTimestamp(i++));
 				long reservationId = resultSet.getLong(i++);
@@ -109,14 +108,14 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		}
 	}
 
-	public void stateUpdate(Connection connection, long offerId, EnumState state)
+	public void stateUpdate(Connection connection, long offerId, String state)
 			throws InstanceNotFoundException{
 		
 		String queryString = "UPDATE Reservation SET state = ?";
 		queryString += " WHERE offerId = ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 			int i = 1;
-			preparedStatement.setString(i++,state.name());
+			preparedStatement.setString(i++,state);
 			preparedStatement.setLong(i++,offerId);
 			
 			int updatedRows = preparedStatement.executeUpdate();
@@ -133,7 +132,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 
 	public Reservation findByReservationId(Connection connection, long reservationId)
 			throws InstanceNotFoundException{
-			String queryString = "SELECT email, offerId, state, requestDate, creditCardNumber"
+			String queryString = "SELECT email, offerId, state, requestDate, creditCardNumber "
 					+ "FROM Reservation WHERE reservationId = ?";
 			try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
 				int i = 1;
@@ -148,11 +147,11 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 				
 				String email = resultSet.getString(i++);
 				long offerId = resultSet.getLong(i++);
-				EnumState state = EnumState.valueOf(resultSet.getString(i++));
+				String state = resultSet.getString(i++);
 				Calendar requestDate = Calendar.getInstance();
 				String creditCardNumber = resultSet.getString(i++);
 				
-				return new Reservation(email, offerId, state, requestDate, creditCardNumber);
+				return new Reservation(email, offerId, state, requestDate, reservationId ,creditCardNumber);
 				
 			}catch (SQLException e){
 				throw new RuntimeException(e);

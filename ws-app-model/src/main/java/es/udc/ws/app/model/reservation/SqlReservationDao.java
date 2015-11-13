@@ -16,7 +16,7 @@ public interface SqlReservationDao {
 	
 	public List<Reservation> findByOfferId(Connection c , long offerId);
 	
-	public void stateUpdate(Connection c, long offerId, EnumState state)
+	public void stateUpdate(Connection c, long offerId, String state)
 			throws InstanceNotFoundException;
 	
 	public Reservation findByReservationId(Connection c, long reservationId)

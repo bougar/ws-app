@@ -5,12 +5,12 @@ public class Reservation {
 
 	private String email;
 	private long offerId;
-	private EnumState state;
+	private String state;
 	private Calendar requestDate;
 	private long reservationId;
 	private String creditCardNumber;
 	
-	public Reservation(String email, long offerId, EnumState state,
+	public Reservation(String email, long offerId, String state,
 			Calendar requestDate, String creditCardNumber) {
 		super();
 		this.email = email;
@@ -22,7 +22,7 @@ public class Reservation {
 		this.creditCardNumber = creditCardNumber;
 	}
 	
-	public Reservation(String email, long offerId, EnumState state,
+	public Reservation(String email, long offerId, String state,
 			Calendar requestDate, long reservationId,
 			String creditCardNumber) {
 		this (email,offerId,state, requestDate, creditCardNumber);
@@ -45,11 +45,11 @@ public class Reservation {
 		this.offerId = offerId;
 	}
 
-	public EnumState getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(EnumState state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 
