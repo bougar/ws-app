@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.sql.Timestamp;
 
 import es.udc.ws.app.model.offer.Offer;
-import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.app.exceptions.InstanceNotFoundException;
 
 public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 	@Override
@@ -127,5 +127,33 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		}
 		
 	}
-	
+
+	public Reservation findByReservationId(Connection connection, long reservationId)
+			throws InstanceNotFoundException{
+			String queryString = "SELECT email, offerId, state, requestDate, creditCardNumber"
+					+ "FROM Reservation WHERE reservationId = ?";
+			try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
+				int i = 1;
+				preparedStatement.setLong(i++,reservationId);
+				
+				ResultSet resultSet = preparedStatement.executeQuery();
+				
+				if (!resultSet.next()) {
+					throw new InstanceNotFoundException(reservationId,Offer.class.getName()); 
+				}
+				i = 1;
+				
+				String email = resultSet.getString(i++);
+				long offerId = resultSet.getLong(i++);
+				EnumState state = EnumState.valueOf(resultSet.getString(i++));
+				Calendar requestDate = Calendar.getInstance();
+				String creditCardNumber = resultSet.getString(i++);
+				
+				return new Reservation(email, offerId, state, requestDate, creditCardNumber);
+				
+			}catch (SQLException e){
+				throw new RuntimeException(e);
+			}
+		
+}
 }

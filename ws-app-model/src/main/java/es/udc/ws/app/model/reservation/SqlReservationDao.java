@@ -2,9 +2,8 @@ package es.udc.ws.app.model.reservation;
 
 import java.sql.Connection;
 import java.util.List;
+import es.udc.ws.app.exceptions.InstanceNotFoundException;
 
-import es.udc.ws.app.model.offer.Offer;
-import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public interface SqlReservationDao {
 
@@ -19,5 +18,8 @@ public interface SqlReservationDao {
 	
 	public void stateUpdate(Connection c, long offerId, EnumState state)
 			throws InstanceNotFoundException;
+	
+	public Reservation findByReservationId(Connection c, long reservationId)
+		throws InstanceNotFoundException;
 	
 }

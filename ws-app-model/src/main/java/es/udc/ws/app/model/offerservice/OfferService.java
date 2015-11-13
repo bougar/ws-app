@@ -1,6 +1,7 @@
 package es.udc.ws.app.model.offerservice;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.reservation.Reservation;
+import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.InputValidationException;
 import es.udc.ws.app.exceptions.InstanceNotFoundException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
@@ -25,7 +26,7 @@ public interface OfferService {
 	
 	public List<Offer> findOffers(String keywords, Boolean state, Calendar date);
 		
-	public long reserveOffer(long OfferId, String email, String creditCardNumber)
+	public long reserveOffer(long offerId, String email, String creditCardNumber)
 		throws InputValidationException, InstanceNotFoundException;
 	
 	public void claimOffer(long reservationId, String email)
@@ -37,6 +38,6 @@ public interface OfferService {
 	public List<Reservation> findReservationByUser(String email, boolean state);
 
 	public void offerInvalidation(long offerId)
-		throws InstanceNotFoundException;
+		throws InstanceNotFoundException, AlreadyInvalidatedException ;
 	
 }
