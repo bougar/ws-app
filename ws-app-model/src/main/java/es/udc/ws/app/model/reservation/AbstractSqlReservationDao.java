@@ -19,7 +19,8 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		/*Create string query*/
 		String queryString = "UPDATE Reservation "
 				+ "SET email = ?, state = ?, requestDate = ?, "
-				+ "creditCardNumber = ?";
+				+ "creditCardNumber = ?, "
+				+ "WHERE reservationId = ? ";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 			int i = 1;
 			preparedStatement.setLong(i++,r.getOfferId());
@@ -29,6 +30,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 					new Timestamp(r.getRequestDate().getTime().getTime()) : null;
 			preparedStatement.setTimestamp(i++,date);	
 			preparedStatement.setString(i++,r.getCreditCardNumber());
+			preparedStatement.setLong(i++,r.getReservationId());
 			
 			int updatedRows = preparedStatement.executeUpdate();
 			
@@ -79,7 +81,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 	@Override
 	public List<Reservation> findByOfferId(Connection connection , long offerId){
 		String queryString = "SELECT email, offerId, state, requestDate, "
-				+ "reservationId, creditCardNumber FROM WHERE offerId = ?";
+				+ "reservationId, creditCardNumber FROM Reservation WHERE offerId = ?";
 		
 		queryString += " ORDER BY reservationId";
 		
