@@ -1,6 +1,6 @@
 package es.udc.ws.app.validation;
 
-import es.udc.ws.app.exceptions.InputValidationException;
+import es.udc.ws.util.exceptions.InputValidationException;
 import java.math.BigInteger;
 import java.util.Calendar;
 

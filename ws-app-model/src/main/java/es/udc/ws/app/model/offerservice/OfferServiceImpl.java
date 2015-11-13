@@ -1,6 +1,6 @@
 package es.udc.ws.app.model.offerservice;
 
-import static es.udc.ws.app.model.ModelConstants.OFFER_DATA_SOURCE;
+import static es.udc.ws.app.model.util.ModelConstants.OFFER_DATA_SOURCE;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,8 +10,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
-import es.udc.ws.app.exceptions.InputValidationException;
-import es.udc.ws.app.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.exceptions.InputValidationException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.model.offer.Offer;
@@ -21,7 +21,7 @@ import es.udc.ws.app.model.reservation.EnumState;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.model.reservation.SqlReservationDao;
 import es.udc.ws.app.model.reservation.SqlReservationDaoFactory;
-import es.udc.ws.app.sql.DataSourceLocator;
+import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.app.validation.PropertyValidator;
 
 public class OfferServiceImpl implements OfferService {

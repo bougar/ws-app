@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.sql.Timestamp;
 
 
-import es.udc.ws.app.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 	

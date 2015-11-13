@@ -1,6 +1,6 @@
 package es.udc.ws.app.model.offer;
 
-import es.udc.ws.app.configuration.ConfigurationParametersManager;
+import es.udc.ws.util.configuration.ConfigurationParametersManager;
 
 /**
  * A factory to get

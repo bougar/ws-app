@@ -2,7 +2,7 @@ package es.udc.ws.app.model.reservation;
 
 import java.sql.Connection;
 import java.util.List;
-import es.udc.ws.app.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 
 public interface SqlReservationDao {

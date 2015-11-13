@@ -2,8 +2,8 @@ package es.udc.ws.app.model.offerservice;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
-import es.udc.ws.app.exceptions.InputValidationException;
-import es.udc.ws.app.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.exceptions.InputValidationException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 

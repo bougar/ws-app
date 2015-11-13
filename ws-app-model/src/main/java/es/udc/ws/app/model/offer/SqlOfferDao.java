@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Calendar;
 
-import es.udc.ws.app.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public interface SqlOfferDao {
 	public Offer create(Connection connection,Offer o);
