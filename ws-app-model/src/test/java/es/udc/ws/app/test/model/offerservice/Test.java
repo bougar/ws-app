@@ -16,8 +16,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.junit.BeforeClass;
-import org.junit.Test;
-
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offerservice.OfferService;
 import es.udc.ws.app.model.offerservice.OfferServiceFactory;
@@ -29,7 +27,7 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.sql.SimpleDataSource;
 
-public class OfferServiceTest {
+public class Test {
 	private final long NON_EXISTENT_OFFER_ID = -1;
 	private final long NON_EXISTENT_RESERVATION_ID = -1;
 	private final String USER_ID = "ws-user";
