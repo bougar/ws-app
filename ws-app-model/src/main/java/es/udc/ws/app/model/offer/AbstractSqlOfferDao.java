@@ -18,10 +18,11 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 	public void update(Connection connection, Offer o)
 			throws InstanceNotFoundException {
 		/*Create string query*/
-		String queryString = "UPDATE Offer"
+		String queryString = "UPDATE Offer "
 				+ "SET name = ?, description = ?, limitReservationDate = ?, "
 				+ "limitApplicationDate = ?, realPrice = ?, discountedPrice = ?, "
-				+ "fee = ?, valid = ?";
+				+ "fee = ?, valid = ? "
+				+ "WHERE offerId=?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 			int i = 1;
 			preparedStatement.setString(i++,o.getName());
@@ -36,6 +37,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			preparedStatement.setFloat(i++,o.getDiscountedPrice());
 			preparedStatement.setFloat(i++,o.getFee());
 			preparedStatement.setBoolean(i++,o.isValid());
+			preparedStatement.setLong(i++, o.getOfferId());
 			
 			int updatedRows = preparedStatement.executeUpdate();
 			

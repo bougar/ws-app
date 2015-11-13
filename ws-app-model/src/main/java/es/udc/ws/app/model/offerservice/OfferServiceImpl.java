@@ -45,10 +45,6 @@ public class OfferServiceImpl implements OfferService {
 		PropertyValidator.validateMandatoryString("title", offer.getName());
 		PropertyValidator.validateMandatoryString("description",
 				offer.getDescription());
-		PropertyValidator.validatePastDate("limitReservationDate",
-				offer.getLimitReservationDate());
-		PropertyValidator.validatePastDate("limitApplicationDate",
-				offer.getLimitApplicationDate());
 		PropertyValidator.validateTwoDates("limitReservationDate",
 				offer.getLimitReservationDate(),
 				offer.getLimitApplicationDate());

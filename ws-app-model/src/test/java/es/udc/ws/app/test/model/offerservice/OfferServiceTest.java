@@ -132,7 +132,7 @@ public class OfferServiceTest {
 	}
 
 	@Test
-	public void testAddMovieAndFindMovie() throws InputValidationException,
+	public void testAddOfferAndFindOffer() throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException {
 
 		Offer offer = getValidOffer();
@@ -220,6 +220,7 @@ public class OfferServiceTest {
 			offer.setLimitReservationDate(null);
 			try {
 				addedOffer = offerService.addOffer(offer);
+				System.out.println("");
 			} catch (InputValidationException e) {
 				exceptionCatched = true;
 			}
@@ -324,8 +325,8 @@ public class OfferServiceTest {
 			offer.setFee(1);
 			Calendar apliDate=Calendar.getInstance();
 			Calendar resDate = Calendar.getInstance();
-			apliDate.add(Calendar.DATE, 8);
-			resDate.add(Calendar.DATE, 28);
+			apliDate.add(Calendar.DATE, 28);
+			resDate.add(Calendar.DATE, 8);
 			offer.setLimitApplicationDate(apliDate);
 			offer.setLimitReservationDate(resDate);
 			offer.setValid(false);

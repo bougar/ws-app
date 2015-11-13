@@ -86,6 +86,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		queryString += " ORDER BY reservationId";
 		
 		try(PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
+			preparedStatement.setLong(1, offerId);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Reservation> reservations= new ArrayList<Reservation>();
 			

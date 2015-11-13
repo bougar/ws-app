@@ -73,7 +73,7 @@ public class Offer {
 	public void setLimitApplicationDate(Calendar limitApplicationDate) {
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
 	}
 
 	public float getRealPrice() {
@@ -163,12 +163,12 @@ public class Offer {
 		if (limitApplicationDate == null) {
 			if (other.limitApplicationDate != null)
 				return false;
-		} else if (!limitApplicationDate.equals(other.limitApplicationDate))
+		} else if (!(limitApplicationDate.compareTo(other.limitApplicationDate)==0))
 			return false;
 		if (limitReservationDate == null) {
 			if (other.limitReservationDate != null)
 				return false;
-		} else if (!limitReservationDate.equals(other.limitReservationDate))
+		} else if (!(limitReservationDate.compareTo(other.limitReservationDate)==0))
 			return false;
 		if (name == null) {
 			if (other.name != null)
