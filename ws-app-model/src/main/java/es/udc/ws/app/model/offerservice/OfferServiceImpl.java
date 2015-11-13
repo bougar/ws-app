@@ -388,14 +388,19 @@ public class OfferServiceImpl implements OfferService {
 			} catch (InstanceNotFoundException e) {
 				connection.commit();
 				throw e;
-			} catch (RuntimeException | Error e) {
-				connection.rollback();
-				throw e;
 			} catch (AlreadyInvalidatedException e) {
 				connection.commit();
 				throw e;
-			}
 			} catch (SQLException e) {
+				connection.rollback();
+				throw new RuntimeException(e);
+
+			} catch (RuntimeException | Error e) {
+				connection.rollback();
+				throw e;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
 
 	}
