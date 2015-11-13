@@ -232,7 +232,8 @@ public class OfferServiceImpl implements OfferService {
 
 	@Override
 	public long reserveOffer(long offerId, String email, String creditCardNumber)
-			throws InputValidationException, InstanceNotFoundException {
+			throws InputValidationException, InstanceNotFoundException,
+			AlreadyInvalidatedException {
 
 		PropertyValidator.validateCreditCard(creditCardNumber);
 
@@ -247,6 +248,11 @@ public class OfferServiceImpl implements OfferService {
 
 				/* Do work. */
 				Offer offer = offerDao.find(connection, offerId);
+
+				/* If offer is invalid a reservation cannot be made */
+				if (!offer.isValid())
+					throw new AlreadyInvalidatedException(offer.getOfferId());
+
 				Calendar requestDate = Calendar.getInstance();
 				Reservation base = new Reservation(email, offer.getOfferId(),
 						EnumState.NOT_CLAIMED, requestDate, creditCardNumber);
@@ -259,6 +265,9 @@ public class OfferServiceImpl implements OfferService {
 				return reservation.getReservationId();
 
 			} catch (InstanceNotFoundException e) {
+				connection.commit();
+				throw e;
+			} catch (AlreadyInvalidatedException e) {
 				connection.commit();
 				throw e;
 			} catch (SQLException e) {
@@ -311,6 +320,7 @@ public class OfferServiceImpl implements OfferService {
 				connection.commit();
 				throw e;
 			} catch (NotClaimableException e) {
+				connection.commit();
 				throw e;
 			} catch (SQLException e) {
 				connection.rollback();
@@ -348,35 +358,45 @@ public class OfferServiceImpl implements OfferService {
 	@Override
 	public void offerInvalidation(long offerId)
 			throws InstanceNotFoundException, AlreadyInvalidatedException {
+
 		try (Connection connection = dataSource.getConnection()) {
-			Offer offer = findOffer(offerId);
 
-			/* Offer is invalid already */
-			if (!offer.isValid())
-				throw new AlreadyInvalidatedException(offerId);
+			try {
 
-			List<Reservation> reservations = reservationDao.findByOfferId(
-					connection, offerId);
+				Offer offer = offerDao.find(connection, offerId);
+				/* Offer is invalid already */
+				if (!offer.isValid())
+					throw new AlreadyInvalidatedException(offerId);
 
-			/* Loop sets reservations state to INVALID if NOT_CALIMED */
-			for (Reservation r : reservations) {
-				if (r.getState().toString().equals("NOT_CLAIMED"))
-					reservationDao.stateUpdate(connection,
-							r.getReservationId(), EnumState.INVALID);
+				List<Reservation> reservations = reservationDao.findByOfferId(
+						connection, offerId);
+
+				/* Loop sets reservations state to INVALID if NOT_CALIMED */
+				for (Reservation r : reservations) {
+					if (r.getState().toString().equals("NOT_CLAIMED"))
+						reservationDao.stateUpdate(connection,
+								r.getReservationId(), EnumState.INVALID);
+				}
+
+				/* Offer is not longer valid */
+				offer.setValid(false);
+				offerDao.update(connection, offer);
+
+				/* Commit. */
+				connection.commit();
+
+			} catch (InstanceNotFoundException e) {
+				connection.commit();
+				throw e;
+			} catch (RuntimeException | Error e) {
+				connection.rollback();
+				throw e;
+			} catch (AlreadyInvalidatedException e) {
+				connection.commit();
+				throw e;
 			}
-
-			/* Offer is not longer valid */
-			offer.setValid(false);
-			offerDao.update(connection, offer);
-
-			/* Commit. */
-			connection.commit();
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} catch (AlreadyInvalidatedException e) {
-			throw new RuntimeException(e);
+			} catch (SQLException e) {
 		}
-	}
 
+	}
 }
