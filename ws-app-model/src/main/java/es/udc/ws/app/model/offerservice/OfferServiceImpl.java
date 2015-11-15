@@ -18,7 +18,6 @@ import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offer.SqlOfferDao;
 import es.udc.ws.app.model.offer.SqlOfferDaoFactory;
 import es.udc.ws.app.model.util.ModelConstants;
-import es.udc.ws.app.model.util.ModelConstants.*;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.model.reservation.SqlReservationDao;
 import es.udc.ws.app.model.reservation.SqlReservationDaoFactory;
@@ -308,6 +307,7 @@ public class OfferServiceImpl implements OfferService {
 									.getState().toString());
 
 				/* Do work. */
+				reservation.setState("CLAIMED");
 				reservationDao.update(connection, reservation);
 
 				/* Commit. */

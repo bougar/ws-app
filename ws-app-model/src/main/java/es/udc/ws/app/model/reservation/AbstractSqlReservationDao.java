@@ -108,20 +108,20 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		}
 	}
 
-	public void stateUpdate(Connection connection, long offerId, String state)
+	public void stateUpdate(Connection connection, long reservationId, String state)
 			throws InstanceNotFoundException{
 		
 		String queryString = "UPDATE Reservation SET state = ?";
-		queryString += " WHERE offerId = ?";
+		queryString += " WHERE reservationId = ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 			int i = 1;
 			preparedStatement.setString(i++,state);
-			preparedStatement.setLong(i++,offerId);
+			preparedStatement.setLong(i++,reservationId);
 			
 			int updatedRows = preparedStatement.executeUpdate();
 			
 			if (updatedRows == 0) {
-				throw new InstanceNotFoundException(offerId,Offer.class.getName());
+				throw new InstanceNotFoundException(reservationId,Offer.class.getName());
 			}
 			
 		}catch (SQLException e){
@@ -132,7 +132,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 
 	public Reservation findByReservationId(Connection connection, long reservationId)
 			throws InstanceNotFoundException{
-			String queryString = "SELECT email, offerId, state, requestDate, creditCardNumber "
+			String queryString = "SELECT offerId, email, state, requestDate, creditCardNumber "
 					+ "FROM Reservation WHERE reservationId = ?";
 			try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)){
 				int i = 1;
@@ -145,13 +145,16 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 				}
 				i = 1;
 				
-				String email = resultSet.getString(i++);
 				long offerId = resultSet.getLong(i++);
+				String email = resultSet.getString(i++);
 				String state = resultSet.getString(i++);
 				Calendar requestDate = Calendar.getInstance();
+				requestDate.setTime(resultSet.getTimestamp(i++));
 				String creditCardNumber = resultSet.getString(i++);
 				
-				return new Reservation(email, offerId, state, requestDate, reservationId ,creditCardNumber);
+				Reservation reservation = new Reservation(email, offerId, state, requestDate, reservationId ,creditCardNumber);
+				
+				return reservation;
 				
 			}catch (SQLException e){
 				throw new RuntimeException(e);
