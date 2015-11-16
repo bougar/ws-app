@@ -7,6 +7,7 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.NotClaimableException;
+import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 
 import java.util.List;
 import java.util.Calendar;
@@ -27,7 +28,7 @@ public interface OfferService {
 
 	public long reserveOffer(long offerId, String email, String creditCardNumber)
 			throws InputValidationException, InstanceNotFoundException,
-			AlreadyInvalidatedException;
+			AlreadyInvalidatedException, ReservationTimeExpiredException;
 
 	public void claimOffer(long reservationId, String email)
 			throws InstanceNotFoundException, NotClaimableException;

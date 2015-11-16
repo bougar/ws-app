@@ -14,6 +14,7 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
+import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offer.SqlOfferDao;
 import es.udc.ws.app.model.offer.SqlOfferDaoFactory;
@@ -229,7 +230,7 @@ public class OfferServiceImpl implements OfferService {
 	@Override
 	public long reserveOffer(long offerId, String email, String creditCardNumber)
 			throws InputValidationException, InstanceNotFoundException,
-			AlreadyInvalidatedException {
+			AlreadyInvalidatedException, ReservationTimeExpiredException {
 
 		PropertyValidator.validateCreditCard(creditCardNumber);
 
@@ -249,9 +250,15 @@ public class OfferServiceImpl implements OfferService {
 				if (!offer.isValid())
 					throw new AlreadyInvalidatedException(offer.getOfferId());
 
+				if (offer.getLimitReservationDate().compareTo(
+						Calendar.getInstance()) < 0)
+					throw new ReservationTimeExpiredException(
+							offer.getOfferId());
+
 				Calendar requestDate = Calendar.getInstance();
 				Reservation base = new Reservation(email, offer.getOfferId(),
-						ModelConstants.NOT_CLAIMED, requestDate, creditCardNumber);
+						ModelConstants.NOT_CLAIMED, requestDate,
+						creditCardNumber);
 				Reservation reservation = reservationDao.create(connection,
 						base);
 
@@ -264,6 +271,9 @@ public class OfferServiceImpl implements OfferService {
 				connection.commit();
 				throw e;
 			} catch (AlreadyInvalidatedException e) {
+				connection.commit();
+				throw e;
+			} catch (ReservationTimeExpiredException e) {
 				connection.commit();
 				throw e;
 			} catch (SQLException e) {
@@ -299,6 +309,13 @@ public class OfferServiceImpl implements OfferService {
 				/* Reservation owned by other user */
 				if (!reservation.getEmail().equals(email))
 					throw new NotClaimableException(email);
+
+				Offer aux = findOffer(reservation.getOfferId());
+
+				if (aux.getLimitApplicationDate().compareTo(
+						Calendar.getInstance()) < 0)
+					throw new NotClaimableException(aux.getOfferId(),
+							aux.getLimitApplicationDate());
 
 				/* State must be NOT_CLAIMED in order to claim a reservation */
 				if (!reservation.getState().toString().equals("NOT_CLAIMED"))
@@ -362,7 +379,7 @@ public class OfferServiceImpl implements OfferService {
 				connection
 						.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
-				
+
 				Offer offer = offerDao.find(connection, offerId);
 				/* Offer is invalid already */
 				if (!offer.isValid())
