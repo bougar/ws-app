@@ -1,5 +1,6 @@
 package es.udc.ws.app.soapservice;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -41,7 +42,6 @@ public class SoapOfferService {
 	}
 
 	public OfferDto addOffer(Offer offer) throws SoapInputValidationException {
-		// Offer offer = OfferToOfferDtoConversor.toOffer(offerDto, fee);
 		try {
 			return OfferToOfferDtoConversor.toOfferDto(OfferServiceFactory
 					.getService().addOffer(offer));
@@ -138,13 +138,17 @@ public class SoapOfferService {
 		}
 	}
 
-	/*
-	 * public List<OfferDto> findOffers(String keywords){
-	 * OfferServiceFactory.getService().findOffers(keywords, true,
-	 * Calendar.getInstance()); }
-	 */
+	
+	public List<OfferDto> findOffers(String keywords) {
+		List<Offer> offers = new ArrayList<Offer>();
+		List<OfferDto> offersDto = new ArrayList<OfferDto>();
+		offers = OfferServiceFactory.getService().findOffers(keywords, true,
+				Calendar.getInstance());
+		for (Offer o : offers)
+			offersDto.add(OfferToOfferDtoConversor.toOfferDto(o));
+		return offersDto;
+	}
 
-	//
 	public List<Reservation> findReservationByUser(String user, boolean showAll) {
 		return OfferServiceFactory.getService().findReservationByUser(user,
 				showAll);
