@@ -252,6 +252,9 @@ public class OfferServiceImpl implements OfferService {
 				if (!offer.isValid())
 					throw new AlreadyInvalidatedException(offer.getOfferId());
 
+				if (reservationDao.isOfferAlreadyReservated(connection, offerId, email))
+					throw new AlreadyReservatedException(offerId, email);
+				
 				if (offer.getLimitReservationDate().compareTo(
 						Calendar.getInstance()) < 0)
 					throw new ReservationTimeExpiredException(
@@ -273,6 +276,9 @@ public class OfferServiceImpl implements OfferService {
 				connection.commit();
 				throw e;
 			} catch (AlreadyInvalidatedException e) {
+				connection.commit();
+				throw e;
+			} catch (AlreadyReservatedException e) {
 				connection.commit();
 				throw e;
 			} catch (ReservationTimeExpiredException e) {

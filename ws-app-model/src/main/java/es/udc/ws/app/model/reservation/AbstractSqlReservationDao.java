@@ -52,7 +52,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 				+ "reservationId, creditCardNumber FROM Reservation WHERE email = ?";
 
 		if (!isValid) {
-			queryString += " AND state = INVALID";
+			queryString += " AND state = 'INVALID'";
 		}
 		queryString += " ORDER BY reservationId";
 
@@ -112,10 +112,24 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 		}
 	}
 	
-	public boolean isOfferAlreadyReservated(Connection c, long offerId, String user){
+	public boolean isOfferAlreadyReservated(Connection connection, long offerId, String user){
 		String queryString = "SELECT reservationId"
-				+ "FROM Reservation WHERE offerId = ? AND email = ?";
-		return false;
+				+ " FROM Reservation WHERE offerId = ? AND email = ?";
+		boolean isReservated = false;
+		try (PreparedStatement preparedStatement = connection
+				.prepareStatement(queryString)) {
+			int i =1;
+			preparedStatement.setLong(i++, offerId);
+			preparedStatement.setString(i++, user);
+			
+			ResultSet updatedRows = preparedStatement.executeQuery();
+
+			isReservated = (updatedRows.next());			
+		}catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return isReservated;
 		
 	}
 	
