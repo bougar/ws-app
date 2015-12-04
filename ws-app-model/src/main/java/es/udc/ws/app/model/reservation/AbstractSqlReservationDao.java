@@ -107,7 +107,14 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao{
 		
 		}
 	}
-
+	
+	public boolean isOfferAlreadyReservated(Connection c, long offerId, String user){
+		String queryString = "SELECT reservationId"
+				+ "FROM Reservation WHERE offerId = ? AND email = ?";
+		return false;
+		
+	}
+	
 	public void stateUpdate(Connection connection, long reservationId, String state)
 			throws InstanceNotFoundException{
 		

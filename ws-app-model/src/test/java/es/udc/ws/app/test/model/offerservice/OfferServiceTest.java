@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.sql.DataSource;

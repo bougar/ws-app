@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
@@ -230,7 +231,8 @@ public class OfferServiceImpl implements OfferService {
 	@Override
 	public long reserveOffer(long offerId, String email, String creditCardNumber)
 			throws InputValidationException, InstanceNotFoundException,
-			AlreadyInvalidatedException, ReservationTimeExpiredException {
+			AlreadyInvalidatedException, ReservationTimeExpiredException,
+			AlreadyReservatedException {
 
 		PropertyValidator.validateCreditCard(creditCardNumber);
 

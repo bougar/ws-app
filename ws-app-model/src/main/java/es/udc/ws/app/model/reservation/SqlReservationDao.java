@@ -22,4 +22,5 @@ public interface SqlReservationDao {
 	public Reservation findByReservationId(Connection c, long reservationId)
 		throws InstanceNotFoundException;
 	
+	public boolean isOfferAlreadyReservated(Connection c, long offerId, String user);
 }
