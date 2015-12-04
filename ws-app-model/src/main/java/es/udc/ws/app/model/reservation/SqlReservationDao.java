@@ -26,4 +26,8 @@ public interface SqlReservationDao {
 			throws InstanceNotFoundException;
 
 	public boolean isOfferAlreadyReservated(Connection c, long offerId, String user);
+	
+	public int howManyByOffer(Connection c, long offerId);
+	
+	public int howManyByUser(Connection c, String user);
 }

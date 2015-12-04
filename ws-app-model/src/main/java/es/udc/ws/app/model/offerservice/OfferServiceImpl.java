@@ -109,16 +109,13 @@ public class OfferServiceImpl implements OfferService {
 				/* Get previous values to validate modifications */
 				Offer baseOffer = offerDao.find(connection, offer.getOfferId());
 
-				List<Reservation> reservations = reservationDao.findByOfferId(
-						connection, offer.getOfferId());
-
 				/* Checks if any user has already reserved the offer */
 
 				/*
 				 * If reservations > 0 we can only modify AppDate(later) and
 				 * prize(cheaper)
 				 */
-				if (reservations.size() != 0) {
+				if (reservationDao.howManyByOffer(connection, offer.getOfferId()) > 0) {
 
 					if (offer.getLimitApplicationDate().compareTo(
 							baseOffer.getLimitApplicationDate()) < 0)
@@ -170,16 +167,11 @@ public class OfferServiceImpl implements OfferService {
 						.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
 
-				Offer offer = offerDao.find(connection, offerId);
-
-				List<Reservation> reservations = reservationDao.findByOfferId(
-						connection, offer.getOfferId());
-
 				/*
 				 * An offer can only be removed if no one has already reserved
 				 * it
 				 */
-				if (reservations.size() != 0)
+				if (reservationDao.howManyByOffer(connection, offerId) > 0)
 					throw new NotModifiableOfferException(offerId);
 
 				/* Do work. */

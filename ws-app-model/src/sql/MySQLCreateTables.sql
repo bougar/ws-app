@@ -34,6 +34,8 @@ CREATE TABLE Reservation ( reservationId BIGINT NOT NULL AUTO_INCREMENT,
     state ENUM ('EXPIRED', 'INVALID', 'CLAIMED', 'NOT_CLAIMED') NOT NULL,
     requestDate TIMESTAMP DEFAULT 0 NOT NULL,
     creditCardNumber VARCHAR(16) NOT NULL,
+    reservationPrice FLOAT NOT NULL,
+    reservationFee FLOAT NOT NULL,
     CONSTRAINT ReservationPK PRIMARY KEY(reservationId),
     CONSTRAINT ReservationOfferIdFK FOREIGN KEY(offerId)
         REFERENCES Offer(offerId) ON DELETE CASCADE ) ENGINE = InnoDB;

@@ -550,7 +550,6 @@ public class OfferServiceTest {
 			try {
 				offerService.removeOffer(addedOffer.getOfferId());
 			} catch (NotModifiableOfferException e) {
-				// removeReservation(reservation);
 				exceptionCatched = true;
 			}
 			assertTrue(exceptionCatched);
@@ -619,7 +618,6 @@ public class OfferServiceTest {
 			removeReservation(reservationId);
 			removeOffer(addedOffer.getOfferId());
 		}
-
 	}
 
 	@Test(expected = NotClaimableException.class)
@@ -736,5 +734,5 @@ public class OfferServiceTest {
 		}
 	}
 
-	
+
 }

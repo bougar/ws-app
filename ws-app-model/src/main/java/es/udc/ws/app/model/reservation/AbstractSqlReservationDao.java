@@ -222,4 +222,40 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public int howManyByOffer(Connection connection, long offerId) {
+		String queryString = "SELECT COUNT(*) FROM Reservation WHERE" + " offerId = ?";
+		int rows = 0;
+		
+		try (PreparedStatement preparedStatement = connection
+				.prepareStatement(queryString)) {
+			connection.setAutoCommit(false);
+			int i = 1;
+			preparedStatement.setLong(i++, offerId);
+			ResultSet updatedRows = preparedStatement.executeQuery();
+			updatedRows.next();
+			rows = updatedRows.getInt(1);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return rows;
+	}
+	public int howManyByUser(Connection connection, String user) {
+		String queryString = "SELECT COUNT(*) FROM Reservation WHERE" + " email = ?";
+		int rows = 0;
+		
+		try (PreparedStatement preparedStatement = connection
+				.prepareStatement(queryString)) {
+			connection.setAutoCommit(false);
+			int i = 1;
+			preparedStatement.setString(i++, user);
+			ResultSet updatedRows = preparedStatement.executeQuery();
+			updatedRows.next();
+			rows = updatedRows.getInt(1);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return rows;
+	}
+	
 }
