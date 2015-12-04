@@ -112,12 +112,12 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 
 	@Override
 	public List<Offer> advancedFilter(Connection connection, String keywords,
-			boolean isValid, Calendar data) {
+			boolean showAll, Calendar data) {
 		String[] words = keywords != null ? keywords.split(" ") : null;
 		String queryString = "SELECT offerId, name, description, limitReservationDate, limitApplicationDate, "
 				+ "realPrice, discountedPrice, fee, valid FROM Offer ";
 
-		if (isValid) {
+		if (!showAll) {
 			queryString += "WHERE valid=1";
 		} else {
 			queryString += "WHERE valid=0 || valid=1";

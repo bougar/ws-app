@@ -50,7 +50,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 				+ "reservationId, creditCardNumber, reservationPrice, reservationFee FROM Reservation WHERE email = ?";
 
 		if (!showAll) {
-			queryString += " AND state = 'VALID'";
+			queryString += " AND state != 'INVALID'";
 		}
 		queryString += " ORDER BY reservationId";
 

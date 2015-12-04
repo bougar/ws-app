@@ -131,16 +131,21 @@ public class OfferServiceTest {
 			NotModifiableOfferException, InputValidationException {
 		Offer offer1 = createOffer(getValidOffer());
 		Offer offer2 = createOffer(getValidOffer());
+		Offer offer3 = null;
+		try {
 		List<Offer> offerList = offerService.findOffers(null, true, null);
 		assertEquals(offerList.size(), 2);
-		Offer offer3 = createOffer(getValidOffer());
+		offer3 = createOffer(getValidOffer());
 		offer3.setDescription("test");
 		offerService.updateOffer(offer3);
 		offerList = offerService.findOffers("Offer description", true, null);
 		assertEquals(offerList.size(), 2);
-		removeOffer(offer1.getOfferId());
-		removeOffer(offer2.getOfferId());
-		removeOffer(offer3.getOfferId());
+		}finally{
+			removeOffer(offer1.getOfferId());
+			removeOffer(offer2.getOfferId());
+			if (offer3 != null)
+				removeOffer(offer3.getOfferId());
+		}
 	}
 
 	@Test
@@ -148,13 +153,17 @@ public class OfferServiceTest {
 			NotModifiableOfferException, AlreadyInvalidatedException {
 		Offer offer1 = createOffer(getValidOffer());
 		Offer offer2 = createOffer(getValidOffer());
+		try{
+		
 		offerService.offerInvalidation(offer2.getOfferId());
 		List<Offer> offerList = offerService.findOffers(null, true, null);
-		assertEquals(offerList.size(), 1);
-		offerList = offerService.findOffers(null, false, null);
 		assertEquals(offerList.size(), 2);
-		removeOffer(offer1.getOfferId());
-		removeOffer(offer2.getOfferId());
+		offerList = offerService.findOffers(null, false, null);
+		assertEquals(offerList.size(), 1);
+		}finally{
+			removeOffer(offer1.getOfferId());
+			removeOffer(offer2.getOfferId());
+		}
 	}
 
 	@Test
@@ -163,12 +172,15 @@ public class OfferServiceTest {
 			InputValidationException {
 		Offer offer1 = createOffer(getValidOffer());
 		Calendar sDate1 = offer1.getLimitReservationDate();
-		List<Offer> offerList = offerService.findOffers(null, true, sDate1);
-		assertEquals(offerList.size(), 1);
-		sDate1.add(Calendar.DATE, -1);
-		offerList = offerService.findOffers(null, true, sDate1);
-		assertEquals(offerList.size(), 0);
-		removeOffer(offer1.getOfferId());
+		try {
+			List<Offer> offerList = offerService.findOffers(null, true, sDate1);
+			assertEquals(offerList.size(), 1);
+			sDate1.add(Calendar.DATE, -1);
+			offerList = offerService.findOffers(null, true, sDate1);
+			assertEquals(offerList.size(), 1);
+		} finally {
+			removeOffer(offer1.getOfferId());
+		}
 	}
 
 	@Test
@@ -186,14 +198,17 @@ public class OfferServiceTest {
 				"otherUSer", VALID_CREDIT_CARD_NUMBER);
 		List<Reservation> reservations = offerService.findReservationByUser(
 				USER_ID, true);
-		assertEquals(reservations.size(), 2);
-		reservations = offerService.findReservationByUser(USER_ID, false);
-		assertEquals(reservations.size(), 1);
-		removeReservation(reservationUser);
-		removeReservation(reservationInvalid);
-		removeReservation(reservationOther);
-		removeOffer(offer.getOfferId());
-		removeOffer(invalid.getOfferId());
+		try {
+			assertEquals(reservations.size(), 2);
+			reservations = offerService.findReservationByUser(USER_ID, false);
+			assertEquals(reservations.size(), 1);
+		} finally {
+			removeReservation(reservationUser);
+			removeReservation(reservationInvalid);
+			removeReservation(reservationOther);
+			removeOffer(offer.getOfferId());
+			removeOffer(invalid.getOfferId());
+		}
 	}
 
 	@Test
@@ -733,6 +748,5 @@ public class OfferServiceTest {
 			removeOffer(offer.getOfferId());
 		}
 	}
-
 
 }
