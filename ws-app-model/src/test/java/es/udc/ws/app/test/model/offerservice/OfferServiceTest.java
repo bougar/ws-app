@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -99,36 +98,12 @@ public class OfferServiceTest {
 
 	private void removeReservation(long reservationId)
 			throws InstanceNotFoundException {
-		String queryString = "DELETE FROM Reservation WHERE"
-				+ " reservationId = ?";
 		DataSource dataSource = DataSourceLocator
 				.getDataSource(OFFER_DATA_SOURCE);
 
 		try (Connection connection = dataSource.getConnection()) {
-			try (PreparedStatement preparedStatement = connection
-					.prepareStatement(queryString)) {
-				connection.setAutoCommit(false);
-				int i = 1;
-				preparedStatement.setLong(i++, reservationId);
-				int removedRows = preparedStatement.executeUpdate();
-
-				if (removedRows == 0) {
-					throw new InstanceNotFoundException(reservationId,
-							Offer.class.getName());
-				}
-
-				connection.commit();
-
-			} catch (InstanceNotFoundException e) {
-				connection.commit();
-				throw new RuntimeException(e);
-			} catch (SQLException e) {
-				connection.rollback();
-				throw new RuntimeException(e);
-			} catch (RuntimeException | Error e) {
-				connection.rollback();
-				throw e;
-			}
+			reservationDao.remove(connection, reservationId);
+			connection.commit();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
