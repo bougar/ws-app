@@ -45,12 +45,12 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 	}
 
 	public List<Reservation> findByUserId(Connection connection, String email,
-			boolean isValid) {
+			boolean showAll) {
 		String queryString = "SELECT email, offerId, state, requestDate, "
 				+ "reservationId, creditCardNumber, reservationPrice, reservationFee FROM Reservation WHERE email = ?";
 
-		if (!isValid) {
-			queryString += " AND state = 'INVALID'";
+		if (!showAll) {
+			queryString += " AND state = 'VALID'";
 		}
 		queryString += " ORDER BY reservationId";
 

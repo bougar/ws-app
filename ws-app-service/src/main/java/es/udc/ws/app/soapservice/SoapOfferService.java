@@ -1,5 +1,8 @@
 package es.udc.ws.app.soapservice;
 
+import java.util.Calendar;
+import java.util.List;
+
 import javax.jws.WebService;
 
 import es.udc.ws.app.dto.OfferDto;
@@ -10,6 +13,7 @@ import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offerservice.OfferServiceFactory;
+import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.serviceutil.OfferToOfferDtoConversor;
 import es.udc.ws.app.soapserviceexceptions.SoapAlreadyInvalidatedException;
 import es.udc.ws.app.soapserviceexceptions.SoapAlreadyInvalidatedExceptionInfo;
@@ -75,11 +79,13 @@ public class SoapOfferService {
 					new SoapNotModifiableOfferExceptionInfo(e.getOfferId()));
 		}
 	}
-	
-	public OfferDto findOffer(long offerId) throws SoapInstanceNotFoundException{
-		OfferDto offerDto=null;
+
+	public OfferDto findOffer(long offerId)
+			throws SoapInstanceNotFoundException {
+		OfferDto offerDto = null;
 		try {
-			offerDto=OfferToOfferDtoConversor.toOfferDto(OfferServiceFactory.getService().findOffer(offerId));
+			offerDto = OfferToOfferDtoConversor.toOfferDto(OfferServiceFactory
+					.getService().findOffer(offerId));
 		} catch (InstanceNotFoundException e) {
 			throw new SoapInstanceNotFoundException(
 					new SoapInstanceNotFoundExceptionInfo(e.getInstanceId(),
@@ -87,11 +93,15 @@ public class SoapOfferService {
 		}
 		return offerDto;
 	}
-	
-	public long reserveOffer(long offerId, String email, String creditCard) throws SoapInputValidationException, SoapInstanceNotFoundException, SoapAlreadyInvalidatedException, SoapReservationTimeExpiredException, SoapAlreadyReservedException{
+
+	public long reserveOffer(long offerId, String email, String creditCard)
+			throws SoapInputValidationException, SoapInstanceNotFoundException,
+			SoapAlreadyInvalidatedException,
+			SoapReservationTimeExpiredException, SoapAlreadyReservedException {
 		Long offer = null;
 		try {
-			offer=OfferServiceFactory.getService().reserveOffer(offerId,email,creditCard);
+			offer = OfferServiceFactory.getService().reserveOffer(offerId,
+					email, creditCard);
 		} catch (InputValidationException e) {
 			throw new SoapInputValidationException(e.getMessage());
 		} catch (InstanceNotFoundException e) {
@@ -99,15 +109,20 @@ public class SoapOfferService {
 					new SoapInstanceNotFoundExceptionInfo(e.getInstanceId(),
 							e.getInstanceType()));
 		} catch (AlreadyInvalidatedException e) {
-			throw new SoapAlreadyInvalidatedException(new SoapAlreadyInvalidatedExceptionInfo(e.getOfferId()));
+			throw new SoapAlreadyInvalidatedException(
+					new SoapAlreadyInvalidatedExceptionInfo(e.getOfferId()));
 		} catch (ReservationTimeExpiredException e) {
-			throw new SoapReservationTimeExpiredException(new SoapReservationTimeExpiredExceptionInfo(e.getOfferId(),e.getLimitReservationDate()));
+			throw new SoapReservationTimeExpiredException(
+					new SoapReservationTimeExpiredExceptionInfo(e.getOfferId(),
+							e.getLimitReservationDate()));
 		} catch (AlreadyReservatedException e) {
-			throw new SoapAlreadyReservedException(new SoapAlreadyReservedExceptionInfo(e.getOfferId(),e.getUser()));
+			throw new SoapAlreadyReservedException(
+					new SoapAlreadyReservedExceptionInfo(e.getOfferId(),
+							e.getUser()));
 		}
 		return offer;
 	}
-	
+
 	public void claimOffer(long reservationId, String user)
 			throws SoapInstanceNotFoundException, SoapNotClaimableException {
 		try {
@@ -120,6 +135,33 @@ public class SoapOfferService {
 			throw new SoapNotClaimableException(
 					new SoapNotClaimableExceptionInfo(e.getReservationId(),
 							e.getExpirationDate(), e.getEmail(), e.getState()));
+		}
+	}
+
+	/*
+	 * public List<OfferDto> findOffers(String keywords){
+	 * OfferServiceFactory.getService().findOffers(keywords, true,
+	 * Calendar.getInstance()); }
+	 */
+
+	//
+	public List<Reservation> findReservationByUser(String user, boolean showAll) {
+		return OfferServiceFactory.getService().findReservationByUser(user,
+				showAll);
+	}
+
+	public void offerInvalidation(long offerId)
+			throws SoapInstanceNotFoundException,
+			SoapAlreadyInvalidatedException {
+		try {
+			OfferServiceFactory.getService().offerInvalidation(offerId);
+		} catch (InstanceNotFoundException e) {
+			throw new SoapInstanceNotFoundException(
+					new SoapInstanceNotFoundExceptionInfo(e.getInstanceId(),
+							e.getInstanceType()));
+		} catch (AlreadyInvalidatedException e) {
+			throw new SoapAlreadyInvalidatedException(
+					new SoapAlreadyInvalidatedExceptionInfo(e.getOfferId()));
 		}
 	}
 }

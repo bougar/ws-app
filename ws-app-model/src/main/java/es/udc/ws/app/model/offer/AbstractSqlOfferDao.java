@@ -134,7 +134,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 
 		if (data != null) {
 			queryString += " AND";
-			queryString += " limitReservationDate <= ?";
+			queryString += " limitReservationDate >= ?";
 		}
 		queryString += " ORDER BY name";
 		try (PreparedStatement preparedStatement = connection

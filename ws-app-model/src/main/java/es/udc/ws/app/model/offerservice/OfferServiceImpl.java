@@ -369,9 +369,9 @@ public class OfferServiceImpl implements OfferService {
 	}
 
 	@Override
-	public List<Reservation> findReservationByUser(String email, boolean state) {
+	public List<Reservation> findReservationByUser(String email, boolean showAll) {
 		try (Connection connection = dataSource.getConnection()) {
-			return reservationDao.findByUserId(connection, email, state);
+			return reservationDao.findByUserId(connection, email, showAll);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
