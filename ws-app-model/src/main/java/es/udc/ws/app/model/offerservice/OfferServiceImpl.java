@@ -258,7 +258,7 @@ public class OfferServiceImpl implements OfferService {
 				if (offer.getLimitReservationDate().compareTo(
 						Calendar.getInstance()) < 0)
 					throw new ReservationTimeExpiredException(
-							offer.getOfferId());
+							offer.getOfferId(),offer.getLimitReservationDate());
 
 				Calendar requestDate = Calendar.getInstance();
 				Reservation base = new Reservation(email, offer.getOfferId(),

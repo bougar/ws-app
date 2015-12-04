@@ -9,14 +9,14 @@ import javax.xml.ws.WebFault;
 )
 public class SoapInstanceNotFoundException extends Exception {
 
-    private SoapInstanceNotFoundExceptionInfo faultInfo;  
-    
-    public SoapInstanceNotFoundException(
-            SoapInstanceNotFoundExceptionInfo faultInfo) {
-        this.faultInfo = faultInfo;
-    }
+	private SoapInstanceNotFoundExceptionInfo faultInfo;
 
-    public SoapInstanceNotFoundExceptionInfo getFaultInfo() {
-        return faultInfo;
-    }
+	public SoapInstanceNotFoundException(
+			SoapInstanceNotFoundExceptionInfo faultInfo) {
+		this.faultInfo = faultInfo;
+	}
+
+	public SoapInstanceNotFoundExceptionInfo getFaultInfo() {
+		return faultInfo;
+	}
 }

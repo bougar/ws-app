@@ -7,13 +7,13 @@ import javax.xml.ws.WebFault;
     name="SoapInputValidationException",
     targetNamespace="http://soap.ws.udc.es/offer"
 )
-public class SoapInputValidationException extends Exception {  
-    
-    public SoapInputValidationException(String message) {
-        super(message);
-    }
-    
-    public String getFaultInfo() {
-        return getMessage();
-    }    
+public class SoapInputValidationException extends Exception {
+
+	public SoapInputValidationException(String message) {
+		super(message);
+	}
+
+	public String getFaultInfo() {
+		return getMessage();
+	}
 }

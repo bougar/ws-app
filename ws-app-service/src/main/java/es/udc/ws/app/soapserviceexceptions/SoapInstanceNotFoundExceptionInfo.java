@@ -2,32 +2,32 @@ package es.udc.ws.app.soapserviceexceptions;
 
 public class SoapInstanceNotFoundExceptionInfo {
 
-    private Object instanceId;
-    private String instanceType;
+	private Object instanceId;
+	private String instanceType;
 
-    public SoapInstanceNotFoundExceptionInfo() {
-    }    
-    
-    public SoapInstanceNotFoundExceptionInfo(Object instanceId, 
-                                             String instanceType) {
-        this.instanceId = instanceId;
-        this.instanceType = instanceType;
-    }
+	public SoapInstanceNotFoundExceptionInfo() {
+	}
 
-    public Object getInstanceId() {
-        return instanceId;
-    }
+	public SoapInstanceNotFoundExceptionInfo(Object instanceId,
+			String instanceType) {
+		this.instanceId = instanceId;
+		this.instanceType = instanceType;
+	}
 
-    public String getInstanceType() {
-        return instanceType;
-    }
+	public Object getInstanceId() {
+		return instanceId;
+	}
 
-    public void setInstanceId(Object instanceId) {
-        this.instanceId = instanceId;
-    }
+	public String getInstanceType() {
+		return instanceType;
+	}
 
-    public void setInstanceType(String instanceType) {
-        this.instanceType = instanceType;
-    }
-        
+	public void setInstanceId(Object instanceId) {
+		this.instanceId = instanceId;
+	}
+
+	public void setInstanceType(String instanceType) {
+		this.instanceType = instanceType;
+	}
+
 }

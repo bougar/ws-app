@@ -9,12 +9,13 @@ import javax.xml.ws.WebFault;
 	)
 public class SoapNotModifiableOfferException extends Exception {
 	private SoapNotModifiableOfferExceptionInfo faultInfo;
-	
-	public SoapNotModifiableOfferException(SoapNotModifiableOfferExceptionInfo faultInfo){
-		this.faultInfo=faultInfo;
+
+	public SoapNotModifiableOfferException(
+			SoapNotModifiableOfferExceptionInfo faultInfo) {
+		this.faultInfo = faultInfo;
 	}
-	
-	public SoapNotModifiableOfferExceptionInfo getFaultInfo(){
+
+	public SoapNotModifiableOfferExceptionInfo getFaultInfo() {
 		return faultInfo;
 	}
 }

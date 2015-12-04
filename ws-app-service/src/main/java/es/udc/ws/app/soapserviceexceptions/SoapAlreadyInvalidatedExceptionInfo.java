@@ -1,12 +1,12 @@
 package es.udc.ws.app.soapserviceexceptions;
 
-public class SoapNotModifiableOfferExceptionInfo {
+public class SoapAlreadyInvalidatedExceptionInfo {
 	private long offerId;
 
-	public SoapNotModifiableOfferExceptionInfo() {
+	public SoapAlreadyInvalidatedExceptionInfo() {
 	}
 
-	public SoapNotModifiableOfferExceptionInfo(long offerId) {
+	public SoapAlreadyInvalidatedExceptionInfo(long offerId) {
 		this.offerId = offerId;
 	}
 
