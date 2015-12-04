@@ -11,7 +11,7 @@ public class SoapInstanceNotFoundException extends Exception {
 
     private SoapInstanceNotFoundExceptionInfo faultInfo;  
     
-    protected SoapInstanceNotFoundException(
+    public SoapInstanceNotFoundException(
             SoapInstanceNotFoundExceptionInfo faultInfo) {
         this.faultInfo = faultInfo;
     }

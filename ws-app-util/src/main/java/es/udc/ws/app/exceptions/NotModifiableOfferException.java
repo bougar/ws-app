@@ -19,5 +19,4 @@ public class NotModifiableOfferException extends Exception{
 		this.offerId = offerId;
 	}
     
-    
 }
