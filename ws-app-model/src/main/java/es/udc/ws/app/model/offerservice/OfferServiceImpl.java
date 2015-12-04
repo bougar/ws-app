@@ -263,7 +263,7 @@ public class OfferServiceImpl implements OfferService {
 				Calendar requestDate = Calendar.getInstance();
 				Reservation base = new Reservation(email, offer.getOfferId(),
 						ModelConstants.NOT_CLAIMED, requestDate,
-						creditCardNumber);
+						creditCardNumber, offer.getDiscountedPrice(), offer.getFee());
 				Reservation reservation = reservationDao.create(connection,
 						base);
 

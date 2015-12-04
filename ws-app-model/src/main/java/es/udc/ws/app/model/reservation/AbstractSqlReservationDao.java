@@ -1,6 +1,5 @@
 package es.udc.ws.app.model.reservation;
 
-
 import java.sql.Connection;
 import java.util.Calendar;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Timestamp;
-
 
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -49,7 +47,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 	public List<Reservation> findByUserId(Connection connection, String email,
 			boolean isValid) {
 		String queryString = "SELECT email, offerId, state, requestDate, "
-				+ "reservationId, creditCardNumber FROM Reservation WHERE email = ?";
+				+ "reservationId, creditCardNumber, reservationPrice, reservationFee FROM Reservation WHERE email = ?";
 
 		if (!isValid) {
 			queryString += " AND state = 'INVALID'";
@@ -70,8 +68,11 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 				requestDate.setTime(resultSet.getTimestamp(i++));
 				long reservationId = resultSet.getLong(i++);
 				String creditCardNumber = resultSet.getString(i++);
+				long reservationPrice = resultSet.getLong(i++);
+				long reservationFee = resultSet.getLong(i++);
 				reservations.add(new Reservation(email, offerId, state,
-						requestDate, reservationId, creditCardNumber));
+						requestDate, reservationId, creditCardNumber,
+						reservationPrice, reservationFee));
 			}
 
 			return reservations;
@@ -83,7 +84,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 
 	public List<Reservation> findByOfferId(Connection connection, long offerId) {
 		String queryString = "SELECT email, state, requestDate, "
-				+ "reservationId, creditCardNumber FROM Reservation WHERE offerId = ?";
+				+ "reservationId, creditCardNumber, reservationPrice, reservationFee FROM Reservation WHERE offerId = ?";
 
 		queryString += " ORDER BY reservationId";
 
@@ -101,8 +102,11 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 				requestDate.setTime(resultSet.getTimestamp(i++));
 				long reservationId = resultSet.getLong(i++);
 				String creditCardNumber = resultSet.getString(i++);
+				long reservationPrice = resultSet.getLong(i++);
+				long reservationFee = resultSet.getLong(i++);
 				reservations.add(new Reservation(email, offerId, state,
-						requestDate, reservationId, creditCardNumber));
+						requestDate, reservationId, creditCardNumber,
+						reservationPrice, reservationFee));
 			}
 
 			return reservations;
@@ -111,28 +115,29 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 
 		}
 	}
-	
-	public boolean isOfferAlreadyReservated(Connection connection, long offerId, String user){
+
+	public boolean isOfferAlreadyReservated(Connection connection,
+			long offerId, String user) {
 		String queryString = "SELECT reservationId"
 				+ " FROM Reservation WHERE offerId = ? AND email = ?";
 		boolean isReservated = false;
 		try (PreparedStatement preparedStatement = connection
 				.prepareStatement(queryString)) {
-			int i =1;
+			int i = 1;
 			preparedStatement.setLong(i++, offerId);
 			preparedStatement.setString(i++, user);
-			
+
 			ResultSet updatedRows = preparedStatement.executeQuery();
 
-			isReservated = (updatedRows.next());			
-		}catch (SQLException e) {
+			isReservated = (updatedRows.next());
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		return isReservated;
-		
+
 	}
-	
+
 	public void stateUpdate(Connection connection, long reservationId,
 			String state) throws InstanceNotFoundException {
 
@@ -159,7 +164,7 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 
 	public Reservation findByReservationId(Connection connection,
 			long reservationId) throws InstanceNotFoundException {
-		String queryString = "SELECT offerId, email, state, requestDate, creditCardNumber "
+		String queryString = "SELECT offerId, email, state, requestDate, creditCardNumber, reservationPrice, reservationFee "
 				+ "FROM Reservation WHERE reservationId = ?";
 		try (PreparedStatement preparedStatement = connection
 				.prepareStatement(queryString)) {
@@ -180,9 +185,11 @@ public abstract class AbstractSqlReservationDao implements SqlReservationDao {
 			Calendar requestDate = Calendar.getInstance();
 			requestDate.setTime(resultSet.getTimestamp(i++));
 			String creditCardNumber = resultSet.getString(i++);
-
+			long reservationPrice = resultSet.getLong(i++);
+			long reservationFee = resultSet.getLong(i++);
 			Reservation reservation = new Reservation(email, offerId, state,
-					requestDate, reservationId, creditCardNumber);
+					requestDate, reservationId, creditCardNumber,
+					reservationPrice, reservationFee);
 
 			return reservation;
 
