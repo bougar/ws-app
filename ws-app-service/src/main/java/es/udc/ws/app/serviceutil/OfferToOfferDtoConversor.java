@@ -11,4 +11,12 @@ public class OfferToOfferDtoConversor {
 				offer.getLimitApplicationDate(), offer.getRealPrice(),
 				offer.getDiscountedPrice(), offer.isValid());
 	}
+	
+	public static Offer toOffer(OfferDto offerDto,long fee){
+		return new Offer(offerDto.getOfferId(), offerDto.getName(),
+				offerDto.getDescription(),
+				offerDto.getLimitReservationDate(),
+				offerDto.getLimitApplicationDate(), offerDto.getRealPrice(),
+				offerDto.getDiscountedPrice(),fee, offerDto.isValid());
+	}
 }
