@@ -5,6 +5,7 @@ import javax.jws.WebService;
 import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
+import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 import es.udc.ws.app.model.offer.Offer;
@@ -17,6 +18,8 @@ import es.udc.ws.app.soapserviceexceptions.SoapAlreadyReservedExceptionInfo;
 import es.udc.ws.app.soapserviceexceptions.SoapInputValidationException;
 import es.udc.ws.app.soapserviceexceptions.SoapInstanceNotFoundException;
 import es.udc.ws.app.soapserviceexceptions.SoapInstanceNotFoundExceptionInfo;
+import es.udc.ws.app.soapserviceexceptions.SoapNotClaimableException;
+import es.udc.ws.app.soapserviceexceptions.SoapNotClaimableExceptionInfo;
 import es.udc.ws.app.soapserviceexceptions.SoapNotModifiableOfferException;
 import es.udc.ws.app.soapserviceexceptions.SoapNotModifiableOfferExceptionInfo;
 import es.udc.ws.app.soapserviceexceptions.SoapReservationTimeExpiredException;
@@ -104,5 +107,19 @@ public class SoapOfferService {
 		}
 		return offer;
 	}
-
+	
+	public void claimOffer(long reservationId, String user)
+			throws SoapInstanceNotFoundException, SoapNotClaimableException {
+		try {
+			OfferServiceFactory.getService().claimOffer(reservationId, user);
+		} catch (InstanceNotFoundException e) {
+			throw new SoapInstanceNotFoundException(
+					new SoapInstanceNotFoundExceptionInfo(e.getInstanceId(),
+							e.getInstanceType()));
+		} catch (NotClaimableException e) {
+			throw new SoapNotClaimableException(
+					new SoapNotClaimableExceptionInfo(e.getReservationId(),
+							e.getExpirationDate(), e.getEmail(), e.getState()));
+		}
+	}
 }
