@@ -1,15 +1,17 @@
 package es.udc.ws.app.soapserviceexceptions;
 
+import java.util.Calendar;
+
 public class SoapReservationTimeExpiredExceptionInfo {
 	private long offerId;
-	private String user;
+	private Calendar limitReservationDate;
 
 	public SoapReservationTimeExpiredExceptionInfo() {
 	}
 
-	public SoapReservationTimeExpiredExceptionInfo(long offerId, String user) {
+	public SoapReservationTimeExpiredExceptionInfo(long offerId, Calendar limitReservationDate) {
 		this.offerId = offerId;
-		this.user = user;
+		this.limitReservationDate = limitReservationDate;
 	}
 
 	public long getOfferId() {
@@ -20,12 +22,12 @@ public class SoapReservationTimeExpiredExceptionInfo {
 		this.offerId = offerId;
 	}
 
-	public String getUser() {
-		return user;
+	public Calendar getLimitReservationDate() {
+		return limitReservationDate;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setLimitReservationDate(Calendar limitReservationDate) {
+		this.limitReservationDate = limitReservationDate;
 	}
 
 }
