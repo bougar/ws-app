@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import es.udc.ws.app.dto.OfferDto;
+import es.udc.ws.app.dto.UserOfferDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
@@ -167,5 +168,28 @@ public class SoapOfferService {
 			throw new SoapAlreadyInvalidatedException(
 					new SoapAlreadyInvalidatedExceptionInfo(e.getOfferId()));
 		}
+	}
+	
+	public List<UserOfferDto> getUserOffersInfo (String user) throws SoapInstanceNotFoundException{
+		List<Reservation> reservations = OfferServiceFactory.getService()
+				.findReservationByUser(user, true);
+		List<UserOfferDto> userOffers = new ArrayList<UserOfferDto>();
+		Calendar requestDate = null;
+		String description = null;
+		float discountedPrice;
+		for (Reservation r : reservations){
+			try {
+				Offer offer = OfferServiceFactory.getService().findOffer(r.getOfferId());
+				description = offer.getDescription();
+				discountedPrice = offer.getDiscountedPrice();
+				requestDate = r.getRequestDate();
+			} catch (InstanceNotFoundException e) {
+				throw new SoapInstanceNotFoundException(
+						new SoapInstanceNotFoundExceptionInfo(e.getInstanceId(),
+								e.getInstanceType()));
+			}
+			userOffers.add(new UserOfferDto(description,discountedPrice,requestDate));	
+		}
+		return userOffers;
 	}
 }
