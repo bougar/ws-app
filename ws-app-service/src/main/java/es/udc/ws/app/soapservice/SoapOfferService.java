@@ -170,25 +170,29 @@ public class SoapOfferService {
 		}
 	}
 	
-	public List<UserOfferDto> getUserOffersInfo (String user) throws SoapInstanceNotFoundException{
+	public List<UserOfferDto> getUserOffersInfo(String user)
+			throws SoapInstanceNotFoundException {
 		List<Reservation> reservations = OfferServiceFactory.getService()
 				.findReservationByUser(user, true);
 		List<UserOfferDto> userOffers = new ArrayList<UserOfferDto>();
 		Calendar requestDate = null;
 		String description = null;
 		float discountedPrice;
-		for (Reservation r : reservations){
+		for (Reservation r : reservations) {
+			Offer offer = null;
 			try {
-				Offer offer = OfferServiceFactory.getService().findOffer(r.getOfferId());
-				description = offer.getDescription();
-				discountedPrice = offer.getDiscountedPrice();
-				requestDate = r.getRequestDate();
+				offer = OfferServiceFactory.getService().findOffer(
+						r.getOfferId());
 			} catch (InstanceNotFoundException e) {
 				throw new SoapInstanceNotFoundException(
-						new SoapInstanceNotFoundExceptionInfo(e.getInstanceId(),
-								e.getInstanceType()));
+						new SoapInstanceNotFoundExceptionInfo(
+								e.getInstanceId(), e.getInstanceType()));
 			}
-			userOffers.add(new UserOfferDto(description,discountedPrice,requestDate));	
+			description = offer.getDescription();
+			discountedPrice = offer.getDiscountedPrice();
+			requestDate = r.getRequestDate();
+			userOffers.add(new UserOfferDto(description, discountedPrice,
+					requestDate));
 		}
 		return userOffers;
 	}
