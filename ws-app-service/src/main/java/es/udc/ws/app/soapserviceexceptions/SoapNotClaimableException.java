@@ -5,7 +5,7 @@ import javax.xml.ws.WebFault;
 @SuppressWarnings("serial")
 @WebFault(
 	    name="SoapNotClaimableExceptionInfo",
-	    targetNamespace="http://soap.ws.udc.es/offer"
+	    targetNamespace="http://soap.ws.app.udc.es/"
 	)
 public class SoapNotClaimableException extends Exception {
 	private SoapNotClaimableExceptionInfo faultInfo;

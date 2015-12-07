@@ -33,14 +33,12 @@ import es.udc.ws.app.soapserviceexceptions.SoapReservationTimeExpiredExceptionIn
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
-@WebService(name = "OfferService", 
+@WebService(
+	name = "OfferProvider", 
 	serviceName = "OfferProviderService", 
-	targetNamespace = "http://soap.ws.udc.es/offer"
+	targetNamespace = "http://soap.ws.app.udc.es/"
 	)
 public class SoapOfferService {
-
-	public SoapOfferService() {
-	}
 
 	public OfferDto addOffer(Offer offer) throws SoapInputValidationException {
 		try {

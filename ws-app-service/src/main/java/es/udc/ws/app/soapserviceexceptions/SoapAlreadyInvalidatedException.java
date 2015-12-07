@@ -5,7 +5,7 @@ import javax.xml.ws.WebFault;
 @SuppressWarnings("serial")
 @WebFault(
     name="SoapAlreadyInvalidatedException",
-    targetNamespace="http://soap.ws.udc.es/offer"
+    targetNamespace="http://soap.ws.app.udc.es/"
 )
 public class SoapAlreadyInvalidatedException extends Exception {
 	private SoapAlreadyInvalidatedExceptionInfo fautlInfo;

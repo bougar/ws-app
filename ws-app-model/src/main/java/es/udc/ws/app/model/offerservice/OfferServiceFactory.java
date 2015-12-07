@@ -19,7 +19,7 @@ public class OfferServiceFactory {
             Class serviceClass = Class.forName(serviceClassName);
             return (OfferService) serviceClass.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+           throw new RuntimeException(e);
         }
 
     }
