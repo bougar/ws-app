@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for offerDto complex type.
+ * <p>Clase Java para offerDto complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
  * &lt;complexType name="offerDto">
@@ -59,7 +59,7 @@ public class OfferDto {
     protected boolean valid;
 
     /**
-     * Gets the value of the description property.
+     * Obtiene el valor de la propiedad description.
      * 
      * @return
      *     possible object is
@@ -71,7 +71,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the description property.
+     * Define el valor de la propiedad description.
      * 
      * @param value
      *     allowed object is
@@ -83,7 +83,7 @@ public class OfferDto {
     }
 
     /**
-     * Gets the value of the discountedPrice property.
+     * Obtiene el valor de la propiedad discountedPrice.
      * 
      */
     public float getDiscountedPrice() {
@@ -91,7 +91,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the discountedPrice property.
+     * Define el valor de la propiedad discountedPrice.
      * 
      */
     public void setDiscountedPrice(float value) {
@@ -99,7 +99,7 @@ public class OfferDto {
     }
 
     /**
-     * Gets the value of the limitApplicationDate property.
+     * Obtiene el valor de la propiedad limitApplicationDate.
      * 
      * @return
      *     possible object is
@@ -111,7 +111,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the limitApplicationDate property.
+     * Define el valor de la propiedad limitApplicationDate.
      * 
      * @param value
      *     allowed object is
@@ -123,7 +123,7 @@ public class OfferDto {
     }
 
     /**
-     * Gets the value of the limitReservationDate property.
+     * Obtiene el valor de la propiedad limitReservationDate.
      * 
      * @return
      *     possible object is
@@ -135,7 +135,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the limitReservationDate property.
+     * Define el valor de la propiedad limitReservationDate.
      * 
      * @param value
      *     allowed object is
@@ -147,7 +147,7 @@ public class OfferDto {
     }
 
     /**
-     * Gets the value of the name property.
+     * Obtiene el valor de la propiedad name.
      * 
      * @return
      *     possible object is
@@ -159,7 +159,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the name property.
+     * Define el valor de la propiedad name.
      * 
      * @param value
      *     allowed object is
@@ -171,7 +171,7 @@ public class OfferDto {
     }
 
     /**
-     * Gets the value of the offerId property.
+     * Obtiene el valor de la propiedad offerId.
      * 
      */
     public long getOfferId() {
@@ -179,7 +179,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the offerId property.
+     * Define el valor de la propiedad offerId.
      * 
      */
     public void setOfferId(long value) {
@@ -187,7 +187,7 @@ public class OfferDto {
     }
 
     /**
-     * Gets the value of the realPrice property.
+     * Obtiene el valor de la propiedad realPrice.
      * 
      */
     public float getRealPrice() {
@@ -195,7 +195,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the realPrice property.
+     * Define el valor de la propiedad realPrice.
      * 
      */
     public void setRealPrice(float value) {
@@ -203,7 +203,7 @@ public class OfferDto {
     }
 
     /**
-     * Gets the value of the valid property.
+     * Obtiene el valor de la propiedad valid.
      * 
      */
     public boolean isValid() {
@@ -211,7 +211,7 @@ public class OfferDto {
     }
 
     /**
-     * Sets the value of the valid property.
+     * Define el valor de la propiedad valid.
      * 
      */
     public void setValid(boolean value) {

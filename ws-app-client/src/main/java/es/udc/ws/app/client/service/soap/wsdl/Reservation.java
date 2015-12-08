@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for reservation complex type.
+ * <p>Clase Java para reservation complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
  * &lt;complexType name="reservation">
@@ -58,7 +58,7 @@ public class Reservation {
     protected String state;
 
     /**
-     * Gets the value of the creditCardNumber property.
+     * Obtiene el valor de la propiedad creditCardNumber.
      * 
      * @return
      *     possible object is
@@ -70,7 +70,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the creditCardNumber property.
+     * Define el valor de la propiedad creditCardNumber.
      * 
      * @param value
      *     allowed object is
@@ -82,7 +82,7 @@ public class Reservation {
     }
 
     /**
-     * Gets the value of the email property.
+     * Obtiene el valor de la propiedad email.
      * 
      * @return
      *     possible object is
@@ -94,7 +94,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the email property.
+     * Define el valor de la propiedad email.
      * 
      * @param value
      *     allowed object is
@@ -106,7 +106,7 @@ public class Reservation {
     }
 
     /**
-     * Gets the value of the offerId property.
+     * Obtiene el valor de la propiedad offerId.
      * 
      */
     public long getOfferId() {
@@ -114,7 +114,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the offerId property.
+     * Define el valor de la propiedad offerId.
      * 
      */
     public void setOfferId(long value) {
@@ -122,7 +122,7 @@ public class Reservation {
     }
 
     /**
-     * Gets the value of the requestDate property.
+     * Obtiene el valor de la propiedad requestDate.
      * 
      * @return
      *     possible object is
@@ -134,7 +134,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the requestDate property.
+     * Define el valor de la propiedad requestDate.
      * 
      * @param value
      *     allowed object is
@@ -146,7 +146,7 @@ public class Reservation {
     }
 
     /**
-     * Gets the value of the reservationFee property.
+     * Obtiene el valor de la propiedad reservationFee.
      * 
      */
     public float getReservationFee() {
@@ -154,7 +154,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the reservationFee property.
+     * Define el valor de la propiedad reservationFee.
      * 
      */
     public void setReservationFee(float value) {
@@ -162,7 +162,7 @@ public class Reservation {
     }
 
     /**
-     * Gets the value of the reservationId property.
+     * Obtiene el valor de la propiedad reservationId.
      * 
      */
     public long getReservationId() {
@@ -170,7 +170,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the reservationId property.
+     * Define el valor de la propiedad reservationId.
      * 
      */
     public void setReservationId(long value) {
@@ -178,7 +178,7 @@ public class Reservation {
     }
 
     /**
-     * Gets the value of the reservationPrice property.
+     * Obtiene el valor de la propiedad reservationPrice.
      * 
      */
     public float getReservationPrice() {
@@ -186,7 +186,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the reservationPrice property.
+     * Define el valor de la propiedad reservationPrice.
      * 
      */
     public void setReservationPrice(float value) {
@@ -194,7 +194,7 @@ public class Reservation {
     }
 
     /**
-     * Gets the value of the state property.
+     * Obtiene el valor de la propiedad state.
      * 
      * @return
      *     possible object is
@@ -206,7 +206,7 @@ public class Reservation {
     }
 
     /**
-     * Sets the value of the state property.
+     * Define el valor de la propiedad state.
      * 
      * @param value
      *     allowed object is
