@@ -12,7 +12,7 @@ import es.udc.ws.app.client.types.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
-public interface ClientMovieService {
+public interface ClientOfferService {
 
 	public OfferDto addOffer(Offer offer) throws InputValidationException;
 
