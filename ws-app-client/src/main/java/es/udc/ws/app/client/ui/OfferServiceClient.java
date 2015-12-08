@@ -6,6 +6,8 @@ public class OfferServiceClient {
 		if (args.length == 0) {
 			printUsageAndExit();
 		}
+		
+		
 	}
 
 	public static void validateArgs(String[] args, int expectedArgs,
@@ -14,6 +16,7 @@ public class OfferServiceClient {
 		if (expectedArgs != args.length) {
 			printUsageAndExit();
 		}
+		
 		for (int i = 0; i < numericArguments.length; i++) {
 			int position = numericArguments[i];
 			try {
