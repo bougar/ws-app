@@ -11,7 +11,7 @@ import es.udc.ws.app.client.types.*;
 import es.udc.ws.app.client.service.soap.wsdl.*;
 
 public class OfferToSoapOfferConversions {
-	public es.udc.ws.app.client.types.Offer toClientOffer(es.udc.ws.app.client.service.soap.wsdl.Offer offer){
+	public static es.udc.ws.app.client.types.Offer toClientOffer(es.udc.ws.app.client.service.soap.wsdl.Offer offer){
 		Calendar limitReservationDate = Calendar.getInstance();
 		limitReservationDate.setTime(offer.getLimitReservationDate().toGregorianCalendar().getTime());
 		Calendar limitApplicationDate = Calendar.getInstance();
@@ -19,7 +19,7 @@ public class OfferToSoapOfferConversions {
 		return new es.udc.ws.app.client.types.Offer (offer.getOfferId(),offer.getName(),offer.getDescription(),limitReservationDate,limitApplicationDate,offer.getRealPrice(),offer.getDiscountedPrice(),offer.getFee(),offer.isValid());
 	}
 	
-	public es.udc.ws.app.client.service.soap.wsdl.Offer toSoapOffer(es.udc.ws.app.client.types.Offer offer) {
+	public static es.udc.ws.app.client.service.soap.wsdl.Offer toSoapOffer(es.udc.ws.app.client.types.Offer offer) {
 		XMLGregorianCalendar limitReservationDate = null;
 		XMLGregorianCalendar limitApplicationDate = null;
 		GregorianCalendar aux = null;
@@ -48,7 +48,7 @@ public class OfferToSoapOfferConversions {
 		return soapOffer;
 	}
 
-	public es.udc.ws.app.client.types.OfferDto toClientOfferDto(es.udc.ws.app.client.service.soap.wsdl.OfferDto offer){
+	public static es.udc.ws.app.client.types.OfferDto toClientOfferDto(es.udc.ws.app.client.service.soap.wsdl.OfferDto offer){
 		Calendar limitReservationDate = Calendar.getInstance();
 		limitReservationDate.setTime(offer.getLimitReservationDate().toGregorianCalendar().getTime());
 		Calendar limitApplicationDate = Calendar.getInstance();
@@ -56,7 +56,7 @@ public class OfferToSoapOfferConversions {
 		return new es.udc.ws.app.client.types.OfferDto (offer.getOfferId(),offer.getName(),offer.getDescription(),limitReservationDate,limitApplicationDate,offer.getRealPrice(),offer.getDiscountedPrice(),offer.isValid());
 	}
 	
-	public es.udc.ws.app.client.service.soap.wsdl.OfferDto toSoapOfferDto(es.udc.ws.app.client.types.OfferDto offer) {
+	public static es.udc.ws.app.client.service.soap.wsdl.OfferDto toSoapOfferDto(es.udc.ws.app.client.types.OfferDto offer) {
 		XMLGregorianCalendar limitReservationDate = null;
 		XMLGregorianCalendar limitApplicationDate = null;
 		GregorianCalendar aux = null;

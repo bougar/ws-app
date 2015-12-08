@@ -8,6 +8,13 @@ import java.util.Calendar;
 import es.udc.ws.app.client.service.ClientOfferService;
 import es.udc.ws.app.client.service.ClientOfferServiceFactory;
 import es.udc.ws.app.client.types.*;
+import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
+import es.udc.ws.app.exceptions.AlreadyReservatedException;
+import es.udc.ws.app.exceptions.NotClaimableException;
+import es.udc.ws.app.exceptions.NotModifiableOfferException;
+import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
+import es.udc.ws.util.exceptions.InputValidationException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public class OfferServiceClient {
 
@@ -24,7 +31,11 @@ public class OfferServiceClient {
 			Calendar limitReservationDate = toDate(args[2]);
 			Calendar limitApplicationDate = toDate(args[3]);
 			Offer offer = new Offer(args[0],args[1],limitReservationDate,limitApplicationDate,Float.valueOf(args[4]),Float.valueOf(args[5]),Float.valueOf(args[6]),true);
-			
+			try {
+				clientOfferService.addOffer(offer);
+			} catch (InputValidationException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else if ("-u".equalsIgnoreCase(args[0])){
@@ -32,38 +43,103 @@ public class OfferServiceClient {
 			Calendar limitReservationDate = toDate(args[3]);
 			Calendar limitApplicationDate = toDate(args[4]);
 			Offer offer = new Offer(Integer.valueOf(args[1]),args[2],args[3],limitReservationDate,limitApplicationDate,Float.valueOf(args[5]),Float.valueOf(args[6]),Float.valueOf(args[7]),true);
+			try {
+				clientOfferService.updateOffer(offer);
+			} catch (InputValidationException e) {
+				e.printStackTrace();
+			} catch (InstanceNotFoundException e) {
+				e.printStackTrace();
+			} catch (NotModifiableOfferException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else if ("-r".equalsIgnoreCase(args[0])){
 			validateArgs(args,2,new int[] {1});
+			try {
+				clientOfferService.removeOffer(Integer.valueOf(args[1]));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (InstanceNotFoundException e) {
+				e.printStackTrace();
+			} catch (NotModifiableOfferException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else if ("-g".equalsIgnoreCase(args[0])){
 			validateArgs(args,2,new int[] {1});
+			try {
+				clientOfferService.findOffer(Integer.valueOf(args[1]));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (InstanceNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else if ("-f".equalsIgnoreCase(args[0])){
 			validateArgs(args,2,new int[] {});
+			clientOfferService.findOffers(args[1]);
+			
 		}
 		
 		else if ("-reserve".equalsIgnoreCase(args[0])){
 			validateArgs(args,4,new int[] {1});
+			try {
+				clientOfferService.reserveOffer(Integer.valueOf(args[1]), args[2], args[3]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (InputValidationException e) {
+				e.printStackTrace();
+			} catch (InstanceNotFoundException e) {
+				e.printStackTrace();
+			} catch (AlreadyInvalidatedException e) {
+				e.printStackTrace();
+			} catch (ReservationTimeExpiredException e) {
+				e.printStackTrace();
+			} catch (AlreadyReservatedException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else if ("-claim".equalsIgnoreCase(args[0])){
 			validateArgs(args,3,new int[] {1});
+			try {
+				clientOfferService.claimOffer(Integer.valueOf(args[1]), args[2]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (InstanceNotFoundException e) {
+				e.printStackTrace();
+			} catch (NotClaimableException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else if ("-getReservation".equalsIgnoreCase(args[0])){
 			validateArgs(args,2,new int[] {});
+			try {
+				clientOfferService.findReservationByOfferId(Integer.valueOf(args[1]));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (InstanceNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		
-		else if ("-findUserReservation".equalsIgnoreCase(args[0])){
-			validateArgs(args,3,new int[] {});
+		else if ("-findUserReservations".equalsIgnoreCase(args[0])){
+			validateArgs(args,2,new int[] {});
+			clientOfferService.findReservationByUser(args[1], true);
+			
 		}
 		
 		else if ("-getUserOffers".equalsIgnoreCase(args[0])){
 			validateArgs(args,2,new int[] {});
+			try {
+				clientOfferService.getUserOffersInfo(args[1]);
+			} catch (InstanceNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else {

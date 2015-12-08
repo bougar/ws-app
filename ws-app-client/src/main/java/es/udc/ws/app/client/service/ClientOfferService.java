@@ -24,8 +24,7 @@ public interface ClientOfferService {
 
 	public OfferDto findOffer(long offerId) throws InstanceNotFoundException;
 
-	public List<OfferDto> findOffers(String keywords, Boolean state,
-			Calendar date);
+	public List<OfferDto> findOffers(String keywords);
 
 	public long reserveOffer(long offerId, String email, String creditCardNumber)
 			throws InputValidationException, InstanceNotFoundException,
