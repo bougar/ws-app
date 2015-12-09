@@ -34,10 +34,10 @@ public interface ClientOfferService {
 	public void claimOffer(long reservationId, String email)
 			throws InstanceNotFoundException, NotClaimableException;
 
-	public List<Reservation> findReservationByOfferId(long offerId)
+	public List<ReservationDto> findReservationByOfferId(long offerId)
 			throws InstanceNotFoundException;
 
-	public List<Reservation> findReservationByUser(String email, boolean state);
+	public List<ReservationDto> findReservationByUser(String email, boolean state);
 
 	public void offerInvalidation(long offerId)
 			throws InstanceNotFoundException, AlreadyInvalidatedException;

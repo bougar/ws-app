@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import es.udc.ws.app.dto.OfferDto;
+import es.udc.ws.app.dto.ReservationDto;
 import es.udc.ws.app.dto.UserOfferDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
@@ -17,6 +18,7 @@ import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offerservice.OfferServiceFactory;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.serviceutil.OfferToOfferDtoConversor;
+import es.udc.ws.app.serviceutil.ReservationToReservationDtoConversor;
 import es.udc.ws.app.soapserviceexceptions.SoapAlreadyInvalidatedException;
 import es.udc.ws.app.soapserviceexceptions.SoapAlreadyInvalidatedExceptionInfo;
 import es.udc.ws.app.soapserviceexceptions.SoapAlreadyReservedException;
@@ -148,9 +150,11 @@ public class SoapOfferService {
 		return offersDto;
 	}
 
-	public List<Reservation> findReservationByUser(String user, boolean showAll) {
-		return OfferServiceFactory.getService().findReservationByUser(user,
-				showAll);
+	public List<ReservationDto> findReservationByUser(String user,
+			boolean showAll) {
+		return ReservationToReservationDtoConversor
+				.toReservationDtoList(OfferServiceFactory.getService()
+						.findReservationByUser(user, showAll));
 	}
 
 	public void offerInvalidation(long offerId)
@@ -167,7 +171,15 @@ public class SoapOfferService {
 					new SoapAlreadyInvalidatedExceptionInfo(e.getOfferId()));
 		}
 	}
-	
+	public List<ReservationDto> findReservationByOfferId(long offerId) throws SoapInstanceNotFoundException{
+		try {
+			return ReservationToReservationDtoConversor.toReservationDtoList(OfferServiceFactory.getService().findReservationByOfferId(offerId));
+		} catch (InstanceNotFoundException e) {
+			throw new SoapInstanceNotFoundException(
+					new SoapInstanceNotFoundExceptionInfo(e.getInstanceId(),
+							e.getInstanceType()));
+		}
+	}
 	public List<UserOfferDto> getUserOffersInfo(String user)
 			throws SoapInstanceNotFoundException {
 		List<Reservation> reservations = OfferServiceFactory.getService()

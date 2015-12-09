@@ -37,6 +37,7 @@ public class ObjectFactory {
     private final static QName _SoapNotModifiableOfferException_QNAME = new QName("http://soap.ws.app.udc.es/", "SoapNotModifiableOfferException");
     private final static QName _FindOffersResponse_QNAME = new QName("http://soap.ws.app.udc.es/", "findOffersResponse");
     private final static QName _ClaimOffer_QNAME = new QName("http://soap.ws.app.udc.es/", "claimOffer");
+    private final static QName _FindReservationByOfferId_QNAME = new QName("http://soap.ws.app.udc.es/", "findReservationByOfferId");
     private final static QName _UpdateOffer_QNAME = new QName("http://soap.ws.app.udc.es/", "updateOffer");
     private final static QName _SoapAlreadyReservedException_QNAME = new QName("http://soap.ws.app.udc.es/", "SoapAlreadyReservedException");
     private final static QName _SoapNotClaimableExceptionInfo_QNAME = new QName("http://soap.ws.app.udc.es/", "SoapNotClaimableExceptionInfo");
@@ -46,6 +47,7 @@ public class ObjectFactory {
     private final static QName _OfferInvalidationResponse_QNAME = new QName("http://soap.ws.app.udc.es/", "offerInvalidationResponse");
     private final static QName _RemoveOfferResponse_QNAME = new QName("http://soap.ws.app.udc.es/", "removeOfferResponse");
     private final static QName _SoapAlreadyInvalidatedException_QNAME = new QName("http://soap.ws.app.udc.es/", "SoapAlreadyInvalidatedException");
+    private final static QName _FindReservationByOfferIdResponse_QNAME = new QName("http://soap.ws.app.udc.es/", "findReservationByOfferIdResponse");
     private final static QName _SoapInputValidationException_QNAME = new QName("http://soap.ws.app.udc.es/", "SoapInputValidationException");
     private final static QName _AddOfferResponse_QNAME = new QName("http://soap.ws.app.udc.es/", "addOfferResponse");
     private final static QName _GetUserOffersInfoResponse_QNAME = new QName("http://soap.ws.app.udc.es/", "getUserOffersInfoResponse");
@@ -196,6 +198,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link FindReservationByOfferIdResponse }
+     * 
+     */
+    public FindReservationByOfferIdResponse createFindReservationByOfferIdResponse() {
+        return new FindReservationByOfferIdResponse();
+    }
+
+    /**
      * Create an instance of {@link AddOfferResponse }
      * 
      */
@@ -225,6 +235,14 @@ public class ObjectFactory {
      */
     public UpdateOfferResponse createUpdateOfferResponse() {
         return new UpdateOfferResponse();
+    }
+
+    /**
+     * Create an instance of {@link FindReservationByOfferId }
+     * 
+     */
+    public FindReservationByOfferId createFindReservationByOfferId() {
+        return new FindReservationByOfferId();
     }
 
     /**
@@ -284,19 +302,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Reservation }
-     * 
-     */
-    public Reservation createReservation() {
-        return new Reservation();
-    }
-
-    /**
      * Create an instance of {@link UserOfferDto }
      * 
      */
     public UserOfferDto createUserOfferDto() {
         return new UserOfferDto();
+    }
+
+    /**
+     * Create an instance of {@link ReservationDto }
+     * 
+     */
+    public ReservationDto createReservationDto() {
+        return new ReservationDto();
     }
 
     /**
@@ -417,6 +435,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindReservationByOfferId }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.ws.app.udc.es/", name = "findReservationByOfferId")
+    public JAXBElement<FindReservationByOfferId> createFindReservationByOfferId(FindReservationByOfferId value) {
+        return new JAXBElement<FindReservationByOfferId>(_FindReservationByOfferId_QNAME, FindReservationByOfferId.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UpdateOffer }{@code >}}
      * 
      */
@@ -495,6 +522,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.ws.app.udc.es/", name = "SoapAlreadyInvalidatedException")
     public JAXBElement<SoapAlreadyInvalidatedExceptionInfo> createSoapAlreadyInvalidatedException(SoapAlreadyInvalidatedExceptionInfo value) {
         return new JAXBElement<SoapAlreadyInvalidatedExceptionInfo>(_SoapAlreadyInvalidatedException_QNAME, SoapAlreadyInvalidatedExceptionInfo.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindReservationByOfferIdResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.ws.app.udc.es/", name = "findReservationByOfferIdResponse")
+    public JAXBElement<FindReservationByOfferIdResponse> createFindReservationByOfferIdResponse(FindReservationByOfferIdResponse value) {
+        return new JAXBElement<FindReservationByOfferIdResponse>(_FindReservationByOfferIdResponse_QNAME, FindReservationByOfferIdResponse.class, null, value);
     }
 
     /**

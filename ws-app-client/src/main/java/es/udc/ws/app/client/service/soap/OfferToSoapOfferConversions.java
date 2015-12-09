@@ -1,7 +1,9 @@
 package es.udc.ws.app.client.service.soap;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -29,7 +31,7 @@ public class OfferToSoapOfferConversions {
 			aux.setTime(offer.getLimitReservationDate().getTime());
 			limitReservationDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(aux);
 			aux = new GregorianCalendar();
-			aux.setTime(offer.getLimitReservationDate().getTime());
+			aux.setTime(offer.getLimitApplicationDate().getTime());
 			limitApplicationDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(aux);
 		} catch (DatatypeConfigurationException e) {
 			System.err.println("Error parsing date to xml date.");
@@ -66,7 +68,7 @@ public class OfferToSoapOfferConversions {
 			aux.setTime(offer.getLimitReservationDate().getTime());
 			limitReservationDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(aux);
 			aux = new GregorianCalendar();
-			aux.setTime(offer.getLimitReservationDate().getTime());
+			aux.setTime(offer.getLimitApplicationDate().getTime());
 			limitApplicationDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(aux);
 		} catch (DatatypeConfigurationException e) {
 			System.err.println("Error parsing date to xml date.");
@@ -84,6 +86,12 @@ public class OfferToSoapOfferConversions {
 		return soapOffer;
 	}
 	
-	
+	public static List<es.udc.ws.app.client.types.OfferDto> toClientListOffertDto(
+			List<es.udc.ws.app.client.service.soap.wsdl.OfferDto> offersDto) {
+		List<es.udc.ws.app.client.types.OfferDto> clientOffersDto = new ArrayList<es.udc.ws.app.client.types.OfferDto>();
+		for (es.udc.ws.app.client.service.soap.wsdl.OfferDto o : offersDto)
+			clientOffersDto.add(OfferToSoapOfferConversions.toClientOfferDto(o));
+		return clientOffersDto;
+	}
 	
 }

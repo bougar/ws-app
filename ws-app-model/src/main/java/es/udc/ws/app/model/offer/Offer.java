@@ -12,6 +12,9 @@ public class Offer {
 	private long offerId;
 	private boolean isValid;
 	
+	public Offer(){
+		
+	}
 	public Offer(String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
 			float realPrice, float discountedPrice, float fee,
