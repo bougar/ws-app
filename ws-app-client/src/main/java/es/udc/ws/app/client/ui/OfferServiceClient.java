@@ -34,7 +34,7 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.addOffer(offer);
 			} catch (InputValidationException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
@@ -46,11 +46,11 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.updateOffer(offer);
 			} catch (InputValidationException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (NotModifiableOfferException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
@@ -59,11 +59,11 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.removeOffer(Integer.valueOf(args[1]));
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (NotModifiableOfferException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
@@ -72,9 +72,9 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.findOffer(Integer.valueOf(args[1]));
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
@@ -89,17 +89,17 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.reserveOffer(Integer.valueOf(args[1]), args[2], args[3]);
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (InputValidationException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (AlreadyInvalidatedException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (ReservationTimeExpiredException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (AlreadyReservatedException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
@@ -108,11 +108,11 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.claimOffer(Integer.valueOf(args[1]), args[2]);
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (NotClaimableException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
@@ -121,9 +121,9 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.findReservationByOfferId(Integer.valueOf(args[1]));
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				e.getMessage();
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
@@ -138,7 +138,7 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.getUserOffersInfo(args[1]);
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
+				e.getMessage();
 			}
 		}
 		
