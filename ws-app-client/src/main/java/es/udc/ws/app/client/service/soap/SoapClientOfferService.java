@@ -51,6 +51,17 @@ public class SoapClientOfferService implements ClientOfferService{
 	@Override
 	public void updateOffer(Offer offer) throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException {
+		try {
+			offerProvider.updateOffer(OfferToSoapOfferConversions
+					.toSoapOffer(offer));
+		} catch (SoapInputValidationException e) {
+			throw new InputValidationException(e.getFaultInfo());
+		} catch (SoapInstanceNotFoundException e) {
+			throw new InstanceNotFoundException(e.getFaultInfo()
+					.getInstanceId(), e.getFaultInfo().getInstanceType());
+		} catch (SoapNotModifiableOfferException e) {
+			throw new NotModifiableOfferException(e.getFaultInfo().getOfferId());
+		}
 		
 		
 	}

@@ -27,10 +27,10 @@ public class OfferServiceClient {
 				.getInstance();
 
 		if ("-a".equalsIgnoreCase(args[0])) {
-			validateArgs(args, 9, new int[] {5,6,7});
-			Calendar limitReservationDate = toDate(args[2]);
-			Calendar limitApplicationDate = toDate(args[3]);
-			Offer offer = new Offer(args[0],args[1],limitReservationDate,limitApplicationDate,Float.valueOf(args[4]),Float.valueOf(args[5]),Float.valueOf(args[6]),true);
+			validateArgs(args, 8, new int[] {5,6,7});
+			Calendar limitReservationDate = toDate(args[3]);
+			Calendar limitApplicationDate = toDate(args[4]);
+			Offer offer = new Offer(args[1],args[2],limitReservationDate,limitApplicationDate,Float.valueOf(args[5]),Float.valueOf(args[6]),Float.valueOf(args[7]),true);
 			try {
 				clientOfferService.addOffer(offer);
 			} catch (InputValidationException e) {
@@ -190,6 +190,7 @@ public class OfferServiceClient {
 	}
 
 	private static void printDateFormat() {
+		System.err.println("Bad date format: dd-MM-yyyy'T'HH:mm");
 		System.exit(-1);
 	}
 }
