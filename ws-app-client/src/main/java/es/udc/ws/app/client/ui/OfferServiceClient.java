@@ -26,7 +26,7 @@ public class OfferServiceClient {
 		ClientOfferService clientOfferService = ClientOfferServiceFactory
 				.getInstance();
 
-		if ("-a".equalsIgnoreCase(args[0])) {
+		if ("-addOffer".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 8, new int[] { 5, 6, 7 });
 			Calendar limitReservationDate = toDate(args[3]);
 			Calendar limitApplicationDate = toDate(args[4]);
@@ -40,7 +40,7 @@ public class OfferServiceClient {
 			}
 		}
 
-		else if ("-u".equalsIgnoreCase(args[0])) {
+		else if ("-updateOffer".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 10, new int[] { 1, 5, 6, 7 });
 			Calendar limitReservationDate = toDate(args[3]);
 			Calendar limitApplicationDate = toDate(args[4]);
@@ -59,7 +59,7 @@ public class OfferServiceClient {
 			}
 		}
 
-		else if ("-r".equalsIgnoreCase(args[0])) {
+		else if ("-removeOffer".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] { 1 });
 			try {
 				clientOfferService.removeOffer(Integer.valueOf(args[1]));
@@ -72,7 +72,20 @@ public class OfferServiceClient {
 			}
 		}
 
-		else if ("-g".equalsIgnoreCase(args[0])) {
+		else if ("-invalidateOffer".equalsIgnoreCase(args[0])) {
+			validateArgs(args, 2, new int[] { 1 });
+			try {
+				clientOfferService.offerInvalidation(Integer.valueOf(args[1]));
+			} catch (NumberFormatException e) {
+				e.getMessage();
+			} catch (InstanceNotFoundException e) {
+				e.getMessage();
+			} catch (AlreadyInvalidatedException e) {
+				e.getMessage();
+			}
+		}
+
+		else if ("-findOffer".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] { 1 });
 			try {
 				clientOfferService.findOffer(Integer.valueOf(args[1]));
@@ -83,13 +96,13 @@ public class OfferServiceClient {
 			}
 		}
 
-		else if ("-f".equalsIgnoreCase(args[0])) {
+		else if ("-findOffers".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] {});
 			clientOfferService.findOffers(args[1]);
 
 		}
 
-		else if ("-reserve".equalsIgnoreCase(args[0])) {
+		else if ("-reserveOffer".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 4, new int[] { 1 });
 			try {
 				clientOfferService.reserveOffer(Integer.valueOf(args[1]),
@@ -109,7 +122,7 @@ public class OfferServiceClient {
 			}
 		}
 
-		else if ("-claim".equalsIgnoreCase(args[0])) {
+		else if ("-claimReservation".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 3, new int[] { 1 });
 			try {
 				clientOfferService
@@ -123,7 +136,7 @@ public class OfferServiceClient {
 			}
 		}
 
-		else if ("-getReservation".equalsIgnoreCase(args[0])) {
+		else if ("-findOfferReservations".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] {});
 			try {
 				clientOfferService.findReservationByOfferId(Integer
@@ -141,7 +154,7 @@ public class OfferServiceClient {
 
 		}
 
-		else if ("-getUserOffers".equalsIgnoreCase(args[0])) {
+		else if ("-findUserOffers".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] {});
 			try {
 				clientOfferService.getUserOffersInfo(args[1]);
@@ -181,21 +194,22 @@ public class OfferServiceClient {
 	public static void printUsage() {
 		System.err
 				.println("Usage:\n"
-						+ "    [add]    			  OfferServiceClient -a <name> <description> <limitReservationDate> <limitApplicationDate> <realPrice> <discountedPrice> <fee> \n"
-						+ "    [remove] 			  OfferServiceClient -r <offerId>\n"
-						+ "    [update] 			  OfferServiceClient -u <name> <description> <limitReservationDate> <limitApplicationDate> <realPrice> <discountedPrice> <fee> <offerId> <valid> \n"
-						+ "    [findOffers]   	      OfferServiceClient -f <keywords>\n"
-						+ "    [reserve]    		  OfferServiceClient -reserve <offerId> <email> <creditCardNumber>\n"
-						+ "    [getOffer]	    	  OfferServiceClient -f <offerId>\n"
-						+ "	   [claim]  			  OfferServiceClient -claim <reservationId> <email>\n"
-						+ "    [getReservation] 	  OfferServiceClient -getReservation <offerId>\n"
+						+ "    [add]    			  OfferServiceClient -addOffer <name> <description> <limitReservationDate> <limitApplicationDate> <realPrice> <discountedPrice> <fee>\n"
+						+ "    [remove] 			  OfferServiceClient -removeOffer <offerId>\n"
+						+ "    [update] 			  OfferServiceClient -updateOffer <name> <description> <limitReservationDate> <limitApplicationDate> <realPrice> <discountedPrice> <fee> <offerId> <valid>\n"
+						+ "    [findOffers]   	      OfferServiceClient -findOffers <keywords>\n"
+						+ "    [reserve]    		  OfferServiceClient -reserveOffer <offerId> <email> <creditCardNumber>\n"
+						+ "    [findOffer]	    	  OfferServiceClient -findOffer <offerId>\n"
+						+ "	   [claim]  			  OfferServiceClient -claimReservation <reservationId> <email>\n"
+						+ "    [getReservation] 	  OfferServiceClient -findOfferReservations <offerId>\n"
 						+ "    [findUserReservations] OfferServiceClient -findUserReservations <email>\n"
-						+ "    [getUserOffers] 		  OfferServiceClient -getUserOffers <email>\n");
+						+ "    [getUserOffers] 		  OfferServiceClient -findUserOffers <email>\n"
+						+ "    [invalidateOffer]	  OfferServiceClient -invalidateOffer <offerId>\n");	
 	}
 
 	private static Calendar toDate(String dateString) {
 		Calendar cal = Calendar.getInstance();
-		DateFormat format = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm");
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		try {
 			cal.setTime(format.parse(dateString));
 		} catch (ParseException e) {
