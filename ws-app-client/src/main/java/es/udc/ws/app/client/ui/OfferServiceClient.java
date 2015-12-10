@@ -22,8 +22,6 @@ public class OfferServiceClient {
 		if (args.length == 0) {
 			printUsageAndExit();
 		}
-		System.out.println("El bueno es "+ args[0]);
-		System.out.println("El ulmio es "+ args[args.length-1]);
 		ClientOfferService clientOfferService = ClientOfferServiceFactory
 				.getInstance();
 

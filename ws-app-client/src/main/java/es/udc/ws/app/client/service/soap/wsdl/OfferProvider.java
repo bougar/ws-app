@@ -88,36 +88,16 @@ public interface OfferProvider {
 
     /**
      * 
-     * @param arg0
-     * @return
-     *     returns es.udc.ws.app.client.service.soap.wsdl.OfferDto
-     * @throws SoapInstanceNotFoundException
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.FindOffer")
-    @ResponseWrapper(localName = "findOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.FindOfferResponse")
-    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/findOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/findOfferResponse", fault = {
-        @FaultAction(className = SoapInstanceNotFoundException.class, value = "http://soap.ws.app.udc.es/OfferProvider/findOffer/Fault/SoapInstanceNotFoundException")
-    })
-    public OfferDto findOffer(
-        @WebParam(name = "arg0", targetNamespace = "")
-        long arg0)
-        throws SoapInstanceNotFoundException
-    ;
-
-    /**
-     * 
      * @param arg2
      * @param arg1
      * @param arg0
      * @return
      *     returns long
-     * @throws SoapReservationTimeExpiredException
-     * @throws SoapInputValidationException
      * @throws SoapAlreadyReservedException
+     * @throws SoapInputValidationException
      * @throws SoapInstanceNotFoundException
      * @throws SoapAlreadyInvalidatedException
+     * @throws SoapReservationTimeExpiredException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -198,8 +178,8 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
-     * @throws SoapInstanceNotFoundException
      * @throws SoapAlreadyInvalidatedException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @RequestWrapper(localName = "offerInvalidation", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.OfferInvalidation")
@@ -251,6 +231,26 @@ public interface OfferProvider {
     public List<UserOfferDto> getUserOffersInfo(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0)
+        throws SoapInstanceNotFoundException
+    ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns es.udc.ws.app.client.service.soap.wsdl.OfferDto
+     * @throws SoapInstanceNotFoundException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.FindOffer")
+    @ResponseWrapper(localName = "findOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.FindOfferResponse")
+    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/findOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/findOfferResponse", fault = {
+        @FaultAction(className = SoapInstanceNotFoundException.class, value = "http://soap.ws.app.udc.es/OfferProvider/findOffer/Fault/SoapInstanceNotFoundException")
+    })
+    public OfferDto findOffer(
+        @WebParam(name = "arg0", targetNamespace = "")
+        long arg0)
         throws SoapInstanceNotFoundException
     ;
 
