@@ -22,7 +22,8 @@ public class OfferServiceClient {
 		if (args.length == 0) {
 			printUsageAndExit();
 		}
-
+		System.out.println("El bueno es "+ args[0]);
+		System.out.println("El ulmio es "+ args[args.length-1]);
 		ClientOfferService clientOfferService = ClientOfferServiceFactory
 				.getInstance();
 
@@ -36,26 +37,26 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.addOffer(offer);
 			} catch (InputValidationException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
 		else if ("-updateOffer".equalsIgnoreCase(args[0])) {
-			validateArgs(args, 10, new int[] { 1, 5, 6, 7 });
-			Calendar limitReservationDate = toDate(args[3]);
-			Calendar limitApplicationDate = toDate(args[4]);
+			validateArgs(args, 9, new int[] { 1, 6, 7, 8 });
+			Calendar limitReservationDate = toDate(args[4]);
+			Calendar limitApplicationDate = toDate(args[5]);
 			Offer offer = new Offer(Integer.valueOf(args[1]), args[2], args[3],
 					limitReservationDate, limitApplicationDate,
-					Float.valueOf(args[5]), Float.valueOf(args[6]),
-					Float.valueOf(args[7]), true);
+					Float.valueOf(args[6]), Float.valueOf(args[7]),
+					Float.valueOf(args[8]), true);
 			try {
 				clientOfferService.updateOffer(offer);
 			} catch (InputValidationException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (NotModifiableOfferException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -64,11 +65,11 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.removeOffer(Integer.valueOf(args[1]));
 			} catch (NumberFormatException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (NotModifiableOfferException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -77,11 +78,11 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.offerInvalidation(Integer.valueOf(args[1]));
 			} catch (NumberFormatException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (AlreadyInvalidatedException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -90,9 +91,9 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.findOffer(Integer.valueOf(args[1]));
 			} catch (NumberFormatException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -108,17 +109,17 @@ public class OfferServiceClient {
 				clientOfferService.reserveOffer(Integer.valueOf(args[1]),
 						args[2], args[3]);
 			} catch (NumberFormatException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InputValidationException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (AlreadyInvalidatedException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (ReservationTimeExpiredException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (AlreadyReservatedException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -128,11 +129,11 @@ public class OfferServiceClient {
 				clientOfferService
 						.claimOffer(Integer.valueOf(args[1]), args[2]);
 			} catch (NumberFormatException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (NotClaimableException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -142,9 +143,9 @@ public class OfferServiceClient {
 				clientOfferService.findReservationByOfferId(Integer
 						.valueOf(args[1]));
 			} catch (NumberFormatException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -159,7 +160,7 @@ public class OfferServiceClient {
 			try {
 				clientOfferService.getUserOffersInfo(args[1]);
 			} catch (InstanceNotFoundException e) {
-				e.getMessage();
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -192,7 +193,7 @@ public class OfferServiceClient {
 	}
 
 	public static void printUsage() {
-		System.err
+		System.out
 				.println("Usage:\n"
 						+ "    [add]    			  OfferServiceClient -addOffer <name> <description> <limitReservationDate> <limitApplicationDate> <realPrice> <discountedPrice> <fee>\n"
 						+ "    [remove] 			  OfferServiceClient -removeOffer <offerId>\n"
@@ -209,7 +210,7 @@ public class OfferServiceClient {
 
 	private static Calendar toDate(String dateString) {
 		Calendar cal = Calendar.getInstance();
-		DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
 		try {
 			cal.setTime(format.parse(dateString));
 		} catch (ParseException e) {
@@ -223,7 +224,7 @@ public class OfferServiceClient {
 	}
 
 	private static void printDateFormat() {
-		System.err.println("Bad date format: dd-MM-yyyy'T'HH:mm");
+		System.err.println("Bad date format: dd/MM/yyyy' 'HH:mm");
 		System.exit(-1);
 	}
 }
