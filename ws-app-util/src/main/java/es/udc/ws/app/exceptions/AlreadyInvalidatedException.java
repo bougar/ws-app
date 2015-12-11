@@ -7,7 +7,7 @@ public class AlreadyInvalidatedException extends Exception{
 	
     public AlreadyInvalidatedException(Long offerId) {
         super("Offer with id=\"" + offerId + 
-              "\" has already been invalidated "+ "\")");
+              "\" has already been invalidated");
         this.offerId = offerId;
     }
 

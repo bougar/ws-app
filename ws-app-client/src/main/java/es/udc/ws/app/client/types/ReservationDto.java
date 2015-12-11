@@ -26,8 +26,8 @@ public class ReservationDto {
 		this.reservationPrice = reservationPrice;
 	}
 
-	public ReservationDto(String email, long offerId, String state,
-			Calendar requestDate, long reservationId, String creditCardNumber,
+	public ReservationDto(long reservationId, String email, long offerId, String state,
+			Calendar requestDate, String creditCardNumber,
 			float reservationPrice) {
 		this(email, offerId, state, requestDate, creditCardNumber,
 				reservationPrice);

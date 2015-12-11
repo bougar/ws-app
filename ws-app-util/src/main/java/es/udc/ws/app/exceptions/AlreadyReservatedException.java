@@ -6,7 +6,7 @@ public class AlreadyReservatedException extends Exception {
 	private String user;
     public AlreadyReservatedException(Long offerId,String user) {
         super("Offer with id=\"" + offerId + 
-              "\" is already reserved by user=\""+user+ "\")");
+              "\" is already reserved by user=\""+user+ "\"");
         this.offerId = offerId;
         this.user=user;
     }

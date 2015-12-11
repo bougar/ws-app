@@ -148,8 +148,8 @@ public class OfferServiceClient {
 		}
 
 		else if ("-findUserReservations".equalsIgnoreCase(args[0])) {
-			validateArgs(args, 2, new int[] {});
-			clientOfferService.findReservationByUser(args[1], true);
+			validateArgs(args, 3, new int[] {});
+			clientOfferService.findReservationByUser(args[1], Boolean.valueOf(args[2]));
 
 		}
 

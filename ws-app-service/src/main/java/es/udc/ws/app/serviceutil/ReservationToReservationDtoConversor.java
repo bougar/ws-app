@@ -9,7 +9,7 @@ import es.udc.ws.app.model.reservation.Reservation;
 public class ReservationToReservationDtoConversor {
 	public static ReservationDto toReservationDto(Reservation r) {
 		return new ReservationDto(r.getEmail(), r.getOfferId(), r.getState(),
-				r.getRequestDate(), r.getCreditCardNumber(),
+				r.getRequestDate(),r.getReservationId(), r.getCreditCardNumber(),
 				r.getReservationPrice());
 	}
 

@@ -116,7 +116,9 @@ public class OfferServiceImpl implements OfferService {
 				 * prize(cheaper)
 				 */
 				if (reservationDao.howManyByOffer(connection, offer.getOfferId()) > 0) {
-
+					if (!baseOffer.isValid())
+						throw new NotModifiableOfferException(
+								baseOffer.getOfferId());
 					if (offer.getLimitApplicationDate().compareTo(
 							baseOffer.getLimitApplicationDate()) < 0)
 						throw new NotModifiableOfferException(

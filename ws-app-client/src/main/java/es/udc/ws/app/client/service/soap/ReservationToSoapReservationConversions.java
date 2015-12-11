@@ -12,9 +12,9 @@ public class ReservationToSoapReservationConversions {
 			es.udc.ws.app.client.service.soap.wsdl.ReservationDto r) {
 		Calendar requestDate = Calendar.getInstance();
 		requestDate.setTime(r.getRequestDate().toGregorianCalendar().getTime());
-		return new es.udc.ws.app.client.types.ReservationDto(r.getEmail(),
+		return new es.udc.ws.app.client.types.ReservationDto(r.getReservationId(),r.getEmail(),
 				r.getOfferId(), r.getState(), requestDate,
-				r.getReservationId(), r.getCreditCardNumber(),
+			    r.getCreditCardNumber(),
 				r.getReservationPrice());
 	}
 

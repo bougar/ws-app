@@ -13,7 +13,7 @@ public class NotClaimableException extends Exception{
     public NotClaimableException(Long reservationId, Calendar expirationDate) {
         super("Reservation with id=\"" + reservationId + 
               "\" has expired (expirationDate = \"" + 
-              expirationDate + "\")");
+              expirationDate + "\"");
         this.reservationId = reservationId;
         this.expirationDate = expirationDate;
     }

@@ -11,7 +11,7 @@ public class ReservationTimeExpiredException extends Exception{
 	public ReservationTimeExpiredException(Long offerId,
 			Calendar limitReservationDate) {
 		super("Offer with id=\"" + offerId + "\" is lo longer reservable "
-				+ "\")");
+				+ "\"");
 		this.offerId = offerId;
 		this.limitReservationDate = limitReservationDate;
 	}
