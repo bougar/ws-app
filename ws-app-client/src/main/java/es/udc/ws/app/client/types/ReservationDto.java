@@ -1,5 +1,7 @@
 package es.udc.ws.app.client.types;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class ReservationDto {
@@ -149,6 +151,16 @@ public class ReservationDto {
 		return true;
 	}
 
+	
+	@Override
+	public String toString() {
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
+		return "ReservationDto [email=" + email + ", offerId=" + offerId
+				+ ", state=" + state + ", requestDate="
+				+ format.format(requestDate.getTime()) + ", reservationId="
+				+ reservationId + ", creditCardNumber=" + creditCardNumber
+				+ ", reservationPrice=" + reservationPrice + "]";
+	}
 
 
 }

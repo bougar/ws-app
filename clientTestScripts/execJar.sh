@@ -1,7 +1,7 @@
 #!/bin/bash
-JAVA=/opt/jdk1.8.0_05/bin/java
-JAR=/home/bougar/isd/hola.jar
-OPERATIONS=/home/bougar/isd/operaciones
+JAVA=/opt/jdk/bin/java
+JAR=./hola.jar
+OPERATIONS=./operaciones
 if [ ! -f $OPERATIONS ]; then
 	echo "File $OPERATIONS not found.";
 	exit;

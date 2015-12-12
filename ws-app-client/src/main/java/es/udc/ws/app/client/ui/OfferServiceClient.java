@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import es.udc.ws.app.client.service.ClientOfferService;
 import es.udc.ws.app.client.service.ClientOfferServiceFactory;
@@ -33,7 +34,7 @@ public class OfferServiceClient {
 					limitApplicationDate, Float.valueOf(args[5]),
 					Float.valueOf(args[6]), Float.valueOf(args[7]), true);
 			try {
-				clientOfferService.addOffer(offer);
+				System.out.println(clientOfferService.addOffer(offer));
 			} catch (InputValidationException e) {
 				System.err.println(e.getMessage());
 			}
@@ -87,7 +88,7 @@ public class OfferServiceClient {
 		else if ("-findOffer".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] { 1 });
 			try {
-				clientOfferService.findOffer(Integer.valueOf(args[1]));
+				System.out.println(clientOfferService.findOffer(Integer.valueOf(args[1])));
 			} catch (NumberFormatException e) {
 				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
@@ -97,15 +98,17 @@ public class OfferServiceClient {
 
 		else if ("-findOffers".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] {});
-			clientOfferService.findOffers(args[1]);
+			List<OfferDto> offers = clientOfferService.findOffers(args[1]);
+			for (OfferDto o : offers)
+				System.out.println(o);
 
 		}
 
 		else if ("-reserveOffer".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 4, new int[] { 1 });
 			try {
-				clientOfferService.reserveOffer(Integer.valueOf(args[1]),
-						args[2], args[3]);
+				System.out.println(clientOfferService.reserveOffer(Integer.valueOf(args[1]),
+						args[2], args[3]));
 			} catch (NumberFormatException e) {
 				System.err.println(e.getMessage());
 			} catch (InputValidationException e) {
@@ -138,8 +141,10 @@ public class OfferServiceClient {
 		else if ("-findOfferReservations".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] {});
 			try {
-				clientOfferService.findReservationByOfferId(Integer
+				List<ReservationDto> reservations = clientOfferService.findReservationByOfferId(Integer
 						.valueOf(args[1]));
+				for (ReservationDto r: reservations)
+					System.out.println(r);
 			} catch (NumberFormatException e) {
 				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
@@ -149,14 +154,18 @@ public class OfferServiceClient {
 
 		else if ("-findUserReservations".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 3, new int[] {});
-			clientOfferService.findReservationByUser(args[1], Boolean.valueOf(args[2]));
+			List<ReservationDto> reservations = clientOfferService.findReservationByUser(args[1], Boolean.valueOf(args[2]));
+			for (ReservationDto r: reservations)
+				System.out.println(r);
 
 		}
 
 		else if ("-findUserOffers".equalsIgnoreCase(args[0])) {
 			validateArgs(args, 2, new int[] {});
 			try {
-				clientOfferService.getUserOffersInfo(args[1]);
+				List<UserOfferDto> userOffers = clientOfferService.getUserOffersInfo(args[1]);
+				for ( UserOfferDto u : userOffers)
+					System.out.println(u);
 			} catch (InstanceNotFoundException e) {
 				System.err.println(e.getMessage());
 			}

@@ -7,7 +7,7 @@ public class NotModifiableOfferException extends Exception{
 	
     public NotModifiableOfferException(Long offerId) {
         super("Offer with id=\"" + offerId + 
-              "\" cannot be modified "+ "\"");
+              "\" cannot be modified");
         this.offerId = offerId;
     }
 

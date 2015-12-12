@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para soapAlreadyReservedExceptionInfo complex type.
+ * <p>Java class for soapAlreadyReservedExceptionInfo complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="soapAlreadyReservedExceptionInfo">
@@ -37,7 +37,7 @@ public class SoapAlreadyReservedExceptionInfo {
     protected String user;
 
     /**
-     * Obtiene el valor de la propiedad offerId.
+     * Gets the value of the offerId property.
      * 
      * @return
      *     possible object is
@@ -49,7 +49,7 @@ public class SoapAlreadyReservedExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad offerId.
+     * Sets the value of the offerId property.
      * 
      * @param value
      *     allowed object is
@@ -61,7 +61,7 @@ public class SoapAlreadyReservedExceptionInfo {
     }
 
     /**
-     * Obtiene el valor de la propiedad user.
+     * Gets the value of the user property.
      * 
      * @return
      *     possible object is
@@ -73,7 +73,7 @@ public class SoapAlreadyReservedExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad user.
+     * Sets the value of the user property.
      * 
      * @param value
      *     allowed object is

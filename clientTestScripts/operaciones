@@ -14,7 +14,7 @@
 -claimReservation 2 'usr1@udc.es'
 -invalidateOffer 2 
 -invalidateOffer 2 
--claimReservation 4 'usr2@udc.es']
+-claimReservation 4 'usr2@udc.es'
 -findOfferReservations 2
 -findUserReservations 'usr2@udc.es' true
 -findUserReservations 'usr2@udc.es' false

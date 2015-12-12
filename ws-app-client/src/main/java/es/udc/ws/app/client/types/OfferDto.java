@@ -1,5 +1,7 @@
 package es.udc.ws.app.client.types;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class OfferDto {
@@ -30,7 +32,6 @@ public class OfferDto {
 		this.realPrice = realPrice;
 		this.discountedPrice = discountedPrice;
 		this.isValid = isValid;
-		this.offerId=offerId;
 	}
 
 
@@ -103,4 +104,20 @@ public class OfferDto {
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
 	}
+
+
+
+
+	@Override
+	public String toString() {
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
+		return "[name=" + name + ", description=" + description
+				+ ", realPrice=" + realPrice + ", discountedPrice="
+				+ discountedPrice + ", limitApplicationDate="
+				+ format.format(limitApplicationDate.getTime())
+				+ ", limitReservationDate="
+				+ format.format(limitReservationDate.getTime()) + ", offerId="
+				+ offerId + ", isValid=" + isValid + "]";
+	}
+
 }
