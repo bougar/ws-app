@@ -22,10 +22,15 @@
             <artifactId>ws-app-util</artifactId>
         </dependency>
         <dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>fluent-hc</artifactId>
+		</dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
+        
             <groupId>${jdbcDriver.groupId}</groupId>
             <artifactId>${jdbcDriver.artifactId}</artifactId>
         </dependency>
