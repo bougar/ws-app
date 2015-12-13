@@ -29,8 +29,8 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
-     * @throws SoapInstanceNotFoundException
      * @throws SoapInputValidationException
+     * @throws SoapInstanceNotFoundException
      * @throws SoapNotModifiableOfferException
      */
     @WebMethod
@@ -113,11 +113,11 @@ public interface OfferProvider {
      * @param arg0
      * @return
      *     returns long
-     * @throws SoapInstanceNotFoundException
-     * @throws SoapInputValidationException
      * @throws SoapReservationTimeExpiredException
-     * @throws SoapAlreadyInvalidatedException
+     * @throws SoapInputValidationException
      * @throws SoapAlreadyReservedException
+     * @throws SoapInstanceNotFoundException
+     * @throws SoapAlreadyInvalidatedException
      */
     @WebMethod
     @WebResult(targetNamespace = "")

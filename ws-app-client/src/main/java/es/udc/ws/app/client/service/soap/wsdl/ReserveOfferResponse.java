@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for reserveOfferResponse complex type.
+ * <p>Clase Java para reserveOfferResponse complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
  * &lt;complexType name="reserveOfferResponse">
@@ -36,7 +36,7 @@ public class ReserveOfferResponse {
     protected long _return;
 
     /**
-     * Gets the value of the return property.
+     * Obtiene el valor de la propiedad return.
      * 
      */
     public long getReturn() {
@@ -44,7 +44,7 @@ public class ReserveOfferResponse {
     }
 
     /**
-     * Sets the value of the return property.
+     * Define el valor de la propiedad return.
      * 
      */
     public void setReturn(long value) {

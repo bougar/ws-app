@@ -6,26 +6,26 @@
       <xsd:import namespace="http://soap.ws.app.udc.es/" schemaLocation="OfferProviderService_schema1.xsd"/>
     </xsd:schema>
   </types>
-  <message name="addOffer">
-    <part name="parameters" element="tns:addOffer"/>
-  </message>
-  <message name="addOfferResponse">
-    <part name="parameters" element="tns:addOfferResponse"/>
-  </message>
-  <message name="SoapInputValidationException">
-    <part name="fault" element="tns:SoapInputValidationException"/>
-  </message>
   <message name="updateOffer">
     <part name="parameters" element="tns:updateOffer"/>
   </message>
   <message name="updateOfferResponse">
     <part name="parameters" element="tns:updateOfferResponse"/>
   </message>
+  <message name="SoapInputValidationException">
+    <part name="fault" element="tns:SoapInputValidationException"/>
+  </message>
   <message name="SoapInstanceNotFoundException">
     <part name="fault" element="tns:SoapInstanceNotFoundException"/>
   </message>
   <message name="SoapNotModifiableOfferException">
     <part name="fault" element="tns:SoapNotModifiableOfferException"/>
+  </message>
+  <message name="addOffer">
+    <part name="parameters" element="tns:addOffer"/>
+  </message>
+  <message name="addOfferResponse">
+    <part name="parameters" element="tns:addOfferResponse"/>
   </message>
   <message name="removeOffer">
     <part name="parameters" element="tns:removeOffer"/>
@@ -94,17 +94,17 @@
     <part name="parameters" element="tns:getUserOffersInfoResponse"/>
   </message>
   <portType name="OfferProvider">
-    <operation name="addOffer">
-      <input wsam:Action="http://soap.ws.app.udc.es/OfferProvider/addOfferRequest" message="tns:addOffer"/>
-      <output wsam:Action="http://soap.ws.app.udc.es/OfferProvider/addOfferResponse" message="tns:addOfferResponse"/>
-      <fault message="tns:SoapInputValidationException" name="SoapInputValidationException" wsam:Action="http://soap.ws.app.udc.es/OfferProvider/addOffer/Fault/SoapInputValidationException"/>
-    </operation>
     <operation name="updateOffer">
       <input wsam:Action="http://soap.ws.app.udc.es/OfferProvider/updateOfferRequest" message="tns:updateOffer"/>
       <output wsam:Action="http://soap.ws.app.udc.es/OfferProvider/updateOfferResponse" message="tns:updateOfferResponse"/>
       <fault message="tns:SoapInputValidationException" name="SoapInputValidationException" wsam:Action="http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapInputValidationException"/>
       <fault message="tns:SoapInstanceNotFoundException" name="SoapInstanceNotFoundException" wsam:Action="http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapInstanceNotFoundException"/>
       <fault message="tns:SoapNotModifiableOfferException" name="SoapNotModifiableOfferException" wsam:Action="http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapNotModifiableOfferException"/>
+    </operation>
+    <operation name="addOffer">
+      <input wsam:Action="http://soap.ws.app.udc.es/OfferProvider/addOfferRequest" message="tns:addOffer"/>
+      <output wsam:Action="http://soap.ws.app.udc.es/OfferProvider/addOfferResponse" message="tns:addOfferResponse"/>
+      <fault message="tns:SoapInputValidationException" name="SoapInputValidationException" wsam:Action="http://soap.ws.app.udc.es/OfferProvider/addOffer/Fault/SoapInputValidationException"/>
     </operation>
     <operation name="removeOffer">
       <input wsam:Action="http://soap.ws.app.udc.es/OfferProvider/removeOfferRequest" message="tns:removeOffer"/>
@@ -159,18 +159,6 @@
   </portType>
   <binding name="OfferProviderPortBinding" type="tns:OfferProvider">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-    <operation name="addOffer">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="SoapInputValidationException">
-        <soap:fault name="SoapInputValidationException" use="literal"/>
-      </fault>
-    </operation>
     <operation name="updateOffer">
       <soap:operation soapAction=""/>
       <input>
@@ -187,6 +175,18 @@
       </fault>
       <fault name="SoapNotModifiableOfferException">
         <soap:fault name="SoapNotModifiableOfferException" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="addOffer">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="SoapInputValidationException">
+        <soap:fault name="SoapInputValidationException" use="literal"/>
       </fault>
     </operation>
     <operation name="removeOffer">

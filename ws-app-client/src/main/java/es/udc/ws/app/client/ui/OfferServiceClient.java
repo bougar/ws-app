@@ -231,7 +231,7 @@ public class OfferServiceClient {
 	}
 
 	private static void printDateFormat() {
-		System.err.println("Bad date format: dd/MM/yyyy' 'HH:mm");
+		System.err.println("Bad date format: dd/MM/yyyy HH:mm");
 		System.exit(-1);
 	}
 }
