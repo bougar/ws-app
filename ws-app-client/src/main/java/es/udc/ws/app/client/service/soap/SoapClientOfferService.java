@@ -133,7 +133,18 @@ public class SoapClientOfferService implements ClientOfferService {
 			throw new InstanceNotFoundException(e.getFaultInfo()
 					.getInstanceId(), e.getFaultInfo().getInstanceType());
 		} catch (SoapNotClaimableException e) {
-			throw new NotClaimableException(e.getFaultInfo().getEmail());
+			if (e.getFaultInfo().getEmail() != null)
+				throw new NotClaimableException(e.getFaultInfo().getEmail());
+			if (e.getFaultInfo().getState() != null)
+				throw new NotClaimableException(e.getFaultInfo()
+						.getReservationId(), e.getFaultInfo().getState());
+			else {
+				Calendar expirationDate = Calendar.getInstance();
+				expirationDate.setTime(e.getFaultInfo().getExpirationDate()
+						.toGregorianCalendar().getTime());
+				throw new NotClaimableException(e.getFaultInfo()
+						.getReservationId(), expirationDate);
+			}
 		}
 
 	}
@@ -142,7 +153,9 @@ public class SoapClientOfferService implements ClientOfferService {
 	public List<ReservationDto> findReservationByOfferId(long offerId)
 			throws InstanceNotFoundException {
 		try {
-			return ReservationToSoapReservationConversions.toClientReservationList(offerProvider.findReservationByOfferId(offerId));
+			return ReservationToSoapReservationConversions
+					.toClientReservationList(offerProvider
+							.findReservationByOfferId(offerId));
 		} catch (SoapInstanceNotFoundException e) {
 			throw new InstanceNotFoundException(e.getFaultInfo()
 					.getInstanceId(), e.getFaultInfo().getInstanceType());
