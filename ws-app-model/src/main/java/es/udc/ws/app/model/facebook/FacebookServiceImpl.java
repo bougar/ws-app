@@ -19,44 +19,69 @@ public class FacebookServiceImpl implements FacebookService {
 	private final String facebookPageId;
 
 	public FacebookServiceImpl() {
-		facebookPageId = ConfigurationParametersManager
-				.getParameter(FACEBOOK_PAGE_ID_PARAM);
-		facebookToken = ConfigurationParametersManager
-				.getParameter(FACEBOOK_TOKEN_PARAM);
-		facebookApi = ConfigurationParametersManager
-				.getParameter(FACEBOOK_API_PARAM);
+		String id=null;
+		String token=null;
+		String api=null;
+		try {
+			id = ConfigurationParametersManager
+					.getParameter(FACEBOOK_PAGE_ID_PARAM);
+			token = ConfigurationParametersManager
+					.getParameter(FACEBOOK_TOKEN_PARAM);
+			api = ConfigurationParametersManager
+					.getParameter(FACEBOOK_API_PARAM);
+			if (id == null || token == null || api == null)
+					throw new Exception("bad parameters");
+		} catch (Exception e) {
+			id=null;
+			token=null;
+			api=null;
+			System.err.println("Properties is missconfigured");
+		}
+		facebookApi=api;
+		facebookPageId=id;
+		facebookToken=token;
 	}
 
 	@Override
-	public void addOffer(Offer o) {
+	public String addOffer(Offer o) {
 		try {
 			HttpResponse response = Request
-					.Post(facebookApi)
+					.Post(facebookApi + facebookPageId + "/" + "feed")
 					.bodyForm(
 							Form.form().add("access_token", facebookToken)
 									.add("message", o.toString()).build())
 					.execute().returnResponse();
-			
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return FacebookParser.toStringKey(
+					response.getEntity().getContent(), "id");
+		} catch (Exception e){
+			System.err.println("Error adding offer in facebook");
 		}
-
+		return null;
 	}
 
 	@Override
 	public void removeOffer(String facebookOfferId) {
-		// TODO Auto-generated method stub
-
+		try {
+			Request.Delete(facebookApi + facebookOfferId).execute();
+		} catch (Exception e){
+			System.err.println("Error removing offer in facebook");
+		}
 	}
 
 	@Override
-	public long getOfferLikes(String facebookOfferId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Long getOfferLikes(String facebookOfferId) {
+		Long likes = null;
+		try {
+			HttpResponse response = Request
+					.Get(facebookApi + facebookOfferId + "/likes").execute()
+					.returnResponse();
+			likes = FacebookParser.getArraySizeKey(response.getEntity()
+					.getContent(), "data");
+		} catch (Exception e){
+			System.err.println("Error removing offer in facebook");
+		}
+		return likes;
 	}
-
+	
+	
 }
