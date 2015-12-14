@@ -16,6 +16,7 @@ import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
+import es.udc.ws.app.model.facebook.FacebookServiceImpl;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offer.SqlOfferDao;
 import es.udc.ws.app.model.offer.SqlOfferDaoFactory;
@@ -75,6 +76,7 @@ public class OfferServiceImpl implements OfferService {
 
 				/* Commit. */
 				connection.commit();
+				(new FacebookServiceImpl()).addOffer(createdOffer);
 
 				return createdOffer;
 			} catch (SQLException e) {

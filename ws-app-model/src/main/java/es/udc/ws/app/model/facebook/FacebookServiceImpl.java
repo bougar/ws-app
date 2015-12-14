@@ -33,7 +33,7 @@ public class FacebookServiceImpl implements FacebookService {
 			HttpResponse response = Request
 					.Post(facebookApi)
 					.bodyForm(
-							Form.form().add("access-token", facebookToken)
+							Form.form().add("access_token", facebookToken)
 									.add("message", o.toString()).build())
 					.execute().returnResponse();
 			
