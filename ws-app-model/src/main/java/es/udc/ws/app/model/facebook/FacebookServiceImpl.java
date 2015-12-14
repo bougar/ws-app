@@ -1,9 +1,6 @@
 package es.udc.ws.app.model.facebook;
 
-import java.io.IOException;
-
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 
@@ -19,9 +16,9 @@ public class FacebookServiceImpl implements FacebookService {
 	private final String facebookPageId;
 
 	public FacebookServiceImpl() {
-		String id=null;
-		String token=null;
-		String api=null;
+		String id = null;
+		String token = null;
+		String api = null;
 		try {
 			id = ConfigurationParametersManager
 					.getParameter(FACEBOOK_PAGE_ID_PARAM);
@@ -30,16 +27,16 @@ public class FacebookServiceImpl implements FacebookService {
 			api = ConfigurationParametersManager
 					.getParameter(FACEBOOK_API_PARAM);
 			if (id == null || token == null || api == null)
-					throw new Exception("bad parameters");
+				throw new Exception("bad parameters");
 		} catch (Exception e) {
-			id=null;
-			token=null;
-			api=null;
-			System.err.println("Properties is missconfigured");
+			id = null;
+			token = null;
+			api = null;
+			System.err.println("Properties settings are misconfigured");
 		}
-		facebookApi=api;
-		facebookPageId=id;
-		facebookToken=token;
+		facebookApi = api;
+		facebookPageId = id;
+		facebookToken = token;
 	}
 
 	@Override
@@ -53,7 +50,7 @@ public class FacebookServiceImpl implements FacebookService {
 					.execute().returnResponse();
 			return FacebookParser.toStringKey(
 					response.getEntity().getContent(), "id");
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.err.println("Error adding offer in facebook");
 		}
 		return null;
@@ -63,11 +60,26 @@ public class FacebookServiceImpl implements FacebookService {
 	public void removeOffer(String facebookOfferId) {
 		try {
 			Request.Delete(facebookApi + facebookOfferId).execute();
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.err.println("Error removing offer in facebook");
 		}
 	}
-
+	public String updateOffer(String facebookOfferId,Offer o){
+		try{
+		Request.Delete(facebookApi + facebookOfferId).execute();
+		HttpResponse response = Request
+				.Post(facebookApi + facebookPageId + "/" + "feed")
+				.bodyForm(
+						Form.form().add("access_token", facebookToken)
+								.add("message", o.toString()).build())
+				.execute().returnResponse();
+		return FacebookParser.toStringKey(
+				response.getEntity().getContent(), "id");
+		} catch (Exception e) {
+			System.err.println("Error updating offer in facebook");
+		}
+		return null;
+	}
 	@Override
 	public Long getOfferLikes(String facebookOfferId) {
 		Long likes = null;
@@ -77,11 +89,10 @@ public class FacebookServiceImpl implements FacebookService {
 					.returnResponse();
 			likes = FacebookParser.getArraySizeKey(response.getEntity()
 					.getContent(), "data");
-		} catch (Exception e){
-			System.err.println("Error removing offer in facebook");
+		} catch (Exception e) {
+			System.err.println("Error getting offer likes from facebook");
 		}
 		return likes;
 	}
-	
-	
+
 }

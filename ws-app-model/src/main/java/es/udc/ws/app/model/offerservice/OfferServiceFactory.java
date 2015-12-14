@@ -3,6 +3,7 @@ package es.udc.ws.app.model.offerservice;
 import es.udc.ws.app.model.offerservice.OfferService;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 
+
 public class OfferServiceFactory {
 
     private final static String CLASS_NAME_PARAMETER = "OfferServiceFactory.className";
