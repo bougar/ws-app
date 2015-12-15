@@ -15,6 +15,7 @@ public class FacebookServiceImpl implements FacebookService {
 	private final String facebookToken;
 	private final String facebookPageId;
 
+	/*Class contructor*/
 	public FacebookServiceImpl() throws FacebookException {
 		String id = null;
 		String token = null;
@@ -139,6 +140,7 @@ public class FacebookServiceImpl implements FacebookService {
 		return likes;
 	}
 
+	/*Check http response code. If check fail it trhows the necesary exception*/
 	private void validateStatusCode(int successCode, HttpResponse response,
 			String errPrefix) throws HttpFacebookException, FacebookException {
 
