@@ -15,7 +15,7 @@ public class FacebookServiceImpl implements FacebookService {
 	private final String facebookToken;
 	private final String facebookPageId;
 
-	public FacebookServiceImpl() {
+	public FacebookServiceImpl() throws FacebookException {
 		String id = null;
 		String token = null;
 		String api = null;
@@ -29,10 +29,10 @@ public class FacebookServiceImpl implements FacebookService {
 			if (id == null || token == null || api == null)
 				throw new Exception("bad parameters");
 		} catch (Exception e) {
-			id = null;
-			token = null;
-			api = null;
-			System.err.println("Properties settings are misconfigured");
+			facebookApi = null;
+			facebookPageId = null;
+			facebookToken = null;
+			throw new FacebookException(e);
 		}
 		facebookApi = api;
 		facebookPageId = id;
