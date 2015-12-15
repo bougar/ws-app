@@ -1,15 +1,11 @@
 package es.udc.ws.app.model.facebook;
 
-
-
 import org.apache.http.HttpResponse;
-
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
-
 
 public class FacebookServiceImpl implements FacebookService {
 	private static final String FACEBOOK_PAGE_ID_PARAM = "FacebookId";
@@ -44,7 +40,8 @@ public class FacebookServiceImpl implements FacebookService {
 	}
 
 	@Override
-	public String addOffer(Offer o) throws Exception {
+	public String addOffer(Offer o) throws HttpFacebookException,
+			FacebookException {
 		try {
 			HttpResponse response = Request
 					.Post(facebookApi + facebookPageId + "/" + "feed")
@@ -55,25 +52,31 @@ public class FacebookServiceImpl implements FacebookService {
 			validateStatusCode(200, response);
 			return FacebookParser.toStringKey(
 					response.getEntity().getContent(), "id");
-		} catch (Exception e) {
+		} catch (HttpFacebookException e) {
 			throw e;
+		} catch (Exception e) {
+			throw new FacebookException(e);
 		}
 	}
 
 	@Override
-	public void removeOffer(String facebookOfferId) throws Exception {
+	public void removeOffer(String facebookOfferId)
+			throws HttpFacebookException, FacebookException {
 		try {
 			HttpResponse response = Request
 					.Delete(facebookApi + facebookOfferId).execute()
 					.returnResponse();
 			validateStatusCode(200, response);
-		} catch (Exception e) {
+		} catch (HttpFacebookException e) {
 			throw e;
+		} catch (Exception e) {
+			throw new FacebookException(e);
 		}
 	}
 
-	public String updateOffer(String facebookOfferId, Offer o) throws Exception {
-		
+	public String updateOffer(String facebookOfferId, Offer o)
+			throws HttpFacebookException, FacebookException {
+		try {
 			HttpResponse response = Request
 					.Delete(facebookApi + facebookOfferId).execute()
 					.returnResponse();
@@ -85,44 +88,50 @@ public class FacebookServiceImpl implements FacebookService {
 									.add("message", o.toString()).build())
 					.execute().returnResponse();
 			validateStatusCode(200, response);
-		try {
+
 			return FacebookParser.toStringKey(
 					response.getEntity().getContent(), "id");
-		} catch (Exception e) {
+		} catch (HttpFacebookException e) {
 			throw e;
+		} catch (Exception e) {
+			throw new FacebookException(e);
 		}
 	}
 
 	@Override
-	public Long getOfferLikes(String facebookOfferId) {
+	public Long getOfferLikes(String facebookOfferId)
+			throws HttpFacebookException, FacebookException {
 		Long likes = null;
 		try {
 			HttpResponse response = Request
 					.Get(facebookApi + facebookOfferId + "/likes").execute()
 					.returnResponse();
-			likes = FacebookParser.getArraySizeKey(response.getEntity()
-					.getContent(), "data");
+			likes = FacebookParser.getLikesLength(response.getEntity()
+					.getContent());
+			validateStatusCode(200, response);
+		} catch (HttpFacebookException e) {
+			throw e;
 		} catch (Exception e) {
-			System.err.println("Error getting offer likes from facebook");
+			throw new FacebookException(e);
 		}
 		return likes;
 	}
 
 	private void validateStatusCode(int successCode, HttpResponse response)
-			throws FacebookException {
+			throws HttpFacebookException, FacebookException {
 
 		try {
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == successCode)
 				return;
-			throw new FacebookException(statusCode,);
-		} catch (Exception e) {
+			throw new HttpFacebookException(statusCode,
+					FacebookParser.parseFacebookErrorMessage(response
+							.getEntity().getContent()));
+		} catch (HttpFacebookException e) {
 			throw e;
+		} catch (Exception e) {
+			throw new FacebookException(e);
 		}
 
-	}
-	
-	private String parseFacebookError(){
-		
 	}
 }
