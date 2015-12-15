@@ -10,7 +10,7 @@ public class FacebookServiceFactory {
 	@SuppressWarnings("rawtypes")
 	private static FacebookService getInstance() {
 		try {
-			Class service = Class.forName("FacebookServiceImpl");
+			Class service = Class.forName("es.udc.ws.app.model.facebook.FacebookServiceImpl");
 			return (FacebookService) service.newInstance();
 		} catch (Exception e) {
 			throw new RuntimeException(e);

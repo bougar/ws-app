@@ -6,7 +6,7 @@ public class HttpFacebookException extends Exception {
 	private String facebookError;
 
 	public HttpFacebookException(int errorCode, String facebookError) {
-		super("Facebook error");
+		super(facebookError);
 		this.errorCode = errorCode;
 		this.facebookError = facebookError;
 	}

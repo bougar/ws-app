@@ -64,8 +64,8 @@ public class FacebookServiceImpl implements FacebookService {
 			throws HttpFacebookException, FacebookException {
 		try {
 			HttpResponse response = Request
-					.Delete(facebookApi + facebookOfferId).execute()
-					.returnResponse();
+					.Delete(facebookApi + facebookOfferId + "/?access_token="
+							+ facebookToken).execute().returnResponse();
 			validateStatusCode(200, response);
 		} catch (HttpFacebookException e) {
 			throw e;
@@ -78,8 +78,8 @@ public class FacebookServiceImpl implements FacebookService {
 			throws HttpFacebookException, FacebookException {
 		try {
 			HttpResponse response = Request
-					.Delete(facebookApi + facebookOfferId).execute()
-					.returnResponse();
+					.Delete(facebookApi + facebookOfferId + "/?access_token="
+							+ facebookToken).execute().returnResponse();
 			validateStatusCode(200, response);
 			response = Request
 					.Post(facebookApi + facebookPageId + "/" + "feed")
@@ -104,7 +104,8 @@ public class FacebookServiceImpl implements FacebookService {
 		Long likes = null;
 		try {
 			HttpResponse response = Request
-					.Get(facebookApi + facebookOfferId + "/likes").execute()
+					.Get(facebookApi + facebookOfferId + "/likes"
+							+ "/?access_token=" + facebookToken).execute()
 					.returnResponse();
 			likes = FacebookParser.getLikesLength(response.getEntity()
 					.getContent());
@@ -127,7 +128,7 @@ public class FacebookServiceImpl implements FacebookService {
 			throw new HttpFacebookException(statusCode,
 					FacebookParser.parseFacebookErrorMessage(response
 							.getEntity().getContent()));
-			
+
 		} catch (HttpFacebookException e) {
 			throw e;
 		} catch (Exception e) {
