@@ -1,4 +1,5 @@
 package es.udc.ws.app.model.offer;
+
 import java.util.Calendar;
 
 public class Offer {
@@ -11,36 +12,53 @@ public class Offer {
 	private float fee;
 	private long offerId;
 	private boolean isValid;
-	
-	public Offer(){
-		
+	private String facebookId = null;
+	private Long likes = null;
+
+	public Long getLikes() {
+		return likes;
 	}
+
+	public void setLikes(Long likes) {
+		this.likes = likes;
+	}
+
+	public String getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
+	}
+
+	public Offer() {
+
+	}
+
 	public Offer(String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
-			float realPrice, float discountedPrice, float fee,
-			boolean isValid) {
+			float realPrice, float discountedPrice, float fee, boolean isValid) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.limitReservationDate = limitReservationDate;
 		if (limitReservationDate != null)
-				this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitReservationDate.set(Calendar.MILLISECOND, 0);
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND, 0);
 		this.realPrice = realPrice;
 		this.discountedPrice = discountedPrice;
 		this.fee = fee;
 		this.isValid = isValid;
 	}
-	
-	public Offer(long offerId,String name, String description,
+
+	public Offer(long offerId, String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
-			float realPrice, float discountedPrice, float fee,
-			boolean isValid) {
-		this (name,description,limitReservationDate,limitApplicationDate,
-				realPrice,discountedPrice,fee,isValid);
-		this.offerId=offerId;
+			float realPrice, float discountedPrice, float fee, boolean isValid) {
+		this(name, description, limitReservationDate, limitApplicationDate,
+				realPrice, discountedPrice, fee, isValid);
+		this.offerId = offerId;
 	}
 
 	public String getName() {
@@ -66,7 +84,7 @@ public class Offer {
 	public void setLimitReservationDate(Calendar limitReservationDate) {
 		this.limitReservationDate = limitReservationDate;
 		if (limitReservationDate != null)
-			this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitReservationDate.set(Calendar.MILLISECOND, 0);
 	}
 
 	public Calendar getLimitApplicationDate() {
@@ -76,7 +94,7 @@ public class Offer {
 	public void setLimitApplicationDate(Calendar limitApplicationDate) {
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND, 0);
 	}
 
 	public float getRealPrice() {
@@ -166,12 +184,12 @@ public class Offer {
 		if (limitApplicationDate == null) {
 			if (other.limitApplicationDate != null)
 				return false;
-		} else if (!(limitApplicationDate.compareTo(other.limitApplicationDate)==0))
+		} else if (!(limitApplicationDate.compareTo(other.limitApplicationDate) == 0))
 			return false;
 		if (limitReservationDate == null) {
 			if (other.limitReservationDate != null)
 				return false;
-		} else if (!(limitReservationDate.compareTo(other.limitReservationDate)==0))
+		} else if (!(limitReservationDate.compareTo(other.limitReservationDate) == 0))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -185,8 +203,5 @@ public class Offer {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
 }
