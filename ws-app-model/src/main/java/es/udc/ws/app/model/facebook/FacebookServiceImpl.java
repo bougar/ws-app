@@ -74,23 +74,44 @@ public class FacebookServiceImpl implements FacebookService {
 		}
 	}
 
+	@Override
 	public String updateOffer(String facebookOfferId, Offer o)
 			throws HttpFacebookException, FacebookException {
 		try {
 			HttpResponse response = Request
 					.Delete(facebookApi + facebookOfferId + "/?access_token="
 							+ facebookToken).execute().returnResponse();
-			validateStatusCode(200, response ,"UpdateOffer(add): ");
+			validateStatusCode(200, response, "UpdateOffer(add): ");
 			response = Request
 					.Post(facebookApi + facebookPageId + "/" + "feed")
 					.bodyForm(
 							Form.form().add("access_token", facebookToken)
-									.add("message", o.toString()).build())
-					.execute().returnResponse();
-			validateStatusCode(200, response,"UpdateOffer(remove): ");
+									.add("message", "test").build()).execute()
+					.returnResponse();
+			validateStatusCode(200, response, "UpdateOffer(remove): ");
 
 			return FacebookParser.toStringKey(
 					response.getEntity().getContent(), "id");
+		} catch (HttpFacebookException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new FacebookException(e);
+		}
+	}
+
+	@Override
+	public String updateOffer2(String facebookOfferId, Offer o)
+			throws HttpFacebookException, FacebookException {
+		try {
+			HttpResponse response = Request
+					.Post(facebookApi + facebookOfferId)
+					.bodyForm(
+							Form.form().add("access_token", facebookToken)
+									.add("message", o.toString()).build())
+					.execute().returnResponse();
+			validateStatusCode(200, response, "UpdateOffer(remove): ");
+
+			return facebookOfferId;
 		} catch (HttpFacebookException e) {
 			throw e;
 		} catch (Exception e) {
@@ -118,15 +139,15 @@ public class FacebookServiceImpl implements FacebookService {
 		return likes;
 	}
 
-	private void validateStatusCode(int successCode, HttpResponse response,String errPrefix)
-			throws HttpFacebookException, FacebookException {
+	private void validateStatusCode(int successCode, HttpResponse response,
+			String errPrefix) throws HttpFacebookException, FacebookException {
 
 		try {
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == successCode)
 				return;
-			throw new HttpFacebookException(statusCode,
-					errPrefix+FacebookParser.parseFacebookErrorMessage(response
+			throw new HttpFacebookException(statusCode, errPrefix
+					+ FacebookParser.parseFacebookErrorMessage(response
 							.getEntity().getContent()));
 
 		} catch (HttpFacebookException e) {

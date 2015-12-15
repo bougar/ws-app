@@ -18,7 +18,7 @@ public class testApi {
 		String a = facebook.addOffer(o);
 		o = new Offer("My offer", "Offer description", startDate, endDate,
 				(float) 10.5, (float) 9, (float) 5, true);
-		String b = facebook.updateOffer(a, o);
+		String b = facebook.updateOffer2(a, o);
 		facebook.removeOffer(b);
 		a = facebook.addOffer(o);
 		System.out.println("The number of likes is: "+facebook.getOfferLikes(a));

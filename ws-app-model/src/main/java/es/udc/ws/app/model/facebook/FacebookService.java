@@ -13,5 +13,8 @@ public interface FacebookService {
 			throws HttpFacebookException, FacebookException;
 
 	public String updateOffer(String facebookOfferId, Offer o)
-			throws HttpFacebookException, FacebookException;;
+			throws HttpFacebookException, FacebookException;
+
+	public String updateOffer2(String facebookOfferId, Offer o)
+			throws HttpFacebookException, FacebookException;
 }
