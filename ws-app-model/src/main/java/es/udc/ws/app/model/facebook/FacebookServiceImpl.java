@@ -127,6 +127,7 @@ public class FacebookServiceImpl implements FacebookService {
 			throw new HttpFacebookException(statusCode,
 					FacebookParser.parseFacebookErrorMessage(response
 							.getEntity().getContent()));
+			
 		} catch (HttpFacebookException e) {
 			throw e;
 		} catch (Exception e) {
