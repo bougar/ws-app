@@ -1,11 +1,15 @@
 package es.udc.ws.app.model.facebook;
 
+
+
 import org.apache.http.HttpResponse;
+
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
+
 
 public class FacebookServiceImpl implements FacebookService {
 	private static final String FACEBOOK_PAGE_ID_PARAM = "FacebookId";
@@ -40,7 +44,7 @@ public class FacebookServiceImpl implements FacebookService {
 	}
 
 	@Override
-	public String addOffer(Offer o) {
+	public String addOffer(Offer o) throws Exception {
 		try {
 			HttpResponse response = Request
 					.Post(facebookApi + facebookPageId + "/" + "feed")
@@ -48,38 +52,47 @@ public class FacebookServiceImpl implements FacebookService {
 							Form.form().add("access_token", facebookToken)
 									.add("message", o.toString()).build())
 					.execute().returnResponse();
+			validateStatusCode(200, response);
 			return FacebookParser.toStringKey(
 					response.getEntity().getContent(), "id");
 		} catch (Exception e) {
-			System.err.println("Error adding offer in facebook");
+			throw e;
 		}
-		return null;
 	}
 
 	@Override
-	public void removeOffer(String facebookOfferId) {
+	public void removeOffer(String facebookOfferId) throws Exception {
 		try {
-			Request.Delete(facebookApi + facebookOfferId).execute();
+			HttpResponse response = Request
+					.Delete(facebookApi + facebookOfferId).execute()
+					.returnResponse();
+			validateStatusCode(200, response);
 		} catch (Exception e) {
-			System.err.println("Error removing offer in facebook");
+			throw e;
 		}
 	}
-	public String updateOffer(String facebookOfferId,Offer o){
-		try{
-		Request.Delete(facebookApi + facebookOfferId).execute();
-		HttpResponse response = Request
-				.Post(facebookApi + facebookPageId + "/" + "feed")
-				.bodyForm(
-						Form.form().add("access_token", facebookToken)
-								.add("message", o.toString()).build())
-				.execute().returnResponse();
-		return FacebookParser.toStringKey(
-				response.getEntity().getContent(), "id");
+
+	public String updateOffer(String facebookOfferId, Offer o) throws Exception {
+		
+			HttpResponse response = Request
+					.Delete(facebookApi + facebookOfferId).execute()
+					.returnResponse();
+			validateStatusCode(200, response);
+			response = Request
+					.Post(facebookApi + facebookPageId + "/" + "feed")
+					.bodyForm(
+							Form.form().add("access_token", facebookToken)
+									.add("message", o.toString()).build())
+					.execute().returnResponse();
+			validateStatusCode(200, response);
+		try {
+			return FacebookParser.toStringKey(
+					response.getEntity().getContent(), "id");
 		} catch (Exception e) {
-			System.err.println("Error updating offer in facebook");
+			throw e;
 		}
-		return null;
 	}
+
 	@Override
 	public Long getOfferLikes(String facebookOfferId) {
 		Long likes = null;
@@ -95,4 +108,21 @@ public class FacebookServiceImpl implements FacebookService {
 		return likes;
 	}
 
+	private void validateStatusCode(int successCode, HttpResponse response)
+			throws FacebookException {
+
+		try {
+			int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == successCode)
+				return;
+			throw new FacebookException(statusCode,);
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+	
+	private String parseFacebookError(){
+		
+	}
 }

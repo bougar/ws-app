@@ -75,8 +75,9 @@ public class OfferServiceImpl implements OfferService {
 				Offer createdOffer = offerDao.create(connection, offer);
 
 				/* Commit. */
-				connection.commit();
 				(new FacebookServiceImpl()).addOffer(createdOffer);
+				connection.commit();
+				
 
 				return createdOffer;
 			} catch (SQLException e) {
@@ -85,6 +86,8 @@ public class OfferServiceImpl implements OfferService {
 			} catch (RuntimeException | Error e) {
 				connection.rollback();
 				throw e;
+			} catch (Exception e){
+				throw new RuntimeException("Facebook adding error");
 			}
 
 		} catch (SQLException e) {
