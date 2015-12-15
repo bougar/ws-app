@@ -49,7 +49,7 @@ public class FacebookServiceImpl implements FacebookService {
 							Form.form().add("access_token", facebookToken)
 									.add("message", o.toString()).build())
 					.execute().returnResponse();
-			validateStatusCode(200, response);
+			validateStatusCode(200, response, "addOffer: ");
 			return FacebookParser.toStringKey(
 					response.getEntity().getContent(), "id");
 		} catch (HttpFacebookException e) {
@@ -66,7 +66,7 @@ public class FacebookServiceImpl implements FacebookService {
 			HttpResponse response = Request
 					.Delete(facebookApi + facebookOfferId + "/?access_token="
 							+ facebookToken).execute().returnResponse();
-			validateStatusCode(200, response);
+			validateStatusCode(200, response, "removeOffer: ");
 		} catch (HttpFacebookException e) {
 			throw e;
 		} catch (Exception e) {
@@ -80,14 +80,14 @@ public class FacebookServiceImpl implements FacebookService {
 			HttpResponse response = Request
 					.Delete(facebookApi + facebookOfferId + "/?access_token="
 							+ facebookToken).execute().returnResponse();
-			validateStatusCode(200, response);
+			validateStatusCode(200, response ,"UpdateOffer(add): ");
 			response = Request
 					.Post(facebookApi + facebookPageId + "/" + "feed")
 					.bodyForm(
 							Form.form().add("access_token", facebookToken)
 									.add("message", o.toString()).build())
 					.execute().returnResponse();
-			validateStatusCode(200, response);
+			validateStatusCode(200, response,"UpdateOffer(remove): ");
 
 			return FacebookParser.toStringKey(
 					response.getEntity().getContent(), "id");
@@ -109,7 +109,7 @@ public class FacebookServiceImpl implements FacebookService {
 					.returnResponse();
 			likes = FacebookParser.getLikesLength(response.getEntity()
 					.getContent());
-			validateStatusCode(200, response);
+			validateStatusCode(200, response, "getOffersLikes: ");
 		} catch (HttpFacebookException e) {
 			throw e;
 		} catch (Exception e) {
@@ -118,7 +118,7 @@ public class FacebookServiceImpl implements FacebookService {
 		return likes;
 	}
 
-	private void validateStatusCode(int successCode, HttpResponse response)
+	private void validateStatusCode(int successCode, HttpResponse response,String errPrefix)
 			throws HttpFacebookException, FacebookException {
 
 		try {
@@ -126,7 +126,7 @@ public class FacebookServiceImpl implements FacebookService {
 			if (statusCode == successCode)
 				return;
 			throw new HttpFacebookException(statusCode,
-					FacebookParser.parseFacebookErrorMessage(response
+					errPrefix+FacebookParser.parseFacebookErrorMessage(response
 							.getEntity().getContent()));
 
 		} catch (HttpFacebookException e) {
