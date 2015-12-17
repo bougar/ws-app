@@ -4,10 +4,10 @@ import es.udc.ws.app.model.offer.Offer;
 
 public interface FacebookService {
 	public String addOffer(Offer o) throws HttpFacebookException,
-			FacebookException;;
+			FacebookException;
 
 	public void removeOffer(String facebookOfferId)
-			throws HttpFacebookException, FacebookException;;
+			throws HttpFacebookException, FacebookException;
 
 	public Long getOfferLikes(String facebookOfferId)
 			throws HttpFacebookException, FacebookException;
