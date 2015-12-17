@@ -3,6 +3,7 @@ package es.udc.ws.app.xml;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import es.udc.ws.app.dto.OfferDto;
 
@@ -21,6 +22,17 @@ public class XmlOfferDtoConversor {
 		Element offerElement = toJDOMElement(offer);
 
 		return new Document(offerElement);
+	}
+	
+	//Porque tira IOException?
+	public static Document toXml(List<OfferDto> offers) throws IOException {
+		Element elements = new Element("offers", XML_NS);
+		for (OfferDto o : offers) {
+			Element offerElement = toJDOMElement(o);
+			elements.addContent(offerElement);
+		}
+		return new Document(elements);
+
 	}
 
 	public static Element toJDOMElement(OfferDto offer) {
