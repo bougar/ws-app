@@ -1,6 +1,7 @@
 package es.udc.ws.app.serviceutil;
 
 import es.udc.ws.app.dto.OfferDto;
+import es.udc.ws.app.model.facebook.FacebookServiceImpl;
 import es.udc.ws.app.model.offer.Offer;
 
 public class OfferToOfferDtoConversor {
@@ -9,7 +10,7 @@ public class OfferToOfferDtoConversor {
 				offer.getDescription(),
 				offer.getLimitReservationDate(),
 				offer.getLimitApplicationDate(), offer.getRealPrice(),
-				offer.getDiscountedPrice(), offer.isValid());
+				offer.getDiscountedPrice(), offer.isValid(), offer.getFaceBookId(), offer.getLikes());
 	}
 	
 	public static Offer toOffer(OfferDto offerDto,long fee){
@@ -17,6 +18,6 @@ public class OfferToOfferDtoConversor {
 				offerDto.getDescription(),
 				offerDto.getLimitReservationDate(),
 				offerDto.getLimitApplicationDate(), offerDto.getRealPrice(),
-				offerDto.getDiscountedPrice(),fee, offerDto.isValid());
+				offerDto.getDiscountedPrice(),fee, offerDto.isValid(), offerDto.getFaceBookId());
 	}
 }

@@ -29,8 +29,28 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
+     * @return
+     *     returns es.udc.ws.app.client.service.soap.wsdl.OfferDto
      * @throws SoapInputValidationException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "addOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.AddOffer")
+    @ResponseWrapper(localName = "addOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.AddOfferResponse")
+    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/addOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/addOfferResponse", fault = {
+        @FaultAction(className = SoapInputValidationException.class, value = "http://soap.ws.app.udc.es/OfferProvider/addOffer/Fault/SoapInputValidationException")
+    })
+    public OfferDto addOffer(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Offer arg0)
+        throws SoapInputValidationException
+    ;
+
+    /**
+     * 
+     * @param arg0
      * @throws SoapInstanceNotFoundException
+     * @throws SoapInputValidationException
      * @throws SoapNotModifiableOfferException
      */
     @WebMethod
@@ -71,26 +91,6 @@ public interface OfferProvider {
      * @param arg0
      * @return
      *     returns es.udc.ws.app.client.service.soap.wsdl.OfferDto
-     * @throws SoapInputValidationException
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.AddOffer")
-    @ResponseWrapper(localName = "addOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.AddOfferResponse")
-    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/addOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/addOfferResponse", fault = {
-        @FaultAction(className = SoapInputValidationException.class, value = "http://soap.ws.app.udc.es/OfferProvider/addOffer/Fault/SoapInputValidationException")
-    })
-    public OfferDto addOffer(
-        @WebParam(name = "arg0", targetNamespace = "")
-        Offer arg0)
-        throws SoapInputValidationException
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns es.udc.ws.app.client.service.soap.wsdl.OfferDto
      * @throws SoapInstanceNotFoundException
      */
     @WebMethod
@@ -113,11 +113,11 @@ public interface OfferProvider {
      * @param arg0
      * @return
      *     returns long
-     * @throws SoapReservationTimeExpiredException
-     * @throws SoapInputValidationException
-     * @throws SoapAlreadyReservedException
      * @throws SoapInstanceNotFoundException
      * @throws SoapAlreadyInvalidatedException
+     * @throws SoapReservationTimeExpiredException
+     * @throws SoapAlreadyReservedException
+     * @throws SoapInputValidationException
      */
     @WebMethod
     @WebResult(targetNamespace = "")

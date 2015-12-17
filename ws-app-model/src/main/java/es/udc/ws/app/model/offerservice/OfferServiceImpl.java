@@ -16,7 +16,11 @@ import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
+import es.udc.ws.app.model.facebook.FacebookException;
+import es.udc.ws.app.model.facebook.FacebookService;
+import es.udc.ws.app.model.facebook.FacebookServiceFactory;
 import es.udc.ws.app.model.facebook.FacebookServiceImpl;
+import es.udc.ws.app.model.facebook.HttpFacebookException;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offer.SqlOfferDao;
 import es.udc.ws.app.model.offer.SqlOfferDaoFactory;
@@ -37,11 +41,13 @@ public class OfferServiceImpl implements OfferService {
 	private DataSource dataSource;
 	private SqlOfferDao offerDao = null;
 	private SqlReservationDao reservationDao = null;
+	private FacebookService facebook = null;
 
 	public OfferServiceImpl() {
 		dataSource = DataSourceLocator.getDataSource(OFFER_DATA_SOURCE);
 		offerDao = SqlOfferDaoFactory.getDao();
 		reservationDao = SqlReservationDaoFactory.getDao();
+		facebook = FacebookServiceFactory.instance();
 	}
 
 	private void validateOffer(Offer offer) throws InputValidationException {
@@ -71,13 +77,14 @@ public class OfferServiceImpl implements OfferService {
 						.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
 
+				offer.setFaceBookId(facebook.addOffer(offer));
+
 				/* Do work. */
 				Offer createdOffer = offerDao.create(connection, offer);
 
 				/* Commit. */
-				(new FacebookServiceImpl()).addOffer(createdOffer);
+
 				connection.commit();
-				
 
 				return createdOffer;
 			} catch (SQLException e) {
@@ -86,7 +93,7 @@ public class OfferServiceImpl implements OfferService {
 			} catch (RuntimeException | Error e) {
 				connection.rollback();
 				throw e;
-			} catch (Exception e){
+			} catch (Exception e) {
 				throw new RuntimeException("Facebook adding error");
 			}
 
@@ -120,7 +127,8 @@ public class OfferServiceImpl implements OfferService {
 				 * If reservations > 0 we can only modify AppDate(later) and
 				 * prize(cheaper)
 				 */
-				if (reservationDao.howManyByOffer(connection, offer.getOfferId()) > 0) {
+				if (reservationDao.howManyByOffer(connection,
+						offer.getOfferId()) > 0) {
 					if (!baseOffer.isValid())
 						throw new NotModifiableOfferException(
 								baseOffer.getOfferId());
@@ -134,6 +142,9 @@ public class OfferServiceImpl implements OfferService {
 						throw new NotModifiableOfferException(
 								offer.getOfferId());
 				}
+
+				offer.setFaceBookId(facebook.updateOffer(offer.getFaceBookId(),
+						offer));
 
 				/* Do work. */
 				offerDao.update(connection, offer);
@@ -153,6 +164,8 @@ public class OfferServiceImpl implements OfferService {
 			} catch (RuntimeException | Error e) {
 				connection.rollback();
 				throw e;
+			} catch (Exception e) {
+				throw new RuntimeException("Facebook adding error");
 			}
 
 		} catch (SQLException e) {
@@ -182,6 +195,8 @@ public class OfferServiceImpl implements OfferService {
 					throw new NotModifiableOfferException(offerId);
 
 				/* Do work. */
+				Offer offer = findOffer(offerId);
+				facebook.removeOffer(offer.getFaceBookId());
 				offerDao.remove(connection, offerId);
 
 				/* Commit. */
@@ -199,6 +214,8 @@ public class OfferServiceImpl implements OfferService {
 			} catch (RuntimeException | Error e) {
 				connection.rollback();
 				throw e;
+			} catch (Exception e) {
+				throw new RuntimeException("Facebook adding error");
 			}
 
 		} catch (SQLException e) {
@@ -211,9 +228,13 @@ public class OfferServiceImpl implements OfferService {
 	public Offer findOffer(long offerId) throws InstanceNotFoundException {
 
 		try (Connection connection = dataSource.getConnection()) {
-			return offerDao.find(connection, offerId);
+			Offer offer = offerDao.find(connection, offerId);
+			offer.setLikes(facebook.getOfferLikes(offer.getFaceBookId()));
+			return offer;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException("Facebook adding error");
 		}
 
 	}
@@ -221,9 +242,16 @@ public class OfferServiceImpl implements OfferService {
 	@Override
 	public List<Offer> findOffers(String keywords, Boolean state, Calendar date) {
 		try (Connection connection = dataSource.getConnection()) {
-			return offerDao.advancedFilter(connection, keywords, state, date);
+			List<Offer> offers = offerDao.advancedFilter(connection, keywords,
+					state, date);
+			for (Offer offer : offers) {
+				offer.setLikes(facebook.getOfferLikes(offer.getFaceBookId()));
+			}
+			return offers;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException("Facebook adding error");
 		}
 	}
 
@@ -251,18 +279,20 @@ public class OfferServiceImpl implements OfferService {
 				if (!offer.isValid())
 					throw new AlreadyInvalidatedException(offer.getOfferId());
 
-				if (reservationDao.isOfferAlreadyReservated(connection, offerId, email))
+				if (reservationDao.isOfferAlreadyReservated(connection,
+						offerId, email))
 					throw new AlreadyReservatedException(offerId, email);
-				
+
 				if (offer.getLimitReservationDate().compareTo(
 						Calendar.getInstance()) < 0)
 					throw new ReservationTimeExpiredException(
-							offer.getOfferId(),offer.getLimitReservationDate());
+							offer.getOfferId(), offer.getLimitReservationDate());
 
 				Calendar requestDate = Calendar.getInstance();
 				Reservation base = new Reservation(email, offer.getOfferId(),
 						ModelConstants.NOT_CLAIMED, requestDate,
-						creditCardNumber, offer.getDiscountedPrice(), offer.getFee());
+						creditCardNumber, offer.getDiscountedPrice(),
+						offer.getFee());
 				Reservation reservation = reservationDao.create(connection,
 						base);
 

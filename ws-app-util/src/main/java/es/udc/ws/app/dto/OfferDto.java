@@ -11,12 +11,14 @@ public class OfferDto {
 	private float discountedPrice;
 	private long offerId;
 	private boolean isValid;
+	private String faceBookId;
+	private Long likes;
 	
 
 	public OfferDto(long offerId,String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
 			float realPrice, float discountedPrice,
-			boolean isValid) {
+			boolean isValid, String faceBookId, Long likes) {
 		super();
 		this.offerId = offerId;
 		this.name = name;
@@ -31,6 +33,36 @@ public class OfferDto {
 		this.discountedPrice = discountedPrice;
 		this.isValid = isValid;
 		this.offerId=offerId;
+		this.faceBookId=faceBookId;
+		this.likes = likes;
+	}
+
+
+
+
+	public String getFaceBookId() {
+		return faceBookId;
+	}
+
+
+
+
+	public void setFaceBookId(String faceBookId) {
+		this.faceBookId = faceBookId;
+	}
+
+
+
+
+	public Long getLikes() {
+		return likes;
+	}
+
+
+
+
+	public void setLikes(Long likes) {
+		this.likes = likes;
 	}
 
 

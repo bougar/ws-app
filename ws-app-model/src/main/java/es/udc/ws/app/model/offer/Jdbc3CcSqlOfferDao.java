@@ -13,8 +13,8 @@ public class Jdbc3CcSqlOfferDao extends AbstractSqlOfferDao {
 	public Offer create(Connection connection, Offer o) {
 		String queryString = "INSERT INTO Offer "
 				+ "(name,description, limitReservationDate, limitApplicationDate, "
-				+ "realPrice, discountedPrice, fee, valid) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "realPrice, discountedPrice, fee, valid, faceBookId) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				queryString,Statement.RETURN_GENERATED_KEYS)) {
 			int i = 1;
@@ -30,7 +30,7 @@ public class Jdbc3CcSqlOfferDao extends AbstractSqlOfferDao {
 			preparedStatement.setFloat(i++,o.getDiscountedPrice());
 			preparedStatement.setFloat(i++,o.getFee());
 			preparedStatement.setBoolean(i++,o.isValid());
-			
+			preparedStatement.setString(i++, o.getFaceBookId());
 			preparedStatement.executeUpdate();
 			
 			ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -40,7 +40,7 @@ public class Jdbc3CcSqlOfferDao extends AbstractSqlOfferDao {
 			long offerId = resultSet.getLong(1);
 			
 			return new Offer(offerId,o.getName(),o.getDescription(),o.getLimitReservationDate(),o.getLimitApplicationDate(),
-					o.getRealPrice(),o.getDiscountedPrice(),o.getFee(),o.isValid());
+					o.getRealPrice(),o.getDiscountedPrice(),o.getFee(),o.isValid(), o.getFaceBookId());
 			
 		}catch (SQLException e) {
             throw new RuntimeException(e);

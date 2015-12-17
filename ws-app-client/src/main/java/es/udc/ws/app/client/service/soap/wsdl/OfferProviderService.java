@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "OfferProviderService", targetNamespace = "http://soap.ws.app.udc.es/", wsdlLocation = "file:/home/bougar/eclipse/ws-app/ws-app-service/target/generated-sources/wsdl/OfferProviderService.wsdl")
+@WebServiceClient(name = "OfferProviderService", targetNamespace = "http://soap.ws.app.udc.es/", wsdlLocation = "file:/home/tk/Desktop/software/ws-app/ws-app-service/target/generated-sources/wsdl/OfferProviderService.wsdl")
 public class OfferProviderService
     extends Service
 {
@@ -30,7 +30,7 @@ public class OfferProviderService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/home/bougar/eclipse/ws-app/ws-app-service/target/generated-sources/wsdl/OfferProviderService.wsdl");
+            url = new URL("file:/home/tk/Desktop/software/ws-app/ws-app-service/target/generated-sources/wsdl/OfferProviderService.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

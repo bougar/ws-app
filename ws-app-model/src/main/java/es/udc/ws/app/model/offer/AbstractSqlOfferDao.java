@@ -20,7 +20,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 		String queryString = "UPDATE Offer "
 				+ "SET name = ?, description = ?, limitReservationDate = ?, "
 				+ "limitApplicationDate = ?, realPrice = ?, discountedPrice = ?, "
-				+ "fee = ?, valid = ? " + "WHERE offerId=?";
+				+ "fee = ?, valid = ?, faceBookId = ? " + "WHERE offerId=?";
 		try (PreparedStatement preparedStatement = connection
 				.prepareStatement(queryString)) {
 			int i = 1;
@@ -36,6 +36,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			preparedStatement.setFloat(i++, o.getDiscountedPrice());
 			preparedStatement.setFloat(i++, o.getFee());
 			preparedStatement.setBoolean(i++, o.isValid());
+			preparedStatement.setString(i++, o.getFaceBookId());
 			preparedStatement.setLong(i++, o.getOfferId());
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -76,7 +77,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 	public Offer find(Connection connection, long offerId)
 			throws InstanceNotFoundException {
 		String queryString = "SELECT name, description, limitReservationDate, limitApplicationDate, "
-				+ "realPrice, discountedPrice, fee, valid FROM Offer WHERE offerId = ?";
+				+ "realPrice, discountedPrice, fee, valid, faceBookId FROM Offer WHERE offerId = ?";
 		try (PreparedStatement preparedStatement = connection
 				.prepareStatement(queryString)) {
 			int i = 1;
@@ -100,10 +101,11 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			float discountedPrice = resultSet.getFloat(i++);
 			float fee = resultSet.getFloat(i++);
 			boolean isValid = resultSet.getBoolean(i++);
+			String faceBookId = resultSet.getString(i++);
 
 			return new Offer(offerId, name, description, limitReservationDate,
 					limitApplicationDate, realPrice, discountedPrice, fee,
-					isValid);
+					isValid, faceBookId);
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -115,7 +117,7 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 			boolean showAll, Calendar data) {
 		String[] words = keywords != null ? keywords.split(" ") : null;
 		String queryString = "SELECT offerId, name, description, limitReservationDate, limitApplicationDate, "
-				+ "realPrice, discountedPrice, fee, valid FROM Offer ";
+				+ "realPrice, discountedPrice, fee, valid, faceBookId FROM Offer ";
 
 		if (!showAll) {
 			queryString += "WHERE valid=1";
@@ -167,9 +169,10 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 				float discountedPrice = resultSet.getFloat(i++);
 				float fee = resultSet.getFloat(i++);
 				boolean valid = resultSet.getBoolean(i++);
+				String faceBookId = resultSet.getString(i++);
 				offers.add(new Offer(offerId, name, description,
 						limitReservationDate, limitApplicationDate, realPrice,
-						discountedPrice, fee, valid));
+						discountedPrice, fee, valid, faceBookId));
 			}
 			return offers;
 		} catch (SQLException e) {

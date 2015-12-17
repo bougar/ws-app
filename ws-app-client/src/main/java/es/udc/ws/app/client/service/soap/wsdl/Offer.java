@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Clase Java para offer complex type.
+ * <p>Java class for offer complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="offer">
@@ -20,7 +20,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;sequence>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="discountedPrice" type="{http://www.w3.org/2001/XMLSchema}float"/>
+ *         &lt;element name="faceBookId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="fee" type="{http://www.w3.org/2001/XMLSchema}float"/>
+ *         &lt;element name="likes" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="limitApplicationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="limitReservationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -39,7 +41,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlType(name = "offer", propOrder = {
     "description",
     "discountedPrice",
+    "faceBookId",
     "fee",
+    "likes",
     "limitApplicationDate",
     "limitReservationDate",
     "name",
@@ -51,7 +55,9 @@ public class Offer {
 
     protected String description;
     protected float discountedPrice;
+    protected String faceBookId;
     protected float fee;
+    protected Long likes;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar limitApplicationDate;
     @XmlSchemaType(name = "dateTime")
@@ -62,7 +68,7 @@ public class Offer {
     protected boolean valid;
 
     /**
-     * Obtiene el valor de la propiedad description.
+     * Gets the value of the description property.
      * 
      * @return
      *     possible object is
@@ -74,7 +80,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad description.
+     * Sets the value of the description property.
      * 
      * @param value
      *     allowed object is
@@ -86,7 +92,7 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad discountedPrice.
+     * Gets the value of the discountedPrice property.
      * 
      */
     public float getDiscountedPrice() {
@@ -94,7 +100,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad discountedPrice.
+     * Sets the value of the discountedPrice property.
      * 
      */
     public void setDiscountedPrice(float value) {
@@ -102,7 +108,31 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad fee.
+     * Gets the value of the faceBookId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFaceBookId() {
+        return faceBookId;
+    }
+
+    /**
+     * Sets the value of the faceBookId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFaceBookId(String value) {
+        this.faceBookId = value;
+    }
+
+    /**
+     * Gets the value of the fee property.
      * 
      */
     public float getFee() {
@@ -110,7 +140,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad fee.
+     * Sets the value of the fee property.
      * 
      */
     public void setFee(float value) {
@@ -118,7 +148,31 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad limitApplicationDate.
+     * Gets the value of the likes property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getLikes() {
+        return likes;
+    }
+
+    /**
+     * Sets the value of the likes property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setLikes(Long value) {
+        this.likes = value;
+    }
+
+    /**
+     * Gets the value of the limitApplicationDate property.
      * 
      * @return
      *     possible object is
@@ -130,7 +184,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad limitApplicationDate.
+     * Sets the value of the limitApplicationDate property.
      * 
      * @param value
      *     allowed object is
@@ -142,7 +196,7 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad limitReservationDate.
+     * Gets the value of the limitReservationDate property.
      * 
      * @return
      *     possible object is
@@ -154,7 +208,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad limitReservationDate.
+     * Sets the value of the limitReservationDate property.
      * 
      * @param value
      *     allowed object is
@@ -166,7 +220,7 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad name.
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
@@ -178,7 +232,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad name.
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
@@ -190,7 +244,7 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad offerId.
+     * Gets the value of the offerId property.
      * 
      */
     public long getOfferId() {
@@ -198,7 +252,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad offerId.
+     * Sets the value of the offerId property.
      * 
      */
     public void setOfferId(long value) {
@@ -206,7 +260,7 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad realPrice.
+     * Gets the value of the realPrice property.
      * 
      */
     public float getRealPrice() {
@@ -214,7 +268,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad realPrice.
+     * Sets the value of the realPrice property.
      * 
      */
     public void setRealPrice(float value) {
@@ -222,7 +276,7 @@ public class Offer {
     }
 
     /**
-     * Obtiene el valor de la propiedad valid.
+     * Gets the value of the valid property.
      * 
      */
     public boolean isValid() {
@@ -230,7 +284,7 @@ public class Offer {
     }
 
     /**
-     * Define el valor de la propiedad valid.
+     * Sets the value of the valid property.
      * 
      */
     public void setValid(boolean value) {

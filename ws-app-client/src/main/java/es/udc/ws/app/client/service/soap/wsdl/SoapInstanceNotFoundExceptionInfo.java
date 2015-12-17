@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para soapInstanceNotFoundExceptionInfo complex type.
+ * <p>Java class for soapInstanceNotFoundExceptionInfo complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="soapInstanceNotFoundExceptionInfo">
@@ -37,7 +37,7 @@ public class SoapInstanceNotFoundExceptionInfo {
     protected String instanceType;
 
     /**
-     * Obtiene el valor de la propiedad instanceId.
+     * Gets the value of the instanceId property.
      * 
      * @return
      *     possible object is
@@ -49,7 +49,7 @@ public class SoapInstanceNotFoundExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad instanceId.
+     * Sets the value of the instanceId property.
      * 
      * @param value
      *     allowed object is
@@ -61,7 +61,7 @@ public class SoapInstanceNotFoundExceptionInfo {
     }
 
     /**
-     * Obtiene el valor de la propiedad instanceType.
+     * Gets the value of the instanceType property.
      * 
      * @return
      *     possible object is
@@ -73,7 +73,7 @@ public class SoapInstanceNotFoundExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad instanceType.
+     * Sets the value of the instanceType property.
      * 
      * @param value
      *     allowed object is
