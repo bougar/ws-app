@@ -4,6 +4,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 
+import es.udc.ws.app.exceptions.FacebookException;
+import es.udc.ws.app.exceptions.HttpFacebookException;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 

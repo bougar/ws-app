@@ -1,4 +1,4 @@
-package es.udc.ws.app.model.facebook;
+package es.udc.ws.app.exceptions;
 /*Facebook request work but it fail.*/
 @SuppressWarnings("serial")
 public class HttpFacebookException extends Exception {

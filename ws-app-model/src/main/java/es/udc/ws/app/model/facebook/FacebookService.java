@@ -1,5 +1,7 @@
 package es.udc.ws.app.model.facebook;
 
+import es.udc.ws.app.exceptions.FacebookException;
+import es.udc.ws.app.exceptions.HttpFacebookException;
 import es.udc.ws.app.model.offer.Offer;
 
 public interface FacebookService {

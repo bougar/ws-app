@@ -15,6 +15,7 @@ import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 import es.udc.ws.app.model.offer.Offer;
+import es.udc.ws.app.model.offer.ReturnedOffer;
 import es.udc.ws.app.model.offerservice.OfferServiceFactory;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.serviceutil.OfferToOfferDtoConversor;
@@ -141,11 +142,11 @@ public class SoapOfferService {
 
 	
 	public List<OfferDto> findOffers(String keywords) {
-		List<Offer> offers = new ArrayList<Offer>();
+		List<ReturnedOffer> offers = new ArrayList<ReturnedOffer>();
 		List<OfferDto> offersDto = new ArrayList<OfferDto>();
 		offers = OfferServiceFactory.getService().findOffers(keywords, true,
 				Calendar.getInstance());
-		for (Offer o : offers)
+		for (ReturnedOffer o : offers)
 			offersDto.add(OfferToOfferDtoConversor.toOfferDto(o));
 		return offersDto;
 	}
@@ -189,7 +190,7 @@ public class SoapOfferService {
 		String description = null;
 		float discountedPrice;
 		for (Reservation r : reservations) {
-			Offer offer = null;
+			ReturnedOffer offer = null;
 			try {
 				offer = OfferServiceFactory.getService().findOffer(
 						r.getOfferId());

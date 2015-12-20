@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Clase Java para soapNotClaimableExceptionInfo complex type.
+ * <p>Java class for soapNotClaimableExceptionInfo complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="soapNotClaimableExceptionInfo">
@@ -46,7 +46,7 @@ public class SoapNotClaimableExceptionInfo {
     protected String state;
 
     /**
-     * Obtiene el valor de la propiedad email.
+     * Gets the value of the email property.
      * 
      * @return
      *     possible object is
@@ -58,7 +58,7 @@ public class SoapNotClaimableExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad email.
+     * Sets the value of the email property.
      * 
      * @param value
      *     allowed object is
@@ -70,7 +70,7 @@ public class SoapNotClaimableExceptionInfo {
     }
 
     /**
-     * Obtiene el valor de la propiedad expirationDate.
+     * Gets the value of the expirationDate property.
      * 
      * @return
      *     possible object is
@@ -82,7 +82,7 @@ public class SoapNotClaimableExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad expirationDate.
+     * Sets the value of the expirationDate property.
      * 
      * @param value
      *     allowed object is
@@ -94,7 +94,7 @@ public class SoapNotClaimableExceptionInfo {
     }
 
     /**
-     * Obtiene el valor de la propiedad reservationId.
+     * Gets the value of the reservationId property.
      * 
      * @return
      *     possible object is
@@ -106,7 +106,7 @@ public class SoapNotClaimableExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad reservationId.
+     * Sets the value of the reservationId property.
      * 
      * @param value
      *     allowed object is
@@ -118,7 +118,7 @@ public class SoapNotClaimableExceptionInfo {
     }
 
     /**
-     * Obtiene el valor de la propiedad state.
+     * Gets the value of the state property.
      * 
      * @return
      *     possible object is
@@ -130,7 +130,7 @@ public class SoapNotClaimableExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad state.
+     * Sets the value of the state property.
      * 
      * @param value
      *     allowed object is

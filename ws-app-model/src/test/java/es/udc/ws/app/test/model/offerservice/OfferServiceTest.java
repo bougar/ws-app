@@ -690,14 +690,17 @@ public class OfferServiceTest {
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			ReservationTimeExpiredException, AlreadyReservatedException {
 		ReturnedOffer offer = createOffer(getValidOffer());
-		long reservation = 0;
-		reservation = offerService.reserveOffer(offer.getOfferId(), USER_ID,
-				VALID_CREDIT_CARD_NUMBER);
-		List<Reservation> reservations = offerService
-				.findReservationByOfferId(offer.getOfferId());
-		assertEquals(reservation, reservations.get(0).getReservationId());
-		removeReservation(reservation);
-		removeOffer(offer.getOfferId());
+		try {
+			long reservation = 0;
+			reservation = offerService.reserveOffer(offer.getOfferId(),
+					USER_ID, VALID_CREDIT_CARD_NUMBER);
+			List<Reservation> reservations = offerService
+					.findReservationByOfferId(offer.getOfferId());
+			assertEquals(reservation, reservations.get(0).getReservationId());
+			removeReservation(reservation);
+		} finally {
+			removeOffer(offer.getOfferId());
+		}
 	}
 
 	@Test(expected = NotClaimableException.class)

@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para soapAlreadyInvalidatedExceptionInfo complex type.
+ * <p>Java class for soapAlreadyInvalidatedExceptionInfo complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="soapAlreadyInvalidatedExceptionInfo">
@@ -34,7 +34,7 @@ public class SoapAlreadyInvalidatedExceptionInfo {
     protected long offerId;
 
     /**
-     * Obtiene el valor de la propiedad offerId.
+     * Gets the value of the offerId property.
      * 
      */
     public long getOfferId() {
@@ -42,7 +42,7 @@ public class SoapAlreadyInvalidatedExceptionInfo {
     }
 
     /**
-     * Define el valor de la propiedad offerId.
+     * Sets the value of the offerId property.
      * 
      */
     public void setOfferId(long value) {

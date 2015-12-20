@@ -13,6 +13,7 @@ public class OfferDto {
 	private float discountedPrice;
 	private long offerId;
 	private boolean isValid;
+	private Long likes;
 	
 
 	public OfferDto(long offerId,String name, String description,
@@ -117,7 +118,21 @@ public class OfferDto {
 				+ format.format(limitApplicationDate.getTime())
 				+ ", limitReservationDate="
 				+ format.format(limitReservationDate.getTime()) + ", offerId="
-				+ offerId + ", isValid=" + isValid + "]";
+				+ offerId +", likes=" + likes + ", isValid=" + isValid + "]";
+	}
+
+
+
+
+	public Long getLikes() {
+		return likes;
+	}
+
+
+
+
+	public void setLikes(Long likes) {
+		this.likes = likes;
 	}
 
 }
