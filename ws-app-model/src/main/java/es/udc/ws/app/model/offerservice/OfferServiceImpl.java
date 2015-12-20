@@ -170,7 +170,7 @@ public class OfferServiceImpl implements OfferService {
 				connection.rollback();
 				throw e;
 			} catch (FacebookException | HttpFacebookException e) {
-				throw new RuntimeException("Facebook adding error");
+				throw new RuntimeException("Facebook updating error");
 			}
 
 		} catch (SQLException e) {

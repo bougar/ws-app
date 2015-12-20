@@ -79,9 +79,9 @@ public class OfferServiceTest {
 		return getValidOffer("Valid offer");
 	}
 
-	private Offer createOffer(Offer offer) {
+	private ReturnedOffer createOffer(Offer offer) {
 
-		Offer addedOffer = null;
+		ReturnedOffer addedOffer = null;
 		try {
 			addedOffer = offerService.addOffer(offer);
 		} catch (InputValidationException e) {
@@ -107,6 +107,7 @@ public class OfferServiceTest {
 				.getDataSource(OFFER_DATA_SOURCE);
 
 		try (Connection connection = dataSource.getConnection()) {
+			offer.setFaceBookId("b");
 			connection.setAutoCommit(false);
 			offerDao.update(connection, offer);
 			connection.commit();
@@ -131,16 +132,16 @@ public class OfferServiceTest {
 	@Test
 	public void testFindOfferByKeywords() throws InstanceNotFoundException,
 			NotModifiableOfferException, InputValidationException {
-		Offer offer1 = createOffer(getValidOffer());
-		Offer offer2 = createOffer(getValidOffer());
-		Offer offer3 = null;
+		ReturnedOffer offer1 = createOffer(getValidOffer());
+		ReturnedOffer offer2 = createOffer(getValidOffer());
+		ReturnedOffer offer3 = null;
 		try {
 			List<ReturnedOffer> offerList = offerService.findOffers(null, true,
 					null);
 			assertEquals(offerList.size(), 2);
 			offer3 = createOffer(getValidOffer());
 			offer3.setDescription("test");
-			offerService.updateOffer(offer3);
+			offerService.updateOffer(OfferToReturnedOffer.toOffer(offer3));
 			offerList = offerService
 					.findOffers("Offer description", true, null);
 			assertEquals(offerList.size(), 2);
@@ -155,8 +156,8 @@ public class OfferServiceTest {
 	@Test
 	public void testFindOfferByValid() throws InstanceNotFoundException,
 			NotModifiableOfferException, AlreadyInvalidatedException {
-		Offer offer1 = createOffer(getValidOffer());
-		Offer offer2 = createOffer(getValidOffer());
+		ReturnedOffer offer1 = createOffer(getValidOffer());
+		ReturnedOffer offer2 = createOffer(getValidOffer());
 		try {
 
 			offerService.offerInvalidation(offer2.getOfferId());
@@ -175,7 +176,7 @@ public class OfferServiceTest {
 	public void testFindOfferByVariousFields()
 			throws InstanceNotFoundException, NotModifiableOfferException,
 			InputValidationException {
-		Offer offer1 = createOffer(getValidOffer());
+		ReturnedOffer offer1 = createOffer(getValidOffer());
 		Calendar sDate1 = offer1.getLimitReservationDate();
 		try {
 			List<ReturnedOffer> offerList = offerService.findOffers(null, true,
@@ -193,8 +194,8 @@ public class OfferServiceTest {
 	public void testFindReservationByUserId() throws InputValidationException,
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			ReservationTimeExpiredException, AlreadyReservatedException {
-		Offer offer = createOffer(getValidOffer());
-		Offer invalid = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
+		ReturnedOffer invalid = createOffer(getValidOffer());
 		long reservationUser = offerService.reserveOffer(offer.getOfferId(),
 				USER_ID, VALID_CREDIT_CARD_NUMBER);
 		long reservationInvalid = offerService.reserveOffer(
@@ -220,26 +221,27 @@ public class OfferServiceTest {
 	@Test
 	public void testAddOfferAndFindOffer() throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException {
+		ReturnedOffer addedOffer = null;
+		try {
+			Offer offer = getValidOffer();
 
-		Offer offer = getValidOffer();
-		Offer addedOffer = null;
+			addedOffer = offerService.addOffer(offer);
+			ReturnedOffer foundOffer = offerService.findOffer(addedOffer
+					.getOfferId());
+			addedOffer.setLikes(Long.valueOf(5));
+			assertTrue(addedOffer.equals(foundOffer));
 
-		addedOffer = offerService.addOffer(offer);
-		ReturnedOffer foundOffer = offerService.findOffer(addedOffer
-				.getOfferId());
-
-		assertTrue(addedOffer.equals(foundOffer));
-
-		// Clear Database
-		removeOffer(addedOffer.getOfferId());
-
+			// Clear Database
+		} finally {
+			removeOffer(addedOffer.getOfferId());
+		}
 	}
 
 	@Test
 	public void testAddInvalidOffer() {
 
 		Offer offer = getValidOffer();
-		Offer addedOffer = null;
+		ReturnedOffer addedOffer = null;
 		boolean exceptionCatched = false;
 
 		try {
@@ -402,7 +404,7 @@ public class OfferServiceTest {
 	public void testUpdateOffer() throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException {
 
-		Offer offer = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
 		try {
 
 			offer.setName("new name");
@@ -416,9 +418,8 @@ public class OfferServiceTest {
 			resDate.add(Calendar.DATE, 8);
 			offer.setLimitApplicationDate(apliDate);
 			offer.setLimitReservationDate(resDate);
-			offer.setValid(false);
-
-			offerService.updateOffer(offer);
+			offer.setLikes(Long.valueOf(5));
+			offerService.updateOffer(OfferToReturnedOffer.toOffer(offer));
 
 			ReturnedOffer updatedOffer = offerService.findOffer(offer
 					.getOfferId());
@@ -434,12 +435,11 @@ public class OfferServiceTest {
 	@Test(expected = InputValidationException.class)
 	public void testUpdateInvalidOffer() throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException {
-		Offer offer = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
 		try {
-			offer = OfferToReturnedOffer.toOffer(offerService.findOffer(offer
-					.getOfferId()));
+			offer = offerService.findOffer(offer.getOfferId());
 			offer.setName(null);
-			offerService.updateOffer(offer);
+			offerService.updateOffer(OfferToReturnedOffer.toOffer(offer));
 		} finally {
 			removeOffer(offer.getOfferId());
 		}
@@ -460,7 +460,7 @@ public class OfferServiceTest {
 			InputValidationException, AlreadyInvalidatedException,
 			ReservationTimeExpiredException, AlreadyReservatedException {
 		Offer offer = getValidOffer();
-		Offer addedOffer = null;
+		ReturnedOffer addedOffer = null;
 		boolean exceptionCatched = false;
 		addedOffer = createOffer(offer);
 		long reservation = offerService.reserveOffer(addedOffer.getOfferId(),
@@ -469,7 +469,8 @@ public class OfferServiceTest {
 			try {
 				addedOffer
 						.setDiscountedPrice(addedOffer.getDiscountedPrice() + 1);
-				offerService.updateOffer(addedOffer);
+				offerService.updateOffer(OfferToReturnedOffer
+						.toOffer(addedOffer));
 			} catch (NotModifiableOfferException e) {
 				// removeReservation(reservation);
 				exceptionCatched = true;
@@ -486,7 +487,7 @@ public class OfferServiceTest {
 			InputValidationException, AlreadyInvalidatedException,
 			ReservationTimeExpiredException, AlreadyReservatedException {
 		Offer offer = getValidOffer();
-		Offer addedOffer = null;
+		ReturnedOffer addedOffer = null;
 		boolean exceptionCatched = false;
 		addedOffer = createOffer(offer);
 		long reservation = offerService.reserveOffer(addedOffer.getOfferId(),
@@ -496,7 +497,8 @@ public class OfferServiceTest {
 				Calendar date = Calendar.getInstance();
 				date.add(Calendar.DATE, 11);
 				addedOffer.setLimitApplicationDate(date);
-				offerService.updateOffer(addedOffer);
+				offerService.updateOffer(OfferToReturnedOffer
+						.toOffer(addedOffer));
 			} catch (NotModifiableOfferException e) {
 				removeReservation(reservation);
 				exceptionCatched = true;
@@ -512,7 +514,7 @@ public class OfferServiceTest {
 			throws InputValidationException, InstanceNotFoundException,
 			AlreadyInvalidatedException, ReservationTimeExpiredException,
 			AlreadyReservatedException {
-		Offer offer = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
 		try {
 			offerService.reserveOffer(offer.getOfferId(), USER_ID,
 					INVALID_CREDIT_CARD_NUMBER);
@@ -539,7 +541,7 @@ public class OfferServiceTest {
 	public void testRemoveOffer() throws InstanceNotFoundException,
 			NotModifiableOfferException {
 
-		Offer offer = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
 		boolean exceptionCatched = false;
 		try {
 			offerService.removeOffer(offer.getOfferId());
@@ -565,7 +567,7 @@ public class OfferServiceTest {
 			InputValidationException, AlreadyInvalidatedException,
 			ReservationTimeExpiredException, AlreadyReservatedException {
 		Offer offer = getValidOffer();
-		Offer addedOffer = null;
+		ReturnedOffer addedOffer = null;
 		boolean exceptionCatched = false;
 		addedOffer = createOffer(offer);
 		long reservation = offerService.reserveOffer(addedOffer.getOfferId(),
@@ -589,7 +591,7 @@ public class OfferServiceTest {
 			ReservationTimeExpiredException, AlreadyReservatedException,
 			SQLException {
 		Offer offer = getValidOffer();
-		Offer addedOffer = null;
+		ReturnedOffer addedOffer = null;
 		long reservationId = 0;
 		DataSource dataSource = DataSourceLocator
 				.getDataSource(OFFER_DATA_SOURCE);
@@ -598,7 +600,8 @@ public class OfferServiceTest {
 			reservationId = offerService.reserveOffer(addedOffer.getOfferId(),
 					USER_ID, VALID_CREDIT_CARD_NUMBER);
 			offerService.offerInvalidation(addedOffer.getOfferId());
-			offer = OfferToReturnedOffer.toOffer(offerService.findOffer(addedOffer.getOfferId()));
+			offer = OfferToReturnedOffer.toOffer(offerService
+					.findOffer(addedOffer.getOfferId()));
 			assertTrue(!(offer.isValid()));
 			Reservation r = reservationDao.findByReservationId(connection,
 					reservationId);
@@ -614,10 +617,11 @@ public class OfferServiceTest {
 	public void testAlreadyInvalidatedOffer() throws InstanceNotFoundException,
 			AlreadyInvalidatedException {
 		Offer offer = getValidOffer();
-		Offer addedOffer = createOffer(offer);
+		ReturnedOffer addedOffer = createOffer(offer);
 		try {
 			offerService.offerInvalidation(addedOffer.getOfferId());
-			offer = OfferToReturnedOffer.toOffer((offerService.findOffer(addedOffer.getOfferId())));
+			offer = OfferToReturnedOffer.toOffer((offerService
+					.findOffer(addedOffer.getOfferId())));
 			offerService.offerInvalidation(addedOffer.getOfferId());
 		} finally {
 			removeOffer(addedOffer.getOfferId());
@@ -630,7 +634,7 @@ public class OfferServiceTest {
 			InputValidationException, ReservationTimeExpiredException,
 			AlreadyReservatedException {
 		Offer offer = getValidOffer();
-		Offer addedOffer = null;
+		ReturnedOffer addedOffer = null;
 		addedOffer = createOffer(offer);
 		long reservationId = offerService.reserveOffer(addedOffer.getOfferId(),
 				USER_ID, VALID_CREDIT_CARD_NUMBER);
@@ -650,7 +654,7 @@ public class OfferServiceTest {
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			NotClaimableException, ReservationTimeExpiredException,
 			AlreadyReservatedException {
-		Offer offer = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
 		long reservation = 0;
 		try {
 			reservation = offerService.reserveOffer(offer.getOfferId(),
@@ -668,7 +672,7 @@ public class OfferServiceTest {
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			NotClaimableException, ReservationTimeExpiredException,
 			AlreadyReservatedException {
-		Offer offer = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
 		long reservation = 0;
 		try {
 			reservation = offerService.reserveOffer(offer.getOfferId(),
@@ -685,7 +689,7 @@ public class OfferServiceTest {
 	public void testReserveOffer() throws InputValidationException,
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			ReservationTimeExpiredException, AlreadyReservatedException {
-		Offer offer = createOffer(getValidOffer());
+		ReturnedOffer offer = createOffer(getValidOffer());
 		long reservation = 0;
 		reservation = offerService.reserveOffer(offer.getOfferId(), USER_ID,
 				VALID_CREDIT_CARD_NUMBER);
@@ -701,7 +705,7 @@ public class OfferServiceTest {
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			NotClaimableException, ReservationTimeExpiredException,
 			InterruptedException, AlreadyReservatedException {
-		Offer offer = null;
+		ReturnedOffer offer = null;
 		long reservationId = 0;
 		try {
 
@@ -711,7 +715,7 @@ public class OfferServiceTest {
 			reservationId = offerService.reserveOffer(offer.getOfferId(),
 					USER_ID, VALID_CREDIT_CARD_NUMBER);
 			offer.setLimitApplicationDate(expired);
-			updateOffer(offer);
+			updateOffer(OfferToReturnedOffer.toOffer(offer));
 			offerService.claimOffer(reservationId, USER_ID);
 
 		} finally {
@@ -725,13 +729,13 @@ public class OfferServiceTest {
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			NotClaimableException, ReservationTimeExpiredException,
 			InterruptedException, AlreadyReservatedException {
-		Offer offer = null;
+		ReturnedOffer offer = null;
 		try {
 			offer = offerService.addOffer(getValidOffer());
 			Calendar expired = Calendar.getInstance();
 			expired.add(Calendar.DATE, -1);
 			offer.setLimitReservationDate(expired);
-			updateOffer(offer);
+			updateOffer(OfferToReturnedOffer.toOffer(offer));
 			offerService.reserveOffer(offer.getOfferId(), USER_ID,
 					VALID_CREDIT_CARD_NUMBER);
 
@@ -745,7 +749,7 @@ public class OfferServiceTest {
 			InstanceNotFoundException, AlreadyInvalidatedException,
 			NotClaimableException, ReservationTimeExpiredException,
 			InterruptedException, AlreadyReservatedException {
-		Offer offer = null;
+		ReturnedOffer offer = null;
 		long reservationId = -1;
 		try {
 			offer = offerService.addOffer(getValidOffer());
