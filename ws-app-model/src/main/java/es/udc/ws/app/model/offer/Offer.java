@@ -1,8 +1,22 @@
 package es.udc.ws.app.model.offer;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Offer {
+	
+	@Override
+	public String toString() {
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
+		return "[name=" + name + ", description=" + description
+				+ ", realPrice=" + realPrice + ", discountedPrice="
+				+ discountedPrice + ", limitApplicationDate="
+				+ format.format(limitApplicationDate.getTime())
+				+ ", limitReservationDate="
+				+ format.format(limitReservationDate.getTime()) +"]";
+	}
+
 	private String name;
 	private String description;
 	private Calendar limitReservationDate;
