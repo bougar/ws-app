@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for soapNotModifiableOfferExceptionInfo complex type.
+ * <p>Clase Java para soapNotModifiableOfferExceptionInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
  * &lt;complexType name="soapNotModifiableOfferExceptionInfo">
@@ -34,7 +34,7 @@ public class SoapNotModifiableOfferExceptionInfo {
     protected long offerId;
 
     /**
-     * Gets the value of the offerId property.
+     * Obtiene el valor de la propiedad offerId.
      * 
      */
     public long getOfferId() {
@@ -42,7 +42,7 @@ public class SoapNotModifiableOfferExceptionInfo {
     }
 
     /**
-     * Sets the value of the offerId property.
+     * Define el valor de la propiedad offerId.
      * 
      */
     public void setOfferId(long value) {

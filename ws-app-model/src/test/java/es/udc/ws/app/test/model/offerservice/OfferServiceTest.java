@@ -20,6 +20,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import es.udc.ws.app.model.offer.Offer;
+import es.udc.ws.app.model.offer.OfferToReturnedOffer;
+import es.udc.ws.app.model.offer.ReturnedOffer;
 import es.udc.ws.app.model.offer.SqlOfferDao;
 import es.udc.ws.app.model.offer.SqlOfferDaoFactory;
 import es.udc.ws.app.model.offerservice.OfferService;
@@ -133,14 +135,16 @@ public class OfferServiceTest {
 		Offer offer2 = createOffer(getValidOffer());
 		Offer offer3 = null;
 		try {
-		List<Offer> offerList = offerService.findOffers(null, true, null);
-		assertEquals(offerList.size(), 2);
-		offer3 = createOffer(getValidOffer());
-		offer3.setDescription("test");
-		offerService.updateOffer(offer3);
-		offerList = offerService.findOffers("Offer description", true, null);
-		assertEquals(offerList.size(), 2);
-		}finally{
+			List<ReturnedOffer> offerList = offerService.findOffers(null, true,
+					null);
+			assertEquals(offerList.size(), 2);
+			offer3 = createOffer(getValidOffer());
+			offer3.setDescription("test");
+			offerService.updateOffer(offer3);
+			offerList = offerService
+					.findOffers("Offer description", true, null);
+			assertEquals(offerList.size(), 2);
+		} finally {
 			removeOffer(offer1.getOfferId());
 			removeOffer(offer2.getOfferId());
 			if (offer3 != null)
@@ -153,14 +157,15 @@ public class OfferServiceTest {
 			NotModifiableOfferException, AlreadyInvalidatedException {
 		Offer offer1 = createOffer(getValidOffer());
 		Offer offer2 = createOffer(getValidOffer());
-		try{
-		
-		offerService.offerInvalidation(offer2.getOfferId());
-		List<Offer> offerList = offerService.findOffers(null, true, null);
-		assertEquals(offerList.size(), 2);
-		offerList = offerService.findOffers(null, false, null);
-		assertEquals(offerList.size(), 1);
-		}finally{
+		try {
+
+			offerService.offerInvalidation(offer2.getOfferId());
+			List<ReturnedOffer> offerList = offerService.findOffers(null, true,
+					null);
+			assertEquals(offerList.size(), 2);
+			offerList = offerService.findOffers(null, false, null);
+			assertEquals(offerList.size(), 1);
+		} finally {
 			removeOffer(offer1.getOfferId());
 			removeOffer(offer2.getOfferId());
 		}
@@ -173,7 +178,8 @@ public class OfferServiceTest {
 		Offer offer1 = createOffer(getValidOffer());
 		Calendar sDate1 = offer1.getLimitReservationDate();
 		try {
-			List<Offer> offerList = offerService.findOffers(null, true, sDate1);
+			List<ReturnedOffer> offerList = offerService.findOffers(null, true,
+					sDate1);
 			assertEquals(offerList.size(), 1);
 			sDate1.add(Calendar.DATE, -1);
 			offerList = offerService.findOffers(null, true, sDate1);
@@ -219,7 +225,8 @@ public class OfferServiceTest {
 		Offer addedOffer = null;
 
 		addedOffer = offerService.addOffer(offer);
-		Offer foundOffer = offerService.findOffer(addedOffer.getOfferId());
+		ReturnedOffer foundOffer = offerService.findOffer(addedOffer
+				.getOfferId());
 
 		assertTrue(addedOffer.equals(foundOffer));
 
@@ -413,8 +420,9 @@ public class OfferServiceTest {
 
 			offerService.updateOffer(offer);
 
-			Offer updatedOffer = offerService.findOffer(offer.getOfferId());
-			assertEquals(offer, updatedOffer);
+			ReturnedOffer updatedOffer = offerService.findOffer(offer
+					.getOfferId());
+			assertTrue(offer.equals(updatedOffer));
 
 		} finally {
 			// Clear Database
@@ -428,7 +436,8 @@ public class OfferServiceTest {
 			InstanceNotFoundException, NotModifiableOfferException {
 		Offer offer = createOffer(getValidOffer());
 		try {
-			offer = offerService.findOffer(offer.getOfferId());
+			offer = OfferToReturnedOffer.toOffer(offerService.findOffer(offer
+					.getOfferId()));
 			offer.setName(null);
 			offerService.updateOffer(offer);
 		} finally {
@@ -584,14 +593,15 @@ public class OfferServiceTest {
 		long reservationId = 0;
 		DataSource dataSource = DataSourceLocator
 				.getDataSource(OFFER_DATA_SOURCE);
-		try (Connection connection = dataSource.getConnection()){
+		try (Connection connection = dataSource.getConnection()) {
 			addedOffer = createOffer(offer);
 			reservationId = offerService.reserveOffer(addedOffer.getOfferId(),
 					USER_ID, VALID_CREDIT_CARD_NUMBER);
 			offerService.offerInvalidation(addedOffer.getOfferId());
-			offer = offerService.findOffer(addedOffer.getOfferId());
+			offer = OfferToReturnedOffer.toOffer(offerService.findOffer(addedOffer.getOfferId()));
 			assertTrue(!(offer.isValid()));
-			Reservation r = reservationDao.findByReservationId(connection, reservationId);
+			Reservation r = reservationDao.findByReservationId(connection,
+					reservationId);
 			assertEquals(r.getState(), "INVALID");
 		} finally {
 			removeReservation(reservationId);
@@ -607,7 +617,7 @@ public class OfferServiceTest {
 		Offer addedOffer = createOffer(offer);
 		try {
 			offerService.offerInvalidation(addedOffer.getOfferId());
-			offer = offerService.findOffer(addedOffer.getOfferId());
+			offer = OfferToReturnedOffer.toOffer((offerService.findOffer(addedOffer.getOfferId())));
 			offerService.offerInvalidation(addedOffer.getOfferId());
 		} finally {
 			removeOffer(addedOffer.getOfferId());
@@ -709,7 +719,7 @@ public class OfferServiceTest {
 			removeOffer(offer.getOfferId());
 		}
 	}
-	
+
 	@Test(expected = ReservationTimeExpiredException.class)
 	public void testReservationDateExpired() throws InputValidationException,
 			InstanceNotFoundException, AlreadyInvalidatedException,
@@ -729,6 +739,7 @@ public class OfferServiceTest {
 			removeOffer(offer.getOfferId());
 		}
 	}
+
 	@Test(expected = AlreadyReservatedException.class)
 	public void testAlreadyReservated() throws InputValidationException,
 			InstanceNotFoundException, AlreadyInvalidatedException,
@@ -738,8 +749,8 @@ public class OfferServiceTest {
 		long reservationId = -1;
 		try {
 			offer = offerService.addOffer(getValidOffer());
-			reservationId = offerService.reserveOffer(offer.getOfferId(), USER_ID,
-					VALID_CREDIT_CARD_NUMBER);
+			reservationId = offerService.reserveOffer(offer.getOfferId(),
+					USER_ID, VALID_CREDIT_CARD_NUMBER);
 			offerService.reserveOffer(offer.getOfferId(), USER_ID,
 					VALID_CREDIT_CARD_NUMBER);
 

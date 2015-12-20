@@ -1,6 +1,7 @@
 package es.udc.ws.app.model.offerservice;
 
 import es.udc.ws.app.model.offer.Offer;
+import es.udc.ws.app.model.offer.ReturnedOffer;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.util.exceptions.InputValidationException;
@@ -15,7 +16,7 @@ import java.util.Calendar;
 
 public interface OfferService {
 
-	public Offer addOffer(Offer offer) throws InputValidationException;
+	public ReturnedOffer addOffer(Offer offer) throws InputValidationException;
 
 	public void updateOffer(Offer offer) throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException;
@@ -23,9 +24,9 @@ public interface OfferService {
 	public void removeOffer(long offerId) throws InstanceNotFoundException,
 			NotModifiableOfferException;
 
-	public Offer findOffer(long offerId) throws InstanceNotFoundException;
+	public ReturnedOffer findOffer(long offerId) throws InstanceNotFoundException;
 
-	public List<Offer> findOffers(String keywords, Boolean state, Calendar date);
+	public List<ReturnedOffer> findOffers(String keywords, Boolean state, Calendar date);
 
 	public long reserveOffer(long offerId, String email, String creditCardNumber)
 			throws InputValidationException, InstanceNotFoundException,

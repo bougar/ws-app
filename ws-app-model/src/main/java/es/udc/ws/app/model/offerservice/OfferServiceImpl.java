@@ -19,9 +19,10 @@ import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 import es.udc.ws.app.model.facebook.FacebookException;
 import es.udc.ws.app.model.facebook.FacebookService;
 import es.udc.ws.app.model.facebook.FacebookServiceFactory;
-import es.udc.ws.app.model.facebook.FacebookServiceImpl;
 import es.udc.ws.app.model.facebook.HttpFacebookException;
 import es.udc.ws.app.model.offer.Offer;
+import es.udc.ws.app.model.offer.OfferToReturnedOffer;
+import es.udc.ws.app.model.offer.ReturnedOffer;
 import es.udc.ws.app.model.offer.SqlOfferDao;
 import es.udc.ws.app.model.offer.SqlOfferDaoFactory;
 import es.udc.ws.app.model.util.ModelConstants;
@@ -65,7 +66,7 @@ public class OfferServiceImpl implements OfferService {
 	}
 
 	@Override
-	public Offer addOffer(Offer offer) throws InputValidationException {
+	public ReturnedOffer addOffer(Offer offer) throws InputValidationException {
 		validateOffer(offer);
 
 		try (Connection connection = dataSource.getConnection()) {
@@ -76,24 +77,28 @@ public class OfferServiceImpl implements OfferService {
 				connection
 						.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
-
+				offer.setValid(true);
+				ReturnedOffer returnedOffer = OfferToReturnedOffer.toReturnedOffer(offer);
+				returnedOffer.setLikes(Long.valueOf(0));
 				offer.setFaceBookId(facebook.addOffer(offer));
 
 				/* Do work. */
 				Offer createdOffer = offerDao.create(connection, offer);
+				returnedOffer.setOfferId(createdOffer.getOfferId());
+				
 
 				/* Commit. */
 
 				connection.commit();
 
-				return createdOffer;
+				return returnedOffer;
 			} catch (SQLException e) {
 				connection.rollback();
 				throw new RuntimeException(e);
 			} catch (RuntimeException | Error e) {
 				connection.rollback();
 				throw e;
-			} catch (Exception e) {
+			} catch (FacebookException | HttpFacebookException e) {
 				throw new RuntimeException("Facebook adding error");
 			}
 
@@ -120,7 +125,7 @@ public class OfferServiceImpl implements OfferService {
 
 				/* Get previous values to validate modifications */
 				Offer baseOffer = offerDao.find(connection, offer.getOfferId());
-
+				offer.setValid(baseOffer.isValid());
 				/* Checks if any user has already reserved the offer */
 
 				/*
@@ -164,7 +169,7 @@ public class OfferServiceImpl implements OfferService {
 			} catch (RuntimeException | Error e) {
 				connection.rollback();
 				throw e;
-			} catch (Exception e) {
+			} catch (FacebookException | HttpFacebookException e) {
 				throw new RuntimeException("Facebook adding error");
 			}
 
@@ -195,7 +200,7 @@ public class OfferServiceImpl implements OfferService {
 					throw new NotModifiableOfferException(offerId);
 
 				/* Do work. */
-				Offer offer = findOffer(offerId);
+				Offer offer = offerDao.find(connection, offerId);
 				facebook.removeOffer(offer.getFaceBookId());
 				offerDao.remove(connection, offerId);
 
@@ -214,7 +219,7 @@ public class OfferServiceImpl implements OfferService {
 			} catch (RuntimeException | Error e) {
 				connection.rollback();
 				throw e;
-			} catch (Exception e) {
+			} catch (FacebookException | HttpFacebookException e) {
 				throw new RuntimeException("Facebook adding error");
 			}
 
@@ -225,32 +230,41 @@ public class OfferServiceImpl implements OfferService {
 	}
 
 	@Override
-	public Offer findOffer(long offerId) throws InstanceNotFoundException {
+	public ReturnedOffer findOffer(long offerId)
+			throws InstanceNotFoundException {
 
 		try (Connection connection = dataSource.getConnection()) {
 			Offer offer = offerDao.find(connection, offerId);
-			offer.setLikes(facebook.getOfferLikes(offer.getFaceBookId()));
-			return offer;
+			ReturnedOffer returnedeOffer = OfferToReturnedOffer
+					.toReturnedOffer(offer);
+			returnedeOffer.setLikes(facebook.getOfferLikes(offer
+					.getFaceBookId()));
+			return returnedeOffer;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} catch (Exception e) {
+		} catch (FacebookException | HttpFacebookException e) {
 			throw new RuntimeException("Facebook adding error");
 		}
 
 	}
 
 	@Override
-	public List<Offer> findOffers(String keywords, Boolean state, Calendar date) {
+	public List<ReturnedOffer> findOffers(String keywords, Boolean state,
+			Calendar date) {
 		try (Connection connection = dataSource.getConnection()) {
 			List<Offer> offers = offerDao.advancedFilter(connection, keywords,
 					state, date);
-			for (Offer offer : offers) {
-				offer.setLikes(facebook.getOfferLikes(offer.getFaceBookId()));
+			List<ReturnedOffer> returnedOffers = OfferToReturnedOffer
+					.toReturnedOfferList(offers);
+			int i = 0;
+			for (ReturnedOffer returnedOffer : returnedOffers) {
+				returnedOffer.setLikes(facebook.getOfferLikes(offers.get(i)
+						.getFaceBookId()));
 			}
-			return offers;
+			return returnedOffers;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} catch (Exception e) {
+		} catch (FacebookException | HttpFacebookException e) {
 			throw new RuntimeException("Facebook adding error");
 		}
 	}
@@ -347,7 +361,7 @@ public class OfferServiceImpl implements OfferService {
 				if (!reservation.getEmail().equals(email))
 					throw new NotClaimableException(email);
 
-				Offer aux = findOffer(reservation.getOfferId());
+				ReturnedOffer aux = findOffer(reservation.getOfferId());
 
 				if (aux.getLimitApplicationDate().compareTo(
 						Calendar.getInstance()) < 0)

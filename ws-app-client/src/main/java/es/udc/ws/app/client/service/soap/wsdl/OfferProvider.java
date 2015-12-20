@@ -49,9 +49,9 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
-     * @throws SoapInstanceNotFoundException
-     * @throws SoapInputValidationException
      * @throws SoapNotModifiableOfferException
+     * @throws SoapInputValidationException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @RequestWrapper(localName = "updateOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.UpdateOffer")
@@ -70,8 +70,8 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
-     * @throws SoapInstanceNotFoundException
      * @throws SoapNotModifiableOfferException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @RequestWrapper(localName = "removeOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.RemoveOffer")
@@ -113,11 +113,11 @@ public interface OfferProvider {
      * @param arg0
      * @return
      *     returns long
-     * @throws SoapInstanceNotFoundException
      * @throws SoapAlreadyInvalidatedException
-     * @throws SoapReservationTimeExpiredException
      * @throws SoapAlreadyReservedException
+     * @throws SoapReservationTimeExpiredException
      * @throws SoapInputValidationException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -144,8 +144,8 @@ public interface OfferProvider {
      * 
      * @param arg1
      * @param arg0
-     * @throws SoapInstanceNotFoundException
      * @throws SoapNotClaimableException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @RequestWrapper(localName = "claimOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.ClaimOffer")
@@ -198,8 +198,8 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
-     * @throws SoapInstanceNotFoundException
      * @throws SoapAlreadyInvalidatedException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @RequestWrapper(localName = "offerInvalidation", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.OfferInvalidation")

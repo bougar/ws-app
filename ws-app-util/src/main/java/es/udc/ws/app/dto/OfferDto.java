@@ -11,62 +11,35 @@ public class OfferDto {
 	private float discountedPrice;
 	private long offerId;
 	private boolean isValid;
-	private String faceBookId;
 	private Long likes;
-	
 
-	public OfferDto(long offerId,String name, String description,
+	public OfferDto(long offerId, String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
-			float realPrice, float discountedPrice,
-			boolean isValid, String faceBookId, Long likes) {
+			float realPrice, float discountedPrice, boolean isValid, Long likes) {
 		super();
 		this.offerId = offerId;
 		this.name = name;
 		this.description = description;
 		this.limitReservationDate = limitReservationDate;
 		if (limitReservationDate != null)
-				this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitReservationDate.set(Calendar.MILLISECOND, 0);
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND, 0);
 		this.realPrice = realPrice;
 		this.discountedPrice = discountedPrice;
 		this.isValid = isValid;
-		this.offerId=offerId;
-		this.faceBookId=faceBookId;
+		this.offerId = offerId;
 		this.likes = likes;
 	}
-
-
-
-
-	public String getFaceBookId() {
-		return faceBookId;
-	}
-
-
-
-
-	public void setFaceBookId(String faceBookId) {
-		this.faceBookId = faceBookId;
-	}
-
-
-
 
 	public Long getLikes() {
 		return likes;
 	}
 
-
-
-
 	public void setLikes(Long likes) {
 		this.likes = likes;
 	}
-
-
-
 
 	public String getName() {
 		return name;
@@ -91,7 +64,7 @@ public class OfferDto {
 	public void setLimitReservationDate(Calendar limitReservationDate) {
 		this.limitReservationDate = limitReservationDate;
 		if (limitReservationDate != null)
-			this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitReservationDate.set(Calendar.MILLISECOND, 0);
 	}
 
 	public Calendar getLimitApplicationDate() {
@@ -101,7 +74,7 @@ public class OfferDto {
 	public void setLimitApplicationDate(Calendar limitApplicationDate) {
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND, 0);
 	}
 
 	public float getRealPrice() {
@@ -119,7 +92,7 @@ public class OfferDto {
 	public void setDiscountedPrice(float discountedPrice) {
 		this.discountedPrice = discountedPrice;
 	}
-	
+
 	public long getOfferId() {
 		return offerId;
 	}

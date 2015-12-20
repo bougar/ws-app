@@ -2,7 +2,7 @@ package es.udc.ws.app.model.offer;
 
 import java.util.Calendar;
 
-public class Offer {
+public class ReturnedOffer {
 	private String name;
 	private String description;
 	private Calendar limitReservationDate;
@@ -12,21 +12,22 @@ public class Offer {
 	private float fee;
 	private long offerId;
 	private boolean isValid;
-	private String faceBookId;
+	private Long likes = null;
 
-	public String getFaceBookId() {
-		return faceBookId;
+
+	public Long getLikes() {
+		return likes;
 	}
 
-	public void setFaceBookId(String faceBookId) {
-		this.faceBookId = faceBookId;
+	public void setLikes(Long likes) {
+		this.likes = likes;
 	}
 
-	public Offer() {
+	public ReturnedOffer() {
 
 	}
 
-	public Offer(String name, String description,
+	public ReturnedOffer(String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
 			float realPrice, float discountedPrice, float fee, boolean isValid) {
 		super();
@@ -44,14 +45,12 @@ public class Offer {
 		this.isValid = isValid;
 	}
 
-	public Offer(long offerId, String name, String description,
+	public ReturnedOffer(long offerId, String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
-			float realPrice, float discountedPrice, float fee, boolean isValid,
-			String faceBookId) {
+			float realPrice, float discountedPrice, float fee, boolean isValid) {
 		this(name, description, limitReservationDate, limitApplicationDate,
 				realPrice, discountedPrice, fee, isValid);
 		this.offerId = offerId;
-		this.faceBookId = faceBookId;
 	}
 
 	public String getName() {
@@ -137,10 +136,9 @@ public class Offer {
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + Float.floatToIntBits(discountedPrice);
-		result = prime * result
-				+ ((faceBookId == null) ? 0 : faceBookId.hashCode());
 		result = prime * result + Float.floatToIntBits(fee);
 		result = prime * result + (isValid ? 1231 : 1237);
+		result = prime * result + ((likes == null) ? 0 : likes.hashCode());
 		result = prime
 				* result
 				+ ((limitApplicationDate == null) ? 0 : limitApplicationDate
@@ -163,7 +161,7 @@ public class Offer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Offer other = (Offer) obj;
+		ReturnedOffer other = (ReturnedOffer) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -172,14 +170,14 @@ public class Offer {
 		if (Float.floatToIntBits(discountedPrice) != Float
 				.floatToIntBits(other.discountedPrice))
 			return false;
-		if (faceBookId == null) {
-			if (other.faceBookId != null)
-				return false;
-		} else if (!faceBookId.equals(other.faceBookId))
-			return false;
 		if (Float.floatToIntBits(fee) != Float.floatToIntBits(other.fee))
 			return false;
 		if (isValid != other.isValid)
+			return false;
+		if (likes == null) {
+			if (other.likes != null)
+				return false;
+		} else if (!likes.equals(other.likes))
 			return false;
 		if (limitApplicationDate == null) {
 			if (other.limitApplicationDate != null)
@@ -203,46 +201,7 @@ public class Offer {
 			return false;
 		return true;
 	}
-
-	public boolean equals(ReturnedOffer returnedOffer) {
-		if (returnedOffer == null)
-			return false;
-		if (description == null) {
-			if (returnedOffer.getDescription() != null)
-				return false;
-		} else if (!description.equals(returnedOffer.getDescription()))
-			return false;
-		if (Float.floatToIntBits(discountedPrice) != Float
-				.floatToIntBits(returnedOffer.getDiscountedPrice()))
-			return false;
-		if (Float.floatToIntBits(fee) != Float.floatToIntBits(returnedOffer
-				.getFee()))
-			return false;
-		if (isValid != returnedOffer.isValid())
-			return false;
-		if (limitApplicationDate == null) {
-			if (returnedOffer.getLimitApplicationDate() != null)
-				return false;
-		} else if (!limitApplicationDate.equals(returnedOffer
-				.getLimitApplicationDate()))
-			return false;
-		if (limitReservationDate == null) {
-			if (returnedOffer.getLimitReservationDate() != null)
-				return false;
-		} else if (!limitReservationDate.equals(returnedOffer
-				.getLimitReservationDate()))
-			return false;
-		if (name == null) {
-			if (returnedOffer.getName() != null)
-				return false;
-		} else if (!name.equals(returnedOffer.getName()))
-			return false;
-		if (offerId != returnedOffer.getOfferId())
-			return false;
-		if (Float.floatToIntBits(realPrice) != Float
-				.floatToIntBits(returnedOffer.getRealPrice()))
-			return false;
-		return true;
-	}
+	
+	
 
 }

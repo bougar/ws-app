@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for soapReservationTimeExpiredExceptionInfo complex type.
+ * <p>Clase Java para soapReservationTimeExpiredExceptionInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
  * &lt;complexType name="soapReservationTimeExpiredExceptionInfo">
@@ -40,7 +40,7 @@ public class SoapReservationTimeExpiredExceptionInfo {
     protected long offerId;
 
     /**
-     * Gets the value of the limitReservationDate property.
+     * Obtiene el valor de la propiedad limitReservationDate.
      * 
      * @return
      *     possible object is
@@ -52,7 +52,7 @@ public class SoapReservationTimeExpiredExceptionInfo {
     }
 
     /**
-     * Sets the value of the limitReservationDate property.
+     * Define el valor de la propiedad limitReservationDate.
      * 
      * @param value
      *     allowed object is
@@ -64,7 +64,7 @@ public class SoapReservationTimeExpiredExceptionInfo {
     }
 
     /**
-     * Gets the value of the offerId property.
+     * Obtiene el valor de la propiedad offerId.
      * 
      */
     public long getOfferId() {
@@ -72,7 +72,7 @@ public class SoapReservationTimeExpiredExceptionInfo {
     }
 
     /**
-     * Sets the value of the offerId property.
+     * Define el valor de la propiedad offerId.
      * 
      */
     public void setOfferId(long value) {
