@@ -1,8 +1,11 @@
 package es.udc.ws.app.xml;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import es.udc.ws.app.dto.OfferDto;
@@ -10,6 +13,7 @@ import es.udc.ws.app.dto.OfferDto;
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 
@@ -23,8 +27,8 @@ public class XmlOfferDtoConversor {
 
 		return new Document(offerElement);
 	}
-	
-	//Porque tira IOException?
+
+	// Porque tira IOException?
 	public static Document toXml(List<OfferDto> offers) throws IOException {
 		Element elements = new Element("offers", XML_NS);
 		for (OfferDto o : offers) {
@@ -32,6 +36,54 @@ public class XmlOfferDtoConversor {
 			elements.addContent(offerElement);
 		}
 		return new Document(elements);
+
+	}
+
+	public static OfferDto toOffer(InputStream input) {
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document document = builder.build(input);
+			Element rootElement = document.getRootElement();
+			return null;
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static OfferDto toOffer(Element e) throws ParsingException {
+		if (!"offer".equals(e.getName()))
+			throw new ParsingException("Unrecognized element '" + e.getName()
+					+ "' ('offermovie' expected)");
+		try {
+		Long offerId = null;
+		Element identifier = e.getChild("offerId", XML_NS);
+
+		if (identifier != null)
+			offerId = Long.valueOf(identifier.getTextTrim());
+		String name = e.getChildTextNormalize("name", XML_NS);
+		String description = e.getChildTextNormalize("description", XML_NS);
+		Calendar limitReservationDate = JDOMElementToCalendar(e,
+				"limitReservationDate");
+		Calendar limitApplicationDate = JDOMElementToCalendar(e,
+				"limitApplicationDate");
+		float realPrice = Float
+				.valueOf(e.getChildTextTrim("realPrice", XML_NS));
+		float discountedPrice = Float.valueOf(e.getChildTextTrim(
+				"discountedPrice", XML_NS));
+		long likes = Long.valueOf(e.getChildTextTrim("likes", XML_NS));
+		boolean isValid = Boolean.valueOf(e.getChildTextNormalize("isValid",
+				XML_NS));
+		return new OfferDto(offerId, name, description, limitReservationDate,
+				limitReservationDate, realPrice, discountedPrice, isValid,
+				likes);
+		} catch (ParseException ex){
+			throw ParsingException("Error Parsing dates in from xml to offerDto.");
+		}
 
 	}
 
@@ -71,6 +123,10 @@ public class XmlOfferDtoConversor {
 		offerId.setText(Long.toString(offer.getOfferId()));
 		offerElement.addContent(offerId);
 
+		Element likes = new Element("likes", XML_NS);
+		likes.setText(offer.getLikes().toString());
+		offerElement.addContent(likes);
+
 		Element isValid = new Element("isValid", XML_NS);
 		isValid.setText(Boolean.toString(offer.isValid()));
 
@@ -86,5 +142,14 @@ public class XmlOfferDtoConversor {
 		element.setText(formatter.format(cal.getTime()));
 		return element;
 	}
+
+	private static Calendar JDOMElementToCalendar(Element e, String name)
+			throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(formatter.parse(e.getChildTextNormalize(name, XML_NS)));
+		return cal;
+	};
 
 }
