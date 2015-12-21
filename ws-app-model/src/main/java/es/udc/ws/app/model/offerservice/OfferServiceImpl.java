@@ -99,7 +99,7 @@ public class OfferServiceImpl implements OfferService {
 				connection.rollback();
 				throw e;
 			} catch (FacebookException | HttpFacebookException e) {
-				throw new RuntimeException("Facebook adding error");
+				throw new RuntimeException(e.getMessage());
 			}
 
 		} catch (SQLException e) {
@@ -170,7 +170,7 @@ public class OfferServiceImpl implements OfferService {
 				connection.rollback();
 				throw e;
 			} catch (FacebookException | HttpFacebookException e) {
-				throw new RuntimeException("Facebook updating error");
+				throw new RuntimeException(e.getMessage());
 			}
 
 		} catch (SQLException e) {
@@ -220,7 +220,7 @@ public class OfferServiceImpl implements OfferService {
 				connection.rollback();
 				throw e;
 			} catch (FacebookException | HttpFacebookException e) {
-				throw new RuntimeException("Facebook adding error");
+				throw new RuntimeException(e.getMessage());
 			}
 
 		} catch (SQLException e) {
@@ -243,7 +243,7 @@ public class OfferServiceImpl implements OfferService {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} catch (FacebookException | HttpFacebookException e) {
-			throw new RuntimeException("Facebook adding error");
+			throw new RuntimeException(e.getMessage());
 		}
 
 	}
@@ -260,12 +260,13 @@ public class OfferServiceImpl implements OfferService {
 			for (ReturnedOffer returnedOffer : returnedOffers) {
 				returnedOffer.setLikes(facebook.getOfferLikes(offers.get(i)
 						.getFaceBookId()));
+				i++;
 			}
 			return returnedOffers;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} catch (FacebookException | HttpFacebookException e) {
-			throw new RuntimeException("Facebook adding error");
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

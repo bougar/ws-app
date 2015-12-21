@@ -14,29 +14,25 @@ public class OfferDto {
 	private long offerId;
 	private boolean isValid;
 	private Long likes;
-	
 
-	public OfferDto(long offerId,String name, String description,
+	public OfferDto(long offerId, String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
-			float realPrice, float discountedPrice,
-			boolean isValid) {
+			float realPrice, float discountedPrice, boolean isValid, Long likes) {
 		super();
 		this.offerId = offerId;
 		this.name = name;
 		this.description = description;
 		this.limitReservationDate = limitReservationDate;
 		if (limitReservationDate != null)
-				this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitReservationDate.set(Calendar.MILLISECOND, 0);
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND, 0);
 		this.realPrice = realPrice;
 		this.discountedPrice = discountedPrice;
 		this.isValid = isValid;
+		this.likes = likes;
 	}
-
-
-
 
 	public String getName() {
 		return name;
@@ -61,7 +57,7 @@ public class OfferDto {
 	public void setLimitReservationDate(Calendar limitReservationDate) {
 		this.limitReservationDate = limitReservationDate;
 		if (limitReservationDate != null)
-			this.limitReservationDate.set(Calendar.MILLISECOND,0);
+			this.limitReservationDate.set(Calendar.MILLISECOND, 0);
 	}
 
 	public Calendar getLimitApplicationDate() {
@@ -71,7 +67,7 @@ public class OfferDto {
 	public void setLimitApplicationDate(Calendar limitApplicationDate) {
 		this.limitApplicationDate = limitApplicationDate;
 		if (limitApplicationDate != null)
-			this.limitApplicationDate.set(Calendar.MILLISECOND,0);
+			this.limitApplicationDate.set(Calendar.MILLISECOND, 0);
 	}
 
 	public float getRealPrice() {
@@ -89,7 +85,7 @@ public class OfferDto {
 	public void setDiscountedPrice(float discountedPrice) {
 		this.discountedPrice = discountedPrice;
 	}
-	
+
 	public long getOfferId() {
 		return offerId;
 	}
@@ -106,9 +102,6 @@ public class OfferDto {
 		this.isValid = isValid;
 	}
 
-
-
-
 	@Override
 	public String toString() {
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
@@ -118,18 +111,12 @@ public class OfferDto {
 				+ format.format(limitApplicationDate.getTime())
 				+ ", limitReservationDate="
 				+ format.format(limitReservationDate.getTime()) + ", offerId="
-				+ offerId +", likes=" + likes + ", isValid=" + isValid + "]";
+				+ offerId + ", likes=" + likes + ", isValid=" + isValid + "]";
 	}
-
-
-
 
 	public Long getLikes() {
 		return likes;
 	}
-
-
-
 
 	public void setLikes(Long likes) {
 		this.likes = likes;

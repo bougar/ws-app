@@ -1,4 +1,5 @@
 package es.udc.ws.app.exceptions;
+
 /*Facebook request work but it fail.*/
 @SuppressWarnings("serial")
 public class HttpFacebookException extends Exception {
@@ -25,6 +26,11 @@ public class HttpFacebookException extends Exception {
 
 	public void setFacebookError(String facebookError) {
 		this.facebookError = facebookError;
+	}
+
+	public String getMessage() {
+		return "InternalError: facebook request errorCode:" + errorCode
+				+ " with message " + facebookError;
 	}
 
 }
