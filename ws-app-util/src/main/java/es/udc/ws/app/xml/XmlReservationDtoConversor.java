@@ -128,28 +128,28 @@ public class XmlReservationDtoConversor {
         int day = requestDateElement.getAttribute("day").getIntValue();
         int month = requestDateElement.getAttribute("month").getIntValue();
         int year = requestDateElement.getAttribute("year").getIntValue();
-        Calendar releaseDate = Calendar.getInstance();
+        Calendar requestDate = Calendar.getInstance();
 
-        releaseDate.set(Calendar.DAY_OF_MONTH, day);
-        releaseDate.set(Calendar.MONTH, Calendar.JANUARY + month - 1);
-        releaseDate.set(Calendar.YEAR, year);
+        requestDate.set(Calendar.DAY_OF_MONTH, day);
+        requestDate.set(Calendar.MONTH, month);
+        requestDate.set(Calendar.YEAR, year);
 
-        return releaseDate;
+        return requestDate;
 
     }
 
     private static Element getRequestDate(Calendar requestDate) {
 
-        Element releaseDateElement = new Element("requestDate", XML_NS);
+        Element requestDateElement = new Element("requestDate", XML_NS);
         int day = requestDate.get(Calendar.DAY_OF_MONTH);
         int month = requestDate.get(Calendar.MONTH) - Calendar.JANUARY + 1;
         int year = requestDate.get(Calendar.YEAR);
 
-        releaseDateElement.setAttribute("day", Integer.toString(day));
-        releaseDateElement.setAttribute("month", Integer.toString(month));
-        releaseDateElement.setAttribute("year", Integer.toString(year));
+        requestDateElement.setAttribute("day", Integer.toString(day));
+        requestDateElement.setAttribute("month", Integer.toString(month));
+        requestDateElement.setAttribute("year", Integer.toString(year));
 
-        return releaseDateElement;
+        return requestDateElement;
 
     }
 
