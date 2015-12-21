@@ -131,7 +131,7 @@ public class XmlReservationDtoConversor {
         Calendar requestDate = Calendar.getInstance();
 
         requestDate.set(Calendar.DAY_OF_MONTH, day);
-        requestDate.set(Calendar.MONTH, month);
+        requestDate.set(Calendar.MONTH, Calendar.JANUARY + month - 1);
         requestDate.set(Calendar.YEAR, year);
 
         return requestDate;
