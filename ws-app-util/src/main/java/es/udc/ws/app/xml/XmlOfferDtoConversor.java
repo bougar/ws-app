@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import es.udc.ws.app.dto.OfferDto;
+import es.udc.ws.app.xml.ParsingException;
 
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
@@ -34,9 +36,34 @@ public class XmlOfferDtoConversor {
 		for (OfferDto o : offers) {
 			Element offerElement = toJDOMElement(o);
 			elements.addContent(offerElement);
+
 		}
 		return new Document(elements);
 
+	}
+
+	public static List<OfferDto> toOffers(InputStream input) {
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document document = builder.build(input);
+			Element rootElement = document.getRootElement();
+			if (!"offers".equals(rootElement.getName())) {
+				throw new ParsingException("Unrecognized element '"
+						+ rootElement.getName() + "' ('offers' expected)");
+			}
+			@SuppressWarnings("unchecked")
+			List<Element> children = rootElement.getChildren();
+			List<OfferDto> offers = new ArrayList<OfferDto> (children.size());
+			for (int i = 0; i < children.size(); i++) {
+                Element element = children.get(i);
+                offers.add(toOffer(element));
+            }
+			return offers;
+        } catch (ParsingException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ParsingException(e);
+        }
 	}
 
 	public static OfferDto toOffer(InputStream input) {
@@ -45,14 +72,11 @@ public class XmlOfferDtoConversor {
 			Document document = builder.build(input);
 			Element rootElement = document.getRootElement();
 			return null;
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+        } catch (ParsingException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ParsingException(e);
+        }
 	}
 
 	private static OfferDto toOffer(Element e) throws ParsingException {
@@ -60,29 +84,30 @@ public class XmlOfferDtoConversor {
 			throw new ParsingException("Unrecognized element '" + e.getName()
 					+ "' ('offermovie' expected)");
 		try {
-		Long offerId = null;
-		Element identifier = e.getChild("offerId", XML_NS);
+			Long offerId = null;
+			Element identifier = e.getChild("offerId", XML_NS);
 
-		if (identifier != null)
-			offerId = Long.valueOf(identifier.getTextTrim());
-		String name = e.getChildTextNormalize("name", XML_NS);
-		String description = e.getChildTextNormalize("description", XML_NS);
-		Calendar limitReservationDate = JDOMElementToCalendar(e,
-				"limitReservationDate");
-		Calendar limitApplicationDate = JDOMElementToCalendar(e,
-				"limitApplicationDate");
-		float realPrice = Float
-				.valueOf(e.getChildTextTrim("realPrice", XML_NS));
-		float discountedPrice = Float.valueOf(e.getChildTextTrim(
-				"discountedPrice", XML_NS));
-		long likes = Long.valueOf(e.getChildTextTrim("likes", XML_NS));
-		boolean isValid = Boolean.valueOf(e.getChildTextNormalize("isValid",
-				XML_NS));
-		return new OfferDto(offerId, name, description, limitReservationDate,
-				limitReservationDate, realPrice, discountedPrice, isValid,
-				likes);
-		} catch (ParseException ex){
-			throw ParsingException("Error Parsing dates in from xml to offerDto.");
+			if (identifier != null)
+				offerId = Long.valueOf(identifier.getTextTrim());
+			String name = e.getChildTextNormalize("name", XML_NS);
+			String description = e.getChildTextNormalize("description", XML_NS);
+			Calendar limitReservationDate = JDOMElementToCalendar(e,
+					"limitReservationDate");
+			Calendar limitApplicationDate = JDOMElementToCalendar(e,
+					"limitApplicationDate");
+			float realPrice = Float.valueOf(e.getChildTextTrim("realPrice",
+					XML_NS));
+			float discountedPrice = Float.valueOf(e.getChildTextTrim(
+					"discountedPrice", XML_NS));
+			long likes = Long.valueOf(e.getChildTextTrim("likes", XML_NS));
+			boolean isValid = Boolean.valueOf(e.getChildTextNormalize(
+					"isValid", XML_NS));
+			return new OfferDto(offerId, name, description,
+					limitReservationDate, limitReservationDate, realPrice,
+					discountedPrice, isValid, likes);
+		} catch (ParseException ex) {
+			throw new ParsingException(
+					"Error Parsing dates in from xml to offerDto.");
 		}
 
 	}

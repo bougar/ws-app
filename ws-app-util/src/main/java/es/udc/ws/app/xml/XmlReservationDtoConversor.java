@@ -89,13 +89,13 @@ public class XmlReservationDtoConversor {
         }
         
         Element reservationIdElement = reservationElement.getChild("reservationId", XML_NS);
-        long reservationId;
+        Long reservationId=null;
         if (reservationIdElement != null) {
             reservationId = Long.valueOf(reservationIdElement.getTextTrim());
         }
 
         Element offerIdElement = reservationElement.getChild("offerId", XML_NS);
-        long offerId;
+        Long offerId=null;
         if (offerIdElement != null) {
             offerId = Long.valueOf(offerIdElement.getTextTrim());
         }
@@ -110,7 +110,7 @@ public class XmlReservationDtoConversor {
         String creditCardNumber = reservationElement.getChildTextTrim("creditCardNumber", XML_NS);
         
         Element reservationPriceElement = reservationElement.getChild("reservationPrice", XML_NS);
-        float reservationPrice;
+        Float reservationPrice=null;
         if (reservationPriceElement != null) {
             reservationPrice = Float.valueOf(reservationPriceElement.getTextTrim());
         }
