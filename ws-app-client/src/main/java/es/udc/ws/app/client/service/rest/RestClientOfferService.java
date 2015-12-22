@@ -6,10 +6,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
@@ -23,6 +30,7 @@ import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
+import es.udc.ws.app.xml.ParsingException;
 import es.udc.ws.app.xml.XmlCreationOfferDtoConversor;
 import es.udc.ws.app.xml.XmlExceptionConversor;
 import es.udc.ws.app.xml.XmlOfferDtoConversor;
@@ -58,7 +66,16 @@ public class RestClientOfferService implements ClientOfferService {
 	public void updateOffer(CreationOfferDto offer)
 			throws InputValidationException, InstanceNotFoundException,
 			NotModifiableOfferException {
-		// TODO Auto-generated method stub
+		try {
+			HttpResponse response = Request
+					.Put(getEndpointAddress() + "offers/" + +offer.getOfferId())
+					.bodyStream(toInputStream(offer),
+							ContentType.create("application/xml")).execute()
+					.returnResponse();
+			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
 	}
 
@@ -152,7 +169,11 @@ public class RestClientOfferService implements ClientOfferService {
 	}
 
 	private void validateStatusCode(int successCode, HttpResponse response)
-			throws InputValidationException {
+			throws InputValidationException, ParsingException,
+			IllegalStateException, InstanceNotFoundException,
+			AlreadyInvalidatedException, AlreadyReservatedException,
+			NotClaimableException, NotModifiableOfferException,
+			ReservationTimeExpiredException {
 		try {
 			int statusCode = response.getStatusLine().getStatusCode();
 
@@ -164,10 +185,16 @@ public class RestClientOfferService implements ClientOfferService {
 			/* Handler error. */
 
 			switch (statusCode) {
+			case HttpStatus.SC_NOT_FOUND:
+				throw XmlExceptionConversor
+						.fromInstanceNotFoundExceptionXml(response.getEntity()
+								.getContent());
 			case HttpStatus.SC_BAD_REQUEST:
 				throw XmlExceptionConversor
 						.fromInputValidationExceptionXml(response.getEntity()
 								.getContent());
+			case HttpStatus.SC_GONE:
+				chooseGoneException(response.getEntity().getContent());
 			default:
 				throw new RuntimeException("HTTP error; status code = "
 						+ statusCode);
@@ -175,6 +202,42 @@ public class RestClientOfferService implements ClientOfferService {
 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+
+	}
+
+	private static void chooseGoneException(InputStream input)
+			throws ParsingException, AlreadyInvalidatedException,
+			AlreadyReservatedException, NotClaimableException,
+			NotModifiableOfferException, ReservationTimeExpiredException {
+		Integer code = null;
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document document = builder.build(input);
+			Element rootElement = document.getRootElement();
+			code = Integer.valueOf(rootElement.getChildTextTrim("internalCode",
+					XmlOfferDtoConversor.XML_NS));
+		} catch (JDOMException | IOException e) {
+			throw new ParsingException(e);
+		}
+
+		switch (code) {
+		case 1:
+			throw XmlExceptionConversor
+					.fromAlreadyInvalidatedExceptionXml(input);
+		case 2:
+			throw XmlExceptionConversor
+					.fromAlreadyReservatedExceptionXml(input);
+		case 3:
+			throw XmlExceptionConversor.fromNotClaimableExceptionXml(input);
+		case 4:
+			throw XmlExceptionConversor
+					.fromNotModifiableOfferExceptionXml(input);
+		case 5:
+			throw XmlExceptionConversor
+					.fromReservationTimeExpiredExceptionXml(input);
+		default:
+			throw new ParsingException("Unknown internal error code.");
 		}
 
 	}
