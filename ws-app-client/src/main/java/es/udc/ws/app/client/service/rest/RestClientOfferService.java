@@ -24,6 +24,7 @@ import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 import es.udc.ws.app.xml.XmlCreationOfferDtoConversor;
+import es.udc.ws.app.xml.XmlExceptionConversor;
 import es.udc.ws.app.xml.XmlOfferDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
@@ -38,13 +39,15 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InputValidationException {
 		try {
 			HttpResponse response = Request
-					.Post(getEndpointAddress() + "movies")
+					.Post(getEndpointAddress() + "offers")
 					.bodyStream(toInputStream(offer),
 							ContentType.create("application/xml")).execute()
 					.returnResponse();
 			validateStatusCode(HttpStatus.SC_CREATED, response);
 			return XmlOfferDtoConversor.toOffer(response.getEntity()
 					.getContent());
+		} catch (InputValidationException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -148,22 +151,31 @@ public class RestClientOfferService implements ClientOfferService {
 
 	}
 
-	private void validateStatusCode(int successCode, HttpResponse response) {
+	private void validateStatusCode(int successCode, HttpResponse response)
+			throws InputValidationException {
+		try {
+			int statusCode = response.getStatusLine().getStatusCode();
 
-		int statusCode = response.getStatusLine().getStatusCode();
+			/* Success? */
+			if (statusCode == successCode) {
+				return;
+			}
 
-		/* Success? */
-		if (statusCode == successCode) {
-			return;
-		}
+			/* Handler error. */
 
-		/* Handler error. */
-		switch (statusCode) {
-		default:
-			throw new RuntimeException("HTTP error; status code = "
-					+ statusCode);
+			switch (statusCode) {
+			case HttpStatus.SC_BAD_REQUEST:
+				throw XmlExceptionConversor
+						.fromInputValidationExceptionXml(response.getEntity()
+								.getContent());
+			default:
+				throw new RuntimeException("HTTP error; status code = "
+						+ statusCode);
+			}
+
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 
 	}
-
 }
