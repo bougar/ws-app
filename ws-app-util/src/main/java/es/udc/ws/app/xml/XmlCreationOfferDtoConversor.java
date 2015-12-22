@@ -1,18 +1,22 @@
 package es.udc.ws.app.xml;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
 
 import es.udc.ws.app.dto.CreationOfferDto;
 
 public class XmlCreationOfferDtoConversor {
 	public final static Namespace XML_NS = Namespace
 			.getNamespace("http://ws.udc.es/offers/xml");
+
 	public static Document toXml(CreationOfferDto offer) throws IOException {
 
 		Element offerElement = toJDOMElement(offer);
@@ -55,15 +59,70 @@ public class XmlCreationOfferDtoConversor {
 		Element offerId = new Element("offerId", XML_NS);
 		offerId.setText(Long.toString(offer.getOfferId()));
 		offerElement.addContent(offerId);
-		
+
 		Element fee = new Element("fee", XML_NS);
 		fee.setText(Float.toString(offer.getFee()));
 		offerElement.addContent(fee);
 
-
 		return offerElement;
 	}
-	
+
+	public static CreationOfferDto toOffer(InputStream input) {
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document document = builder.build(input);
+			Element rootElement = document.getRootElement();
+			return toOffer(rootElement);
+		} catch (ParsingException ex) {
+			throw ex;
+		} catch (Exception e) {
+			throw new ParsingException(e);
+		}
+	}
+
+	private static CreationOfferDto toOffer(Element e) throws ParsingException {
+		if (!"offer".equals(e.getName()))
+			throw new ParsingException("Unrecognized element '" + e.getName()
+					+ "' ('offermovie' expected)");
+		try {
+			Long offerId = null;
+			Element identifier = e.getChild("offerId", XML_NS);
+
+			if (identifier != null)
+				offerId = Long.valueOf(identifier.getTextTrim());
+			String name = e.getChildTextNormalize("name", XML_NS);
+			String description = e.getChildTextNormalize("description", XML_NS);
+			Calendar limitReservationDate = JDOMElementToCalendar(e,
+					"limitReservationDate");
+			Calendar limitApplicationDate = JDOMElementToCalendar(e,
+					"limitApplicationDate");
+			float realPrice = Float.valueOf(e.getChildTextTrim("realPrice",
+					XML_NS));
+			float discountedPrice = Float.valueOf(e.getChildTextTrim(
+					"discountedPrice", XML_NS));
+			float fee = Float.valueOf(e.getChildTextTrim(
+					"fee", XML_NS));
+			boolean isValid = Boolean.valueOf(e.getChildTextNormalize(
+					"isValid", XML_NS));
+			return new CreationOfferDto(offerId, name, description,
+					limitReservationDate, limitApplicationDate, realPrice,
+					discountedPrice, fee, isValid);
+		} catch (ParseException ex) {
+			throw new ParsingException(
+					"Error Parsing dates in from xml to offerDto.");
+		}
+
+	}
+
+	private static Calendar JDOMElementToCalendar(Element e, String name)
+			throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(formatter.parse(e.getChildTextNormalize(name, XML_NS)));
+		return cal;
+	}
+
 	private static Element calendarToJDOMElement(Calendar cal, String name) {
 		SimpleDateFormat formatter = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss");
