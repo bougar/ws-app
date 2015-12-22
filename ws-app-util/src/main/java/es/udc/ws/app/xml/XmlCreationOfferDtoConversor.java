@@ -55,6 +55,11 @@ public class XmlCreationOfferDtoConversor {
 		Element offerId = new Element("offerId", XML_NS);
 		offerId.setText(Long.toString(offer.getOfferId()));
 		offerElement.addContent(offerId);
+		
+		Element fee = new Element("fee", XML_NS);
+		fee.setText(Float.toString(offer.getFee()));
+		offerElement.addContent(fee);
+
 
 		return offerElement;
 	}

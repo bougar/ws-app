@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.management.RuntimeErrorException;
@@ -73,6 +74,9 @@ public class RestClientOfferService implements ClientOfferService {
 							ContentType.create("application/xml")).execute()
 					.returnResponse();
 			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
+		} catch (InputValidationException | InstanceNotFoundException
+				| NotModifiableOfferException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -82,20 +86,43 @@ public class RestClientOfferService implements ClientOfferService {
 	@Override
 	public void removeOffer(long offerId) throws InstanceNotFoundException,
 			NotModifiableOfferException {
-		// TODO Auto-generated method stub
+		try {
+			HttpResponse response = Request
+					.Delete(getEndpointAddress() + "offers/" + offerId)
+					.execute().returnResponse();
+			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
+		} catch (InstanceNotFoundException | NotModifiableOfferException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
 	}
 
 	@Override
 	public OfferDto findOffer(long offerId) throws InstanceNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			HttpResponse response = Request
+					.Get(getEndpointAddress() + "offers/" + offerId).execute()
+					.returnResponse();
+			validateStatusCode(HttpStatus.SC_OK, response);
+			return XmlOfferDtoConversor.toOffer(response.getEntity()
+					.getContent());
+		} catch (InstanceNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public List<OfferDto> findOffers(String keywords) {
-		// TODO Auto-generated method stub
-		return null;
+		HttpResponse response = Request
+				.Get(getEndpointAddress() + "offers?keywords="
+						+ URLEncoder.encode(keywords, "UTF-8")).execute()
+				.returnResponse();
+		validateStatusCode(HttpStatus.SC_OK, response);
+		
 	}
 
 	@Override
