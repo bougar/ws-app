@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import es.udc.ws.app.client.types.*;
-import es.udc.ws.app.client.service.soap.wsdl.*;
-
 public class ReservationToSoapReservationConversions {
 	public static es.udc.ws.app.dto.ReservationDto toClientReservation(
 			es.udc.ws.app.client.service.soap.wsdl.ReservationDto r) {

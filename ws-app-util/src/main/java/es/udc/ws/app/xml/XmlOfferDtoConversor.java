@@ -48,7 +48,7 @@ public class XmlOfferDtoConversor {
 				throw new ParsingException("Unrecognized element '"
 						+ rootElement.getName() + "' ('offers' expected)");
 			}
-			@SuppressWarnings("unchecked")
+		
 			List<Element> children = rootElement.getChildren();
 			List<OfferDto> offers = new ArrayList<OfferDto> (children.size());
 			for (int i = 0; i < children.size(); i++) {
@@ -100,7 +100,7 @@ public class XmlOfferDtoConversor {
 			boolean isValid = Boolean.valueOf(e.getChildTextNormalize(
 					"isValid", XML_NS));
 			return new OfferDto(offerId, name, description,
-					limitReservationDate, limitReservationDate, realPrice,
+					limitReservationDate, limitApplicationDate, realPrice,
 					discountedPrice, isValid, likes);
 		} catch (ParseException ex) {
 			throw new ParsingException(

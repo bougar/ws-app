@@ -1,7 +1,6 @@
 package es.udc.ws.app.serviceutil;
 
 import es.udc.ws.app.dto.OfferDto;
-import es.udc.ws.app.model.facebook.FacebookServiceImpl;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offer.ReturnedOffer;
 

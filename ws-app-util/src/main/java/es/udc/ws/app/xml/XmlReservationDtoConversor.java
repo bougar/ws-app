@@ -2,9 +2,7 @@ package es.udc.ws.app.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 import es.udc.ws.app.dto.ReservationDto;
 
