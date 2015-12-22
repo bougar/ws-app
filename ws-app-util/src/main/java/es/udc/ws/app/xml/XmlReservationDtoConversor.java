@@ -2,8 +2,13 @@ package es.udc.ws.app.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.dto.ReservationDto;
+
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -23,6 +28,30 @@ public class XmlReservationDtoConversor {
         return new Document(reservationElement);
     }
 
+	public static List<ReservationDto> toReservations(InputStream input) {
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document document = builder.build(input);
+			Element rootElement = document.getRootElement();
+			if (!"reservationes".equals(rootElement.getName())) {
+				throw new ParsingException("Unrecognized element '"
+						+ rootElement.getName() + "' ('reservations' expected)");
+			}
+		
+			List<Element> children = rootElement.getChildren();
+			List<ReservationDto> reservations = new ArrayList<ReservationDto> (children.size());
+			for (int i = 0; i < children.size(); i++) {
+                Element element = children.get(i);
+                reservations.add(toReservation(element));
+            }
+			return reservations;
+        } catch (ParsingException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ParsingException(e);
+        }
+	}
+	
     public static ReservationDto toReservation(InputStream reservationXml)
             throws ParsingException {
         try {

@@ -11,6 +11,7 @@ import javax.management.RuntimeErrorException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.jdom2.Document;
@@ -35,6 +36,7 @@ import es.udc.ws.app.xml.ParsingException;
 import es.udc.ws.app.xml.XmlCreationOfferDtoConversor;
 import es.udc.ws.app.xml.XmlExceptionConversor;
 import es.udc.ws.app.xml.XmlOfferDtoConversor;
+import es.udc.ws.app.xml.XmlReservationDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -117,12 +119,18 @@ public class RestClientOfferService implements ClientOfferService {
 
 	@Override
 	public List<OfferDto> findOffers(String keywords) {
-		HttpResponse response = Request
-				.Get(getEndpointAddress() + "offers?keywords="
-						+ URLEncoder.encode(keywords, "UTF-8")).execute()
-				.returnResponse();
-		validateStatusCode(HttpStatus.SC_OK, response);
-		
+		try {
+			HttpResponse response = Request
+					.Get(getEndpointAddress() + "offers?keywords="
+							+ URLEncoder.encode(keywords, "UTF-8")).execute()
+					.returnResponse();
+			validateStatusCode(HttpStatus.SC_OK, response);
+			return XmlOfferDtoConversor.toOffers(response.getEntity()
+					.getContent());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	@Override
@@ -130,43 +138,110 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InputValidationException, InstanceNotFoundException,
 			AlreadyInvalidatedException, ReservationTimeExpiredException,
 			AlreadyReservatedException {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+			HttpResponse response = Request
+					.Post(getEndpointAddress() + "reservations")
+					.bodyForm(
+							Form.form().add("movieId", Long.toString(offerId))
+									.add("userId", email)
+									.add("creditCardNumber", creditCardNumber)
+									.build()).execute().returnResponse();
+			validateStatusCode(HttpStatus.SC_CREATED, response);
+			return XmlReservationDtoConversor.toReservation(
+					response.getEntity().getContent()).getReservationId();
+		} catch (InputValidationException | InstanceNotFoundException
+				| AlreadyInvalidatedException | ReservationTimeExpiredException
+				| AlreadyReservatedException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public void claimOffer(long reservationId, String email)
 			throws InstanceNotFoundException, NotClaimableException {
-		// TODO Auto-generated method stub
+		try {
+			HttpResponse response = Request
+					.Put(getEndpointAddress() + "reservations/"
+							+ +reservationId)
+					.bodyForm(Form.form().add("email", email).build())
+					.execute().returnResponse();
+			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
+		} catch (InstanceNotFoundException | NotClaimableException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
 	}
 
 	@Override
 	public List<ReservationDto> findReservationByOfferId(long offerId)
 			throws InstanceNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			HttpResponse response = Request
+					.Get(getEndpointAddress()
+							+ "reservations?offerId="
+							+ URLEncoder.encode(Long.toString(offerId), "UTF-8"))
+					.execute().returnResponse();
+			validateStatusCode(HttpStatus.SC_OK, response);
+			return XmlReservationDtoConversor.toReservations(response
+					.getEntity().getContent());
+		} catch (InstanceNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public List<ReservationDto> findReservationByUser(String email,
 			boolean state) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			HttpResponse response = Request
+					.Get(getEndpointAddress()
+							+ "reservations?email="
+							+ URLEncoder.encode(email, "UTF-8")
+							+ "&state="
+							+ URLEncoder.encode(Boolean.toString(state),
+									"UTF-8")).execute().returnResponse();
+
+			validateStatusCode(HttpStatus.SC_OK, response);
+			return XmlReservationDtoConversor.toReservations(response
+					.getEntity().getContent());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public void offerInvalidation(long offerId)
 			throws InstanceNotFoundException, AlreadyInvalidatedException {
-		// TODO Auto-generated method stub
-
+		try {
+			HttpResponse response = Request
+					.Put(getEndpointAddress() + "invalidate?offerId="
+							+ +offerId).execute().returnResponse();
+			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
+		} catch (InstanceNotFoundException | AlreadyInvalidatedException e){
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public List<UserOfferDto> getUserOffersInfo(String user)
 			throws InstanceNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			HttpResponse response = Request
+					.Get(getEndpointAddress() + "userOffers?user="
+							+ URLEncoder.encode(user, "UTF-8")).execute()
+					.returnResponse();
+			return null;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private synchronized String getEndpointAddress() {
