@@ -204,7 +204,7 @@ public class XmlExceptionConversor {
 
 		return new Document(exceptionElement);
 	}
-
+	
 	public static Document toInstanceNotFoundException(
 			InstanceNotFoundException ex) throws IOException {
 
@@ -227,14 +227,24 @@ public class XmlExceptionConversor {
 		return new Document(exceptionElement);
 	}
 
+	/*******INTERNAL ERROR CODES:*********
+	**************************************
+	*AlreadyInvalidatedException:		1*
+	*AlreadyReservatedException:		2*
+	*NotClaimableException:				3*
+	*NotModifiableOfferException:		4*
+	*ReservationTimeExpiredException:	5*
+	**************************************/
+	
 	public static Document toReservationTimeExpiredException(
 			ReservationTimeExpiredException ex) throws IOException {
 
 		Element exceptionElement = new Element(
 				"ReservationTimeExpiredException", XML_NS);
-		Element internalCode = new Element("5", XML_NS);
-
-		exceptionElement.addContent(internalCode);
+		
+		Element internalCodeElement = new Element("internalCode", XML_NS);
+		internalCodeElement.setText("5");
+		exceptionElement.addContent(internalCodeElement);
 		Element offerIdElement = new Element("offerId", XML_NS);
 		offerIdElement.setText(ex.getOfferId().toString());
 		exceptionElement.addContent(offerIdElement);
@@ -259,9 +269,10 @@ public class XmlExceptionConversor {
 
 		Element exceptionElement = new Element("AlreadyInvalidatedException",
 				XML_NS);
-		Element internalCode = new Element("1", XML_NS);
-
-		exceptionElement.addContent(internalCode);
+		
+		Element internalCodeElement = new Element("internalCode", XML_NS);
+		internalCodeElement.setText("1");
+		exceptionElement.addContent(internalCodeElement);
 		Element offerIdElement = new Element("offerId", XML_NS);
 		offerIdElement.setText(ex.getOfferId().toString());
 		exceptionElement.addContent(offerIdElement);
@@ -275,13 +286,14 @@ public class XmlExceptionConversor {
 
 		Element exceptionElement = new Element("AlreadyReservatedException",
 				XML_NS);
-		Element internalCode = new Element("2", XML_NS);
-
-		exceptionElement.addContent(internalCode);
+		
+		Element internalCodeElement = new Element("internalCode", XML_NS);
+		internalCodeElement.setText("2");
+		exceptionElement.addContent(internalCodeElement);
 		Element offerIdElement = new Element("offerId", XML_NS);
 		offerIdElement.setText(ex.getOfferId().toString());
 		exceptionElement.addContent(offerIdElement);
-		Element emailElement = new Element("emailId", XML_NS);
+		Element emailElement = new Element("email", XML_NS);
 		emailElement.setText(ex.getUser());
 		exceptionElement.addContent(emailElement);
 
@@ -289,14 +301,23 @@ public class XmlExceptionConversor {
 
 	}
 
-	/*public static Document toNotClaimableException(
+	public static Document toNotClaimableException(
 			NotClaimableException ex) throws IOException {
 		
 		Element exceptionElement = new Element("NotClaimableExceptionException",
 				XML_NS);
-		Element internalCode = new Element("3", XML_NS);
+		
+		Element internalCodeElement = new Element("internalCode", XML_NS);
+		internalCodeElement.setText("3");
+		exceptionElement.addContent(internalCodeElement);
 
-		exceptionElement.addContent(internalCode);
+		if (ex.getEmail() != null) {
+			Element emailElement = new Element("email", XML_NS);
+			emailElement.setText(ex.getEmail());
+			exceptionElement.addContent(emailElement);
+			return new Document(exceptionElement);
+		}
+		
 		Element reservationIdElement = new Element("reservationId", XML_NS);
 		reservationIdElement.setText(ex.getReservationId().toString());
 		exceptionElement.addContent(reservationIdElement);
@@ -304,9 +325,31 @@ public class XmlExceptionConversor {
 		if (ex.getExpirationDate() != null) {
 			Element expirationDateElement = new Element("expirationDate", XML_NS);
 			expirationDateElement.setText(ex.getExpirationDate().toString());
+			exceptionElement.addContent(expirationDateElement);
+			return new Document(exceptionElement);
 		}
-		
 
-	
-}*/
+		Element stateElement = new Element("state", XML_NS);
+		stateElement.setText(ex.getState());
+		exceptionElement.addContent(stateElement);
+		return new Document(exceptionElement);
+
 	}
+	
+	public static Document toNotModifiableOfferException(
+			NotModifiableOfferException ex) throws IOException {
+
+		Element exceptionElement = new Element("NotModifiableOfferException",
+				XML_NS);
+		
+		Element internalCodeElement = new Element("internalCode", XML_NS);
+		internalCodeElement.setText("4");
+		exceptionElement.addContent(internalCodeElement);
+		Element offerIdElement = new Element("offerId", XML_NS);
+		offerIdElement.setText(ex.getOfferId().toString());
+		exceptionElement.addContent(offerIdElement);
+
+		return new Document(exceptionElement);
+
+	}
+}
