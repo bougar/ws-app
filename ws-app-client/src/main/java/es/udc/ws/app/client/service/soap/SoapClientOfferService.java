@@ -6,9 +6,9 @@ import java.util.List;
 import javax.xml.ws.BindingProvider;
 
 import es.udc.ws.app.client.service.ClientOfferService;
-import es.udc.ws.app.client.types.Offer;
-import es.udc.ws.app.client.types.OfferDto;
-import es.udc.ws.app.client.types.ReservationDto;
+import es.udc.ws.app.dto.CreationOfferDto;
+import es.udc.ws.app.dto.OfferDto;
+import es.udc.ws.app.dto.ReservationDto;
 import es.udc.ws.app.client.types.UserOfferDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
@@ -39,7 +39,7 @@ public class SoapClientOfferService implements ClientOfferService {
 	}
 
 	@Override
-	public OfferDto addOffer(Offer offer) throws InputValidationException {
+	public OfferDto addOffer(CreationOfferDto offer) throws InputValidationException {
 		try {
 			return OfferToSoapOfferConversions.toClientOfferDto(offerProvider
 					.addOffer(OfferToSoapOfferConversions.toSoapOffer(offer)));
@@ -49,7 +49,7 @@ public class SoapClientOfferService implements ClientOfferService {
 	}
 
 	@Override
-	public void updateOffer(Offer offer) throws InputValidationException,
+	public void updateOffer(CreationOfferDto offer) throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException {
 		try {
 			offerProvider.updateOffer(OfferToSoapOfferConversions

@@ -9,11 +9,10 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import es.udc.ws.app.client.types.*;
-import es.udc.ws.app.client.service.soap.wsdl.*;
+
 
 public class OfferToSoapOfferConversions {
-	public static es.udc.ws.app.client.types.Offer toClientOffer(
+	public static es.udc.ws.app.dto.CreationOfferDto toClientOffer(
 			es.udc.ws.app.client.service.soap.wsdl.Offer offer) {
 		Calendar limitReservationDate = Calendar.getInstance();
 		limitReservationDate.setTime(offer.getLimitReservationDate()
@@ -21,14 +20,14 @@ public class OfferToSoapOfferConversions {
 		Calendar limitApplicationDate = Calendar.getInstance();
 		limitApplicationDate.setTime(offer.getLimitReservationDate()
 				.toGregorianCalendar().getTime());
-		return new es.udc.ws.app.client.types.Offer(offer.getOfferId(),
+		return new es.udc.ws.app.dto.CreationOfferDto(offer.getOfferId(),
 				offer.getName(), offer.getDescription(), limitReservationDate,
 				limitApplicationDate, offer.getRealPrice(),
 				offer.getDiscountedPrice(), offer.getFee(), offer.isValid());
 	}
 
 	public static es.udc.ws.app.client.service.soap.wsdl.Offer toSoapOffer(
-			es.udc.ws.app.client.types.Offer offer) {
+			es.udc.ws.app.dto.CreationOfferDto offer) {
 		XMLGregorianCalendar limitReservationDate = null;
 		XMLGregorianCalendar limitApplicationDate = null;
 		GregorianCalendar aux = null;
@@ -55,11 +54,10 @@ public class OfferToSoapOfferConversions {
 		soapOffer.setRealPrice(offer.getRealPrice());
 		soapOffer.setDiscountedPrice(offer.getDiscountedPrice());
 		soapOffer.setFee(offer.getFee());
-		soapOffer.setValid(offer.isValid());
 		return soapOffer;
 	}
 
-	public static es.udc.ws.app.client.types.OfferDto toClientOfferDto(
+	public static es.udc.ws.app.dto.OfferDto toClientOfferDto(
 			es.udc.ws.app.client.service.soap.wsdl.OfferDto offer) {
 		Calendar limitReservationDate = Calendar.getInstance();
 		limitReservationDate.setTime(offer.getLimitReservationDate()
@@ -67,14 +65,14 @@ public class OfferToSoapOfferConversions {
 		Calendar limitApplicationDate = Calendar.getInstance();
 		limitApplicationDate.setTime(offer.getLimitReservationDate()
 				.toGregorianCalendar().getTime());
-		return new es.udc.ws.app.client.types.OfferDto(offer.getOfferId(),
+		return new es.udc.ws.app.dto.OfferDto(offer.getOfferId(),
 				offer.getName(), offer.getDescription(), limitReservationDate,
 				limitApplicationDate, offer.getRealPrice(),
 				offer.getDiscountedPrice(), offer.isValid(), offer.getLikes());
 	}
 
 	public static es.udc.ws.app.client.service.soap.wsdl.OfferDto toSoapOfferDto(
-			es.udc.ws.app.client.types.OfferDto offer) {
+			es.udc.ws.app.dto.OfferDto offer) {
 		XMLGregorianCalendar limitReservationDate = null;
 		XMLGregorianCalendar limitApplicationDate = null;
 		GregorianCalendar aux = null;
@@ -105,9 +103,9 @@ public class OfferToSoapOfferConversions {
 		return soapOffer;
 	}
 
-	public static List<es.udc.ws.app.client.types.OfferDto> toClientListOffertDto(
+	public static List<es.udc.ws.app.dto.OfferDto> toClientListOffertDto(
 			List<es.udc.ws.app.client.service.soap.wsdl.OfferDto> offersDto) {
-		List<es.udc.ws.app.client.types.OfferDto> clientOffersDto = new ArrayList<es.udc.ws.app.client.types.OfferDto>();
+		List<es.udc.ws.app.dto.OfferDto> clientOffersDto = new ArrayList<es.udc.ws.app.dto.OfferDto>();
 		for (es.udc.ws.app.client.service.soap.wsdl.OfferDto o : offersDto)
 			clientOffersDto
 					.add(OfferToSoapOfferConversions.toClientOfferDto(o));

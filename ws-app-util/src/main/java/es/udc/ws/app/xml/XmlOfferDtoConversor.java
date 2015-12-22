@@ -6,16 +6,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.xml.ParsingException;
 
-import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 
@@ -71,7 +68,7 @@ public class XmlOfferDtoConversor {
 			SAXBuilder builder = new SAXBuilder();
 			Document document = builder.build(input);
 			Element rootElement = document.getRootElement();
-			return null;
+			return toOffer(rootElement);
         } catch (ParsingException ex) {
             throw ex;
         } catch (Exception e) {
@@ -175,6 +172,6 @@ public class XmlOfferDtoConversor {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(formatter.parse(e.getChildTextNormalize(name, XML_NS)));
 		return cal;
-	};
+	}
 
 }

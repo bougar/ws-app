@@ -1,8 +1,10 @@
 package es.udc.ws.app.client.service;
 
-import java.util.Calendar;
 import java.util.List;
 
+import es.udc.ws.app.dto.CreationOfferDto;
+import es.udc.ws.app.dto.OfferDto;
+import es.udc.ws.app.dto.ReservationDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
@@ -14,9 +16,9 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public interface ClientOfferService {
 
-	public OfferDto addOffer(Offer offer) throws InputValidationException;
+	public OfferDto addOffer(CreationOfferDto offer) throws InputValidationException;
 
-	public void updateOffer(Offer offer) throws InputValidationException,
+	public void updateOffer(CreationOfferDto offer) throws InputValidationException,
 			InstanceNotFoundException, NotModifiableOfferException;
 
 	public void removeOffer(long offerId) throws InstanceNotFoundException,

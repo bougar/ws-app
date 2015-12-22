@@ -1,7 +1,7 @@
-package es.udc.ws.app.client.types;
+package es.udc.ws.app.dto;
 import java.util.Calendar;
 
-public class Offer {
+public class CreationOfferDto {
 	private String name;
 	private String description;
 	private Calendar limitReservationDate;
@@ -10,12 +10,10 @@ public class Offer {
 	private float discountedPrice;
 	private float fee;
 	private long offerId;
-	private boolean isValid;
 	
-	public Offer(String name, String description,
+	public CreationOfferDto(String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
-			float realPrice, float discountedPrice, float fee,
-			boolean isValid) {
+			float realPrice, float discountedPrice, float fee) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -28,15 +26,14 @@ public class Offer {
 		this.realPrice = realPrice;
 		this.discountedPrice = discountedPrice;
 		this.fee = fee;
-		this.isValid = isValid;
 	}
 	
-	public Offer(long offerId,String name, String description,
+	public CreationOfferDto(long offerId,String name, String description,
 			Calendar limitReservationDate, Calendar limitApplicationDate,
 			float realPrice, float discountedPrice, float fee,
 			boolean isValid) {
 		this (name,description,limitReservationDate,limitApplicationDate,
-				realPrice,discountedPrice,fee,isValid);
+				realPrice,discountedPrice,fee);
 		this.offerId=offerId;
 	}
 
@@ -108,14 +105,6 @@ public class Offer {
 		this.offerId = offerId;
 	}
 
-	public boolean isValid() {
-		return isValid;
-	}
-
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -124,7 +113,6 @@ public class Offer {
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + Float.floatToIntBits(discountedPrice);
 		result = prime * result + Float.floatToIntBits(fee);
-		result = prime * result + (isValid ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((limitApplicationDate == null) ? 0 : limitApplicationDate
@@ -147,7 +135,7 @@ public class Offer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Offer other = (Offer) obj;
+		CreationOfferDto other = (CreationOfferDto) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -158,17 +146,15 @@ public class Offer {
 			return false;
 		if (Float.floatToIntBits(fee) != Float.floatToIntBits(other.fee))
 			return false;
-		if (isValid != other.isValid)
-			return false;
 		if (limitApplicationDate == null) {
 			if (other.limitApplicationDate != null)
 				return false;
-		} else if (!(limitApplicationDate.compareTo(other.limitApplicationDate)==0))
+		} else if (!limitApplicationDate.equals(other.limitApplicationDate))
 			return false;
 		if (limitReservationDate == null) {
 			if (other.limitReservationDate != null)
 				return false;
-		} else if (!(limitReservationDate.compareTo(other.limitReservationDate)==0))
+		} else if (!limitReservationDate.equals(other.limitReservationDate))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -182,8 +168,7 @@ public class Offer {
 			return false;
 		return true;
 	}
-	
-	
+
 	
 	
 }

@@ -9,6 +9,9 @@ import java.util.List;
 import es.udc.ws.app.client.service.ClientOfferService;
 import es.udc.ws.app.client.service.ClientOfferServiceFactory;
 import es.udc.ws.app.client.types.*;
+import es.udc.ws.app.dto.CreationOfferDto;
+import es.udc.ws.app.dto.OfferDto;
+import es.udc.ws.app.dto.ReservationDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
@@ -30,9 +33,9 @@ public class OfferServiceClient {
 			validateArgs(args, 8, new int[] { 5, 6, 7 });
 			Calendar limitReservationDate = toDate(args[3]);
 			Calendar limitApplicationDate = toDate(args[4]);
-			Offer offer = new Offer(args[1], args[2], limitReservationDate,
+			CreationOfferDto offer = new CreationOfferDto(args[1], args[2], limitReservationDate,
 					limitApplicationDate, Float.valueOf(args[5]),
-					Float.valueOf(args[6]), Float.valueOf(args[7]), true);
+					Float.valueOf(args[6]), Float.valueOf(args[7]));
 			try {
 				System.out.println(clientOfferService.addOffer(offer));
 			} catch (InputValidationException e) {
@@ -44,7 +47,7 @@ public class OfferServiceClient {
 			validateArgs(args, 9, new int[] { 1, 6, 7, 8 });
 			Calendar limitReservationDate = toDate(args[4]);
 			Calendar limitApplicationDate = toDate(args[5]);
-			Offer offer = new Offer(Integer.valueOf(args[1]), args[2], args[3],
+			CreationOfferDto offer = new CreationOfferDto(Integer.valueOf(args[1]), args[2], args[3],
 					limitReservationDate, limitApplicationDate,
 					Float.valueOf(args[6]), Float.valueOf(args[7]),
 					Float.valueOf(args[8]), true);

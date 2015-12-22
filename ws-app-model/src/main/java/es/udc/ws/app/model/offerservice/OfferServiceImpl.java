@@ -148,7 +148,7 @@ public class OfferServiceImpl implements OfferService {
 								offer.getOfferId());
 				}
 
-				offer.setFaceBookId(facebook.updateOffer(offer.getFaceBookId(),
+				offer.setFaceBookId(facebook.updateOffer(baseOffer.getFaceBookId(),
 						offer));
 
 				/* Do work. */
