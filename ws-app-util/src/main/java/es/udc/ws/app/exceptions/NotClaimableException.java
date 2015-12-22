@@ -6,8 +6,8 @@ import java.util.Calendar;
 public class NotClaimableException extends Exception{
     private Long reservationId;
     private Calendar expirationDate;
-    private String email;
-    private String state;
+    private String email = null;
+    private String state = null;
 
     /*Reservation application expired*/
     public NotClaimableException(Long reservationId, Calendar expirationDate) {

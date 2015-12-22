@@ -3,9 +3,7 @@ package es.udc.ws.app.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
-
 import es.udc.ws.app.dto.ReservationDto;
-
 import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -15,7 +13,7 @@ import org.jdom2.input.SAXBuilder;
 public class XmlReservationDtoConversor {
 
     public final static Namespace XML_NS = Namespace
-            .getNamespace("http://ws.udc.es/reservations/xml");
+            .getNamespace("http://ws.app.udc.es/reservations/xml");
 
     public static Document toResponse(ReservationDto reservation)
             throws IOException {
