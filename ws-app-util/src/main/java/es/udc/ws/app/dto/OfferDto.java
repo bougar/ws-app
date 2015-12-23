@@ -1,5 +1,7 @@
 package es.udc.ws.app.dto;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class OfferDto {
@@ -107,5 +109,20 @@ public class OfferDto {
 
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
+	}
+
+	@Override
+	public String toString() {
+
+		DateFormat reservation = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
+		DateFormat application = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
+		reservation.setCalendar(limitReservationDate);
+		application.setCalendar(limitApplicationDate);
+		return "OfferDto [name=" + name + ", description=" + description
+				+ ", limitReservationDate=" + reservation
+				+ ", limitApplicationDate=" + application + ", realPrice="
+				+ realPrice + ", discountedPrice=" + discountedPrice
+				+ ", offerId=" + offerId + ", isValid=" + isValid + ", likes="
+				+ likes + "]";
 	}
 }

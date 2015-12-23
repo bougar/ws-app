@@ -209,6 +209,8 @@ public class OffersServlet extends HttpServlet {
 		ServletUtils.writeServiceResponse(resp,
 				HttpServletResponse.SC_NO_CONTENT, null, null);
 	}
+	
+	/*
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -256,5 +258,5 @@ public class OffersServlet extends HttpServlet {
 					XmlMovieDtoConversor.toXml(movieDto), null);
 		}
 	}
-
+*/
 }

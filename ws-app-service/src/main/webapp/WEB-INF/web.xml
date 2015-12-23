@@ -29,22 +29,19 @@
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
 
-    <!-- REST service -->
-    <!-- Fill XXX and uncomment the following lines --> 
-    <!--
     <servlet>
-        <display-name>XXXServlet</display-name>
-        <servlet-name>XXXServlet</servlet-name>
+        <display-name>OffersServlet</display-name>
+        <servlet-name>OffersServlet</servlet-name>
         <servlet-class>
-            es.udc.ws.app.restservice.servlets.XXXServlet
+            es.udc.ws.app.restservice.servlets.OffersServlet
         </servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>XXXServlet</servlet-name>
-        <url-pattern>/xxx/*</url-pattern>
+        <servlet-name>OffersServlet</servlet-name>
+        <url-pattern>/offers/*</url-pattern>
     </servlet-mapping>
-    -->
+
 
     <!-- General configuration -->
 
