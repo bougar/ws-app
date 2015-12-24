@@ -26,7 +26,7 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.servlet.ServletUtils;
 
 @SuppressWarnings("serial")
-public class SalesServlet extends HttpServlet {
+public class ReservationServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -196,34 +196,6 @@ public class SalesServlet extends HttpServlet {
 													+ "invalid reservation id '"
 													+ reservationIdAsString
 													+ "'")), null);
-			return;
-		}
-
-		ReservationDto reservationDto;
-		try {
-			reservationDto = XmlReservationDtoConversor.toReservation(req
-					.getInputStream());
-		} catch (ParsingException ex) {
-			ServletUtils
-					.writeServiceResponse(
-							resp,
-							HttpServletResponse.SC_BAD_REQUEST,
-							XmlExceptionConversor
-									.toInputValidationExceptionXml(new InputValidationException(
-											ex.getMessage())), null);
-			return;
-
-		}
-		if (!reservationId.equals(reservationDto.getReservationId())) {
-			ServletUtils
-					.writeServiceResponse(
-							resp,
-							HttpServletResponse.SC_BAD_REQUEST,
-							XmlExceptionConversor
-									.toInputValidationExceptionXml(new InputValidationException(
-											"Invalid Request: "
-													+ "invalid reservationId")),
-							null);
 			return;
 		}
 		try {

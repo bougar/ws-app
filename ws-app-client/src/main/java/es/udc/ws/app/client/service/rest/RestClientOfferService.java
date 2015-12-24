@@ -142,8 +142,8 @@ public class RestClientOfferService implements ClientOfferService {
 			HttpResponse response = Request
 					.Post(getEndpointAddress() + "reservations")
 					.bodyForm(
-							Form.form().add("movieId", Long.toString(offerId))
-									.add("userId", email)
+							Form.form().add("offerId", Long.toString(offerId))
+									.add("email", email)
 									.add("creditCardNumber", creditCardNumber)
 									.build()).execute().returnResponse();
 			validateStatusCode(HttpStatus.SC_CREATED, response);
@@ -182,7 +182,7 @@ public class RestClientOfferService implements ClientOfferService {
 		try {
 			HttpResponse response = Request
 					.Get(getEndpointAddress()
-							+ "reservations?offerId="
+							+ "reservations?function=byOfferId&offerId="
 							+ URLEncoder.encode(Long.toString(offerId), "UTF-8"))
 					.execute().returnResponse();
 			validateStatusCode(HttpStatus.SC_OK, response);
@@ -201,7 +201,7 @@ public class RestClientOfferService implements ClientOfferService {
 		try {
 			HttpResponse response = Request
 					.Get(getEndpointAddress()
-							+ "reservations?email="
+							+ "reservations?function=byUser&email="
 							+ URLEncoder.encode(email, "UTF-8")
 							+ "&state="
 							+ URLEncoder.encode(Boolean.toString(state),
@@ -319,11 +319,11 @@ public class RestClientOfferService implements ClientOfferService {
 			Element rootElement = document.getRootElement();
 			code = Integer.valueOf(rootElement.getChildTextTrim("internalCode",
 					XmlOfferDtoConversor.XML_NS));
+			input.reset();
 			
 		} catch (JDOMException | IOException e) {
 			throw new ParsingException(e);
 		}
-		
 		switch (code) {
 		case 1:
 			throw XmlExceptionConversor

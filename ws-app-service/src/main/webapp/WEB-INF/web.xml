@@ -41,6 +41,19 @@
         <servlet-name>OffersServlet</servlet-name>
         <url-pattern>/offers/*</url-pattern>
     </servlet-mapping>
+    
+        <servlet>
+        <display-name>ReservationServlet</display-name>
+        <servlet-name>ReservationServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.app.restservice.servlets.ReservationServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ReservationServlet</servlet-name>
+        <url-pattern>/reservations/*</url-pattern>
+    </servlet-mapping>
 
 
     <!-- General configuration -->

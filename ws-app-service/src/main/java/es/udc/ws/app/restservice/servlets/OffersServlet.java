@@ -183,7 +183,7 @@ public class OffersServlet extends HttpServlet {
 							null);
 			return;
 		}
-		if (function == null | function.equals("update")) {
+		if (function == null || function.equals("update")) {
 			updateOffer(offerId, resp, req.getInputStream());
 			return;
 		} else if (function.equals("invalidate")) {
