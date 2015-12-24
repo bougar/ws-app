@@ -122,7 +122,7 @@ public class XmlOfferDtoConversor {
 		offerElement.addContent(nameElement);
 
 		Element descritpionElement = new Element("description", XML_NS);
-		descritpionElement.setText(offer.getName());
+		descritpionElement.setText(offer.getDescription());
 		offerElement.addContent(descritpionElement);
 
 		Element limitReservationDate = calendarToJDOMElement(
