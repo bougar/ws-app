@@ -210,9 +210,9 @@ public class OffersServlet extends HttpServlet {
 				HttpServletResponse.SC_NO_CONTENT, null, null);
 	}
 	
-	/*
+	
 
-	@Override
+/*	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String path = ServletUtils.normalizePath(req.getPathInfo());
@@ -257,6 +257,6 @@ public class OffersServlet extends HttpServlet {
 			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
 					XmlMovieDtoConversor.toXml(movieDto), null);
 		}
-	}
-*/
+	}*/
+
 }
