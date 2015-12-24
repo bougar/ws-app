@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Clase Java para reservationDto complex type.
+ * <p>Java class for reservationDto complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="reservationDto">
@@ -55,7 +55,7 @@ public class ReservationDto {
     protected String state;
 
     /**
-     * Obtiene el valor de la propiedad creditCardNumber.
+     * Gets the value of the creditCardNumber property.
      * 
      * @return
      *     possible object is
@@ -67,7 +67,7 @@ public class ReservationDto {
     }
 
     /**
-     * Define el valor de la propiedad creditCardNumber.
+     * Sets the value of the creditCardNumber property.
      * 
      * @param value
      *     allowed object is
@@ -79,7 +79,7 @@ public class ReservationDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad email.
+     * Gets the value of the email property.
      * 
      * @return
      *     possible object is
@@ -91,7 +91,7 @@ public class ReservationDto {
     }
 
     /**
-     * Define el valor de la propiedad email.
+     * Sets the value of the email property.
      * 
      * @param value
      *     allowed object is
@@ -103,7 +103,7 @@ public class ReservationDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad offerId.
+     * Gets the value of the offerId property.
      * 
      */
     public long getOfferId() {
@@ -111,7 +111,7 @@ public class ReservationDto {
     }
 
     /**
-     * Define el valor de la propiedad offerId.
+     * Sets the value of the offerId property.
      * 
      */
     public void setOfferId(long value) {
@@ -119,7 +119,7 @@ public class ReservationDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad requestDate.
+     * Gets the value of the requestDate property.
      * 
      * @return
      *     possible object is
@@ -131,7 +131,7 @@ public class ReservationDto {
     }
 
     /**
-     * Define el valor de la propiedad requestDate.
+     * Sets the value of the requestDate property.
      * 
      * @param value
      *     allowed object is
@@ -143,7 +143,7 @@ public class ReservationDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad reservationId.
+     * Gets the value of the reservationId property.
      * 
      */
     public long getReservationId() {
@@ -151,7 +151,7 @@ public class ReservationDto {
     }
 
     /**
-     * Define el valor de la propiedad reservationId.
+     * Sets the value of the reservationId property.
      * 
      */
     public void setReservationId(long value) {
@@ -159,7 +159,7 @@ public class ReservationDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad reservationPrice.
+     * Gets the value of the reservationPrice property.
      * 
      */
     public float getReservationPrice() {
@@ -167,7 +167,7 @@ public class ReservationDto {
     }
 
     /**
-     * Define el valor de la propiedad reservationPrice.
+     * Sets the value of the reservationPrice property.
      * 
      */
     public void setReservationPrice(float value) {
@@ -175,7 +175,7 @@ public class ReservationDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad state.
+     * Gets the value of the state property.
      * 
      * @return
      *     possible object is
@@ -187,7 +187,7 @@ public class ReservationDto {
     }
 
     /**
-     * Define el valor de la propiedad state.
+     * Sets the value of the state property.
      * 
      * @param value
      *     allowed object is

@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Clase Java para userOfferDto complex type.
+ * <p>Java class for userOfferDto complex type.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="userOfferDto">
@@ -43,7 +43,7 @@ public class UserOfferDto {
     protected XMLGregorianCalendar reservationDate;
 
     /**
-     * Obtiene el valor de la propiedad description.
+     * Gets the value of the description property.
      * 
      * @return
      *     possible object is
@@ -55,7 +55,7 @@ public class UserOfferDto {
     }
 
     /**
-     * Define el valor de la propiedad description.
+     * Sets the value of the description property.
      * 
      * @param value
      *     allowed object is
@@ -67,7 +67,7 @@ public class UserOfferDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad discountedPrice.
+     * Gets the value of the discountedPrice property.
      * 
      */
     public float getDiscountedPrice() {
@@ -75,7 +75,7 @@ public class UserOfferDto {
     }
 
     /**
-     * Define el valor de la propiedad discountedPrice.
+     * Sets the value of the discountedPrice property.
      * 
      */
     public void setDiscountedPrice(float value) {
@@ -83,7 +83,7 @@ public class UserOfferDto {
     }
 
     /**
-     * Obtiene el valor de la propiedad reservationDate.
+     * Gets the value of the reservationDate property.
      * 
      * @return
      *     possible object is
@@ -95,7 +95,7 @@ public class UserOfferDto {
     }
 
     /**
-     * Define el valor de la propiedad reservationDate.
+     * Sets the value of the reservationDate property.
      * 
      * @param value
      *     allowed object is

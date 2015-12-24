@@ -7,12 +7,16 @@ import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -25,6 +29,21 @@ public class XmlExceptionConversor {
 
 	public final static Namespace XML_NS = XmlOfferDtoConversor.XML_NS;
 
+	public static String inputStreamtoString(InputStream input) {
+		StringBuilder sb = new StringBuilder();
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					input));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
+	
 	public static InputValidationException fromInputValidationExceptionXml(
 			InputStream ex) throws ParsingException {
 		try {

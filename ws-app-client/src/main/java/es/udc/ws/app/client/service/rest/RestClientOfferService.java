@@ -220,8 +220,8 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InstanceNotFoundException, AlreadyInvalidatedException {
 		try {
 			HttpResponse response = Request
-					.Put(getEndpointAddress() + "invalidate?offerId="
-							+ +offerId).execute().returnResponse();
+					.Put(getEndpointAddress() + "offers/"
+							+ +offerId + "?function=invalidate").execute().returnResponse();
 			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
 		} catch (InstanceNotFoundException | AlreadyInvalidatedException e){
 			throw e;
@@ -319,10 +319,11 @@ public class RestClientOfferService implements ClientOfferService {
 			Element rootElement = document.getRootElement();
 			code = Integer.valueOf(rootElement.getChildTextTrim("internalCode",
 					XmlOfferDtoConversor.XML_NS));
+			input.reset();
 		} catch (JDOMException | IOException e) {
 			throw new ParsingException(e);
 		}
-
+		
 		switch (code) {
 		case 1:
 			throw XmlExceptionConversor

@@ -89,7 +89,7 @@ public class FacebookServiceImpl implements FacebookService {
 					.Post(facebookApi + facebookPageId + "/" + "feed")
 					.bodyForm(
 							Form.form().add("access_token", facebookToken)
-									.add("message", "test").build()).execute()
+									.add("message", o.toString()).build()).execute()
 					.returnResponse();
 			validateStatusCode(200, response, "UpdateOffer(remove): ");
 
