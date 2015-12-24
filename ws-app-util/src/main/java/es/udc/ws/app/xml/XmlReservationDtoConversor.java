@@ -2,11 +2,11 @@ package es.udc.ws.app.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.dto.ReservationDto;
 
 import org.jdom2.DataConversionException;
@@ -28,6 +28,17 @@ public class XmlReservationDtoConversor {
         return new Document(reservationElement);
     }
 
+	public static Document toXml(List<ReservationDto> reservations) throws IOException {
+		Element elements = new Element("reservations", XML_NS);
+		for (ReservationDto r : reservations) {
+			Element reservationElement = toJDOMElement(r);
+			elements.addContent(reservationElement);
+
+		}
+		return new Document(elements);
+
+	}
+    
 	public static List<ReservationDto> toReservations(InputStream input) {
 		try {
 			SAXBuilder builder = new SAXBuilder();
@@ -177,5 +188,50 @@ public class XmlReservationDtoConversor {
         return requestDateElement;
 
     }
+    
+	public static Element toJDOMElement(ReservationDto reservation) {
 
+		Element reservationElement = new Element("reservation", XML_NS);
+
+		Element identifierElement = new Element("reservationId", XML_NS);
+		identifierElement.setText(((Long) reservation.getReservationId()).toString());
+		reservationElement.addContent(identifierElement);
+
+		Element emailElement = new Element("email", XML_NS);
+		emailElement.setText(reservation.getEmail());
+		reservationElement.addContent(emailElement);
+
+		Element offerIdElement = new Element("offerId", XML_NS);
+		offerIdElement.setText(Long.toString(reservation.getOfferId()));
+		reservationElement.addContent(offerIdElement);
+
+		Element stateElement= new Element("state", XML_NS);
+		stateElement.setText(reservation.getState());
+		reservationElement.addContent(stateElement);
+
+		Element requestDateElement = calendarToJDOMElement(
+				reservation.getRequestDate(), "requestDate");
+		reservationElement.addContent(requestDateElement);
+
+		Element creditCardElement= new Element("creditCardNumber", XML_NS);
+		creditCardElement.setText(reservation.getCreditCardNumber());
+		reservationElement.addContent(creditCardElement);
+		
+		Element reservationPriceElement = new Element("reservationPrice", XML_NS);
+		reservationPriceElement.setText(Float.toString(reservation.getReservationPrice()));
+		reservationElement.addContent(reservationPriceElement);
+
+		return reservationElement;
+	}
+
+	private static Element calendarToJDOMElement(Calendar cal, String name) {
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss");
+		Element element = new Element(name, XML_NS);
+		element.setAttribute("type", "xs:dateTime");
+		formatter.format(cal.getTime());
+		element.setText(formatter.format(cal.getTime()));
+		return element;
+	}
+	
 }
