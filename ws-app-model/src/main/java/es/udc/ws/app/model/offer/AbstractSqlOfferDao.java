@@ -120,23 +120,23 @@ public abstract class AbstractSqlOfferDao implements SqlOfferDao {
 				+ "realPrice, discountedPrice, fee, valid, faceBookId FROM Offer ";
 
 		if (!showAll) {
-			queryString += "WHERE valid=1";
+			queryString += "WHERE (valid=1)";
 		} else {
-			queryString += "WHERE valid=0 || valid=1";
+			queryString += "WHERE (valid=0 || valid=1)";
 		}
 		if (words != null && words.length > 0) {
 			queryString += " AND ";
 			for (int i = 0; i < words.length; i++) {
 				if (i > 0)
 					queryString += " AND ";
-				queryString += "LOWER(description) LIKE LOWER(?)";
+				queryString += "(LOWER(description) LIKE LOWER(?))";
 			}
 
 		}
 
 		if (data != null) {
 			queryString += " AND";
-			queryString += " limitReservationDate >= ?";
+			queryString += " (limitReservationDate >= ?)";
 		}
 		queryString += " ORDER BY name";
 		try (PreparedStatement preparedStatement = connection
