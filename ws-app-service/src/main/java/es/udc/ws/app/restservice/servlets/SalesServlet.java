@@ -258,7 +258,7 @@ public class SalesServlet extends HttpServlet {
 							XmlExceptionConversor
 									.toInputValidationExceptionXml(new InputValidationException(
 											"Invalid Request: "
-													+ "invalid reservation id")),
+													+ "invalid parameters")),
 							null);
 			return;
 		}
