@@ -1,0 +1,17 @@
+es/udc/ws/app/xml/XmlReservationDtoConversor.class
+es/udc/ws/app/xml/ParsingException.class
+es/udc/ws/app/exceptions/NotClaimableException.class
+es/udc/ws/app/xml/XmlExceptionConversor.class
+es/udc/ws/app/exceptions/FacebookException.class
+es/udc/ws/app/exceptions/AlreadyInvalidatedException.class
+es/udc/ws/app/dto/UserOfferDto.class
+es/udc/ws/app/exceptions/ReservationTimeExpiredException.class
+es/udc/ws/app/dto/CreationOfferDto.class
+es/udc/ws/app/dto/OfferDto.class
+es/udc/ws/app/exceptions/NotModifiableOfferException.class
+es/udc/ws/app/exceptions/HttpFacebookException.class
+es/udc/ws/app/xml/XmlOfferDtoConversor.class
+es/udc/ws/app/exceptions/AlreadyReservatedException.class
+es/udc/ws/app/validation/PropertyValidator.class
+es/udc/ws/app/dto/ReservationDto.class
+es/udc/ws/app/xml/XmlCreationOfferDtoConversor.class

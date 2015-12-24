@@ -319,7 +319,7 @@ public class RestClientOfferService implements ClientOfferService {
 			Element rootElement = document.getRootElement();
 			code = Integer.valueOf(rootElement.getChildTextTrim("internalCode",
 					XmlOfferDtoConversor.XML_NS));
-			input.reset();
+			
 		} catch (JDOMException | IOException e) {
 			throw new ParsingException(e);
 		}

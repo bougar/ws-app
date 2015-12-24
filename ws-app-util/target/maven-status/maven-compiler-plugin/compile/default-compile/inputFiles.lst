@@ -1,0 +1,17 @@
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/xml/XmlReservationDtoConversor.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/dto/CreationOfferDto.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/dto/OfferDto.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/exceptions/AlreadyReservatedException.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/dto/UserOfferDto.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/dto/ReservationDto.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/exceptions/NotClaimableException.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/exceptions/NotModifiableOfferException.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/exceptions/FacebookException.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/xml/XmlCreationOfferDtoConversor.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/validation/PropertyValidator.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/xml/XmlOfferDtoConversor.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/xml/ParsingException.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/exceptions/AlreadyInvalidatedException.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/exceptions/HttpFacebookException.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/xml/XmlExceptionConversor.java
+/home/bougar/workspace/ws-app/ws-app-util/src/main/java/es/udc/ws/app/exceptions/ReservationTimeExpiredException.java

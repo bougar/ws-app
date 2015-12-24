@@ -1,5 +1,8 @@
 package es.udc.ws.app.serviceutil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.model.offer.Offer;
 import es.udc.ws.app.model.offer.ReturnedOffer;
@@ -13,6 +16,13 @@ public class OfferToOfferDtoConversor {
 				offer.getDiscountedPrice(), offer.isValid(), offer.getLikes());
 	}
 	
+	public static List<OfferDto> toOffersDto(List<ReturnedOffer> offers){
+		List<OfferDto> offersDto = new ArrayList<OfferDto>();
+		for (ReturnedOffer o : offers)
+			offersDto.add(toOfferDto(o));
+		return offersDto;
+			
+	}
 	public static Offer toOffer(OfferDto offerDto,long fee){
 		return new Offer(offerDto.getOfferId(), offerDto.getName(),
 				offerDto.getDescription(),

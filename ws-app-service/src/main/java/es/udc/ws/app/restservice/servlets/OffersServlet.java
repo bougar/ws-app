@@ -2,6 +2,7 @@ package es.udc.ws.app.restservice.servlets;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,7 +184,7 @@ public class OffersServlet extends HttpServlet {
 			return;
 		}
 		if (function == null | function.equals("update")) {
-			updateOffer(offerId,resp,req.getInputStream());
+			updateOffer(offerId, resp, req.getInputStream());
 			return;
 		} else if (function.equals("invalidate")) {
 			invalidateOffer(offerId, resp);
@@ -244,31 +245,50 @@ public class OffersServlet extends HttpServlet {
 				HttpServletResponse.SC_NO_CONTENT, null, null);
 	}
 
-	/*
-	 * 
-	 * @Override protected void doGet(HttpServletRequest req,
-	 * HttpServletResponse resp) throws ServletException, IOException { String
-	 * path = ServletUtils.normalizePath(req.getPathInfo()); if (path == null ||
-	 * path.length() == 0) { String keyWords = req.getParameter("keywords");
-	 * List<Movie> movies = MovieServiceFactory.getService().findMovies(
-	 * keyWords); List<MovieDto> movieDtos = MovieToMovieDtoConversor
-	 * .toMovieDtos(movies); ServletUtils.writeServiceResponse(resp,
-	 * HttpServletResponse.SC_OK, XmlMovieDtoConversor.toXml(movieDtos), null);
-	 * } else { String movieIdAsString = path.substring(1); Long movieId; try {
-	 * movieId = Long.valueOf(movieIdAsString); } catch (NumberFormatException
-	 * ex) { ServletUtils .writeServiceResponse( resp,
-	 * HttpServletResponse.SC_BAD_REQUEST, XmlExceptionConversor
-	 * .toInputValidationExceptionXml(new InputValidationException(
-	 * "Invalid Request: " + "invalid movie id'" + movieIdAsString + "'")),
-	 * null);
-	 * 
-	 * return; } Movie movie; try { movie =
-	 * MovieServiceFactory.getService().findMovie(movieId); } catch
-	 * (InstanceNotFoundException ex) { ServletUtils.writeServiceResponse(resp,
-	 * HttpServletResponse.SC_NOT_FOUND,
-	 * XmlExceptionConversor.toInstanceNotFoundException(ex), null); return; }
-	 * MovieDto movieDto = MovieToMovieDtoConversor.toMovieDto(movie);
-	 * ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
-	 * XmlMovieDtoConversor.toXml(movieDto), null); } }
-	 */
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String path = ServletUtils.normalizePath(req.getPathInfo());
+		if (path == null || path.length() == 0) {
+			String keyWords = req.getParameter("keywords");
+			List<ReturnedOffer> offers = OfferServiceFactory.getService().findOffers(
+					keyWords, true, Calendar.getInstance());
+			List<OfferDto> offerDtos = OfferToOfferDtoConversor
+					.toOffersDto(offers);
+			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+					XmlOfferDtoConversor.toXml(offerDtos), null);
+		} else {
+			String offerIdAsString = path.substring(1);
+			Long offerId;
+			try {
+				offerId = Long.valueOf(offerIdAsString);
+			} catch (NumberFormatException ex) {
+				ServletUtils
+						.writeServiceResponse(
+								resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(new InputValidationException(
+												"Invalid Request: "
+														+ "invalid offer id'"
+														+ offerIdAsString + "'")),
+								null);
+
+				return;
+			}
+			ReturnedOffer offer;
+			try {
+				offer = OfferServiceFactory.getService().findOffer(offerId);
+			} catch (InstanceNotFoundException ex) {
+				ServletUtils.writeServiceResponse(resp,
+						HttpServletResponse.SC_NOT_FOUND,
+						XmlExceptionConversor.toInstanceNotFoundException(ex),
+						null);
+				return;
+			}
+			OfferDto offerDto = OfferToOfferDtoConversor.toOfferDto(offer);
+			ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+					XmlOfferDtoConversor.toXml(offerDto), null);
+		}
+	}
 }
