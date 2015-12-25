@@ -244,8 +244,8 @@ public class ReservationServlet extends HttpServlet {
 		String function = req.getParameter("function");
 		List<Reservation> reservations = null;
 		try {
-			if (function.equals("userInfo")){
-				
+			if (function.equals("userInfo")) {
+
 				String user = req.getParameter("user");
 				reservations = OfferServiceFactory.getService()
 						.findReservationByUser(user, true);
@@ -259,8 +259,7 @@ public class ReservationServlet extends HttpServlet {
 						offer = OfferServiceFactory.getService().findOffer(
 								r.getOfferId());
 					} catch (InstanceNotFoundException e) {
-						ServletUtils
-						.writeServiceResponse(resp,
+						ServletUtils.writeServiceResponse(resp,
 								HttpServletResponse.SC_NOT_FOUND,
 								XmlExceptionConversor
 										.toInstanceNotFoundException(e), null);
@@ -269,25 +268,35 @@ public class ReservationServlet extends HttpServlet {
 					description = offer.getDescription();
 					discountedPrice = offer.getDiscountedPrice();
 					requestDate = r.getRequestDate();
-					userOffers.add(new UserOfferDto(description, discountedPrice,
-							requestDate));
+					userOffers.add(new UserOfferDto(description,
+							discountedPrice, requestDate));
 				}
-				ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+				ServletUtils.writeServiceResponse(resp,
+						HttpServletResponse.SC_OK,
 						XmlUserOfferDtoConversor.toXml(userOffers), null);
 				return;
-			
-			}
-			if (function == null | function.equals("byOfferId")) {
+
+			} else if (function == null | function.equals("byOfferId")) {
 				Long offerId = Long.valueOf(req.getParameter("offerId"));
 				reservations = OfferServiceFactory.getService()
 						.findReservationByOfferId(offerId);
-			}
-
-			if (function.equals("byUser")) {
+			} else if (function.equals("byUser")) {
 				String email = req.getParameter("email");
 				boolean state = Boolean.valueOf(req.getParameter("state"));
 				reservations = OfferServiceFactory.getService()
 						.findReservationByUser(email, state);
+			} else {
+				ServletUtils
+						.writeServiceResponse(
+								resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(new InputValidationException(
+												"Invalid function: " + "'"
+														+ function + "'"
+														+ " invalid parameters")),
+								null);
+				return;
 			}
 
 			List<ReservationDto> reservationDtos = ReservationToReservationDtoConversor
