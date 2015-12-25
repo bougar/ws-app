@@ -29,6 +29,27 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
+     * @throws SoapInputValidationException
+     * @throws SoapInstanceNotFoundException
+     * @throws SoapNotModifiableOfferException
+     */
+    @WebMethod
+    @RequestWrapper(localName = "updateOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.UpdateOffer")
+    @ResponseWrapper(localName = "updateOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.UpdateOfferResponse")
+    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/updateOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/updateOfferResponse", fault = {
+        @FaultAction(className = SoapInputValidationException.class, value = "http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapInputValidationException"),
+        @FaultAction(className = SoapInstanceNotFoundException.class, value = "http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapInstanceNotFoundException"),
+        @FaultAction(className = SoapNotModifiableOfferException.class, value = "http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapNotModifiableOfferException")
+    })
+    public void updateOffer(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Offer arg0)
+        throws SoapInputValidationException, SoapInstanceNotFoundException, SoapNotModifiableOfferException
+    ;
+
+    /**
+     * 
+     * @param arg0
      * @return
      *     returns es.udc.ws.app.client.service.soap.wsdl.OfferDto
      * @throws SoapInputValidationException
@@ -50,21 +71,19 @@ public interface OfferProvider {
      * 
      * @param arg0
      * @throws SoapInstanceNotFoundException
-     * @throws SoapInputValidationException
      * @throws SoapNotModifiableOfferException
      */
     @WebMethod
-    @RequestWrapper(localName = "updateOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.UpdateOffer")
-    @ResponseWrapper(localName = "updateOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.UpdateOfferResponse")
-    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/updateOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/updateOfferResponse", fault = {
-        @FaultAction(className = SoapInputValidationException.class, value = "http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapInputValidationException"),
-        @FaultAction(className = SoapInstanceNotFoundException.class, value = "http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapInstanceNotFoundException"),
-        @FaultAction(className = SoapNotModifiableOfferException.class, value = "http://soap.ws.app.udc.es/OfferProvider/updateOffer/Fault/SoapNotModifiableOfferException")
+    @RequestWrapper(localName = "removeOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.RemoveOffer")
+    @ResponseWrapper(localName = "removeOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.RemoveOfferResponse")
+    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/removeOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/removeOfferResponse", fault = {
+        @FaultAction(className = SoapInstanceNotFoundException.class, value = "http://soap.ws.app.udc.es/OfferProvider/removeOffer/Fault/SoapInstanceNotFoundException"),
+        @FaultAction(className = SoapNotModifiableOfferException.class, value = "http://soap.ws.app.udc.es/OfferProvider/removeOffer/Fault/SoapNotModifiableOfferException")
     })
-    public void updateOffer(
+    public void removeOffer(
         @WebParam(name = "arg0", targetNamespace = "")
-        Offer arg0)
-        throws SoapInputValidationException, SoapInstanceNotFoundException, SoapNotModifiableOfferException
+        long arg0)
+        throws SoapInstanceNotFoundException, SoapNotModifiableOfferException
     ;
 
     /**
@@ -94,11 +113,11 @@ public interface OfferProvider {
      * @param arg0
      * @return
      *     returns long
-     * @throws SoapInstanceNotFoundException
-     * @throws SoapReservationTimeExpiredException
      * @throws SoapAlreadyInvalidatedException
+     * @throws SoapReservationTimeExpiredException
      * @throws SoapAlreadyReservedException
      * @throws SoapInputValidationException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -179,8 +198,8 @@ public interface OfferProvider {
     /**
      * 
      * @param arg0
-     * @throws SoapInstanceNotFoundException
      * @throws SoapAlreadyInvalidatedException
+     * @throws SoapInstanceNotFoundException
      */
     @WebMethod
     @RequestWrapper(localName = "offerInvalidation", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.OfferInvalidation")
@@ -233,25 +252,6 @@ public interface OfferProvider {
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0)
         throws SoapInstanceNotFoundException
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @throws SoapInstanceNotFoundException
-     * @throws SoapNotModifiableOfferException
-     */
-    @WebMethod
-    @RequestWrapper(localName = "removeOffer", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.RemoveOffer")
-    @ResponseWrapper(localName = "removeOfferResponse", targetNamespace = "http://soap.ws.app.udc.es/", className = "es.udc.ws.app.client.service.soap.wsdl.RemoveOfferResponse")
-    @Action(input = "http://soap.ws.app.udc.es/OfferProvider/removeOfferRequest", output = "http://soap.ws.app.udc.es/OfferProvider/removeOfferResponse", fault = {
-        @FaultAction(className = SoapInstanceNotFoundException.class, value = "http://soap.ws.app.udc.es/OfferProvider/removeOffer/Fault/SoapInstanceNotFoundException"),
-        @FaultAction(className = SoapNotModifiableOfferException.class, value = "http://soap.ws.app.udc.es/OfferProvider/removeOffer/Fault/SoapNotModifiableOfferException")
-    })
-    public void removeOffer(
-        @WebParam(name = "arg0", targetNamespace = "")
-        long arg0)
-        throws SoapInstanceNotFoundException, SoapNotModifiableOfferException
     ;
 
 }
