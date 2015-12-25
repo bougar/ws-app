@@ -1,18 +1,43 @@
 package es.udc.ws.app.xml;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
 
+import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.dto.UserOfferDto;
 
 public class XmlUserOfferDtoConversor {
 	public final static Namespace XML_NS = Namespace
 			.getNamespace("http://ws.udc.es/offers/xml");
+	
+	public static Document toXml(UserOfferDto offer) throws IOException {
 
+		Element offerElement = toJDOMElement(offer);
+
+		return new Document(offerElement);
+	}
+	
+	public static Document toXml(List<UserOfferDto> offers) throws IOException {
+		Element elements = new Element("offers", XML_NS);
+		for (UserOfferDto o : offers) {
+			Element offerElement = toJDOMElement(o);
+			elements.addContent(offerElement);
+
+		}
+		return new Document(elements);
+
+	}
+	
 	public static Element toJDOMElement(UserOfferDto offer) {
 		Element offerElement = new Element("userOfferDto", XML_NS);
 
@@ -50,6 +75,45 @@ public class XmlUserOfferDtoConversor {
 		}
 
 	}
+	
+	public static UserOfferDto toOffer(InputStream input) {
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document document = builder.build(input);
+			Element rootElement = document.getRootElement();
+			return toOffer(rootElement);
+        } catch (ParsingException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ParsingException(e);
+        }
+	}
+	
+	public static List<UserOfferDto> toOffers(InputStream input) {
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document document = builder.build(input);
+			Element rootElement = document.getRootElement();
+			if (!"offers".equals(rootElement.getName())) {
+				throw new ParsingException("Unrecognized element '"
+						+ rootElement.getName() + "' ('offers' expected)");
+			}
+		
+			List<Element> children = rootElement.getChildren();
+			List<UserOfferDto> offers = new ArrayList<UserOfferDto> (children.size());
+			for (int i = 0; i < children.size(); i++) {
+                Element element = children.get(i);
+                offers.add(toOffer(element));
+            }
+			return offers;
+        } catch (ParsingException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ParsingException(e);
+        }
+	}
+	
+	
 	
 	private static Element calendarToJDOMElement(Calendar cal, String name) {
 		SimpleDateFormat formatter = new SimpleDateFormat(

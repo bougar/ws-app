@@ -8,7 +8,7 @@ import java.util.List;
 
 import es.udc.ws.app.client.service.ClientOfferService;
 import es.udc.ws.app.client.service.ClientOfferServiceFactory;
-import es.udc.ws.app.client.types.*;
+import es.udc.ws.app.dto.UserOfferDto;
 import es.udc.ws.app.dto.CreationOfferDto;
 import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.dto.ReservationDto;

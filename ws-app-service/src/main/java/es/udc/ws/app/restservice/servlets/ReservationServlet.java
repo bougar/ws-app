@@ -1,6 +1,8 @@
 package es.udc.ws.app.restservice.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,16 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import es.udc.ws.app.dto.ReservationDto;
+import es.udc.ws.app.dto.UserOfferDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
+import es.udc.ws.app.model.offer.ReturnedOffer;
 import es.udc.ws.app.model.offerservice.OfferServiceFactory;
 import es.udc.ws.app.model.reservation.Reservation;
 import es.udc.ws.app.serviceutil.ReservationToReservationDtoConversor;
+import es.udc.ws.app.soapserviceexceptions.SoapInstanceNotFoundException;
+import es.udc.ws.app.soapserviceexceptions.SoapInstanceNotFoundExceptionInfo;
 import es.udc.ws.app.xml.ParsingException;
 import es.udc.ws.app.xml.XmlExceptionConversor;
 import es.udc.ws.app.xml.XmlReservationDtoConversor;
+import es.udc.ws.app.xml.XmlUserOfferDtoConversor;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.servlet.ServletUtils;
@@ -237,7 +244,39 @@ public class ReservationServlet extends HttpServlet {
 		String function = req.getParameter("function");
 		List<Reservation> reservations = null;
 		try {
-
+			if (function.equals("userInfo")){
+				
+				String user = req.getParameter("user");
+				reservations = OfferServiceFactory.getService()
+						.findReservationByUser(user, true);
+				List<UserOfferDto> userOffers = new ArrayList<UserOfferDto>();
+				Calendar requestDate = null;
+				String description = null;
+				float discountedPrice;
+				for (Reservation r : reservations) {
+					ReturnedOffer offer = null;
+					try {
+						offer = OfferServiceFactory.getService().findOffer(
+								r.getOfferId());
+					} catch (InstanceNotFoundException e) {
+						ServletUtils
+						.writeServiceResponse(resp,
+								HttpServletResponse.SC_NOT_FOUND,
+								XmlExceptionConversor
+										.toInstanceNotFoundException(e), null);
+						return;
+					}
+					description = offer.getDescription();
+					discountedPrice = offer.getDiscountedPrice();
+					requestDate = r.getRequestDate();
+					userOffers.add(new UserOfferDto(description, discountedPrice,
+							requestDate));
+				}
+				ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+						XmlUserOfferDtoConversor.toXml(userOffers), null);
+				return;
+			
+			}
 			if (function == null | function.equals("byOfferId")) {
 				Long offerId = Long.valueOf(req.getParameter("offerId"));
 				reservations = OfferServiceFactory.getService()

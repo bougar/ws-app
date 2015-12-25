@@ -5,12 +5,12 @@ import java.util.List;
 import es.udc.ws.app.dto.CreationOfferDto;
 import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.dto.ReservationDto;
+import es.udc.ws.app.dto.UserOfferDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
 import es.udc.ws.app.exceptions.NotModifiableOfferException;
 import es.udc.ws.app.exceptions.ReservationTimeExpiredException;
-import es.udc.ws.app.client.types.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 

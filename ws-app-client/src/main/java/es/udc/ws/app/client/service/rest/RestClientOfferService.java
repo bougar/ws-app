@@ -23,10 +23,10 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import es.udc.ws.app.client.service.ClientOfferService;
-import es.udc.ws.app.client.types.UserOfferDto;
 import es.udc.ws.app.dto.CreationOfferDto;
 import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.dto.ReservationDto;
+import es.udc.ws.app.dto.UserOfferDto;
 import es.udc.ws.app.exceptions.AlreadyInvalidatedException;
 import es.udc.ws.app.exceptions.AlreadyReservatedException;
 import es.udc.ws.app.exceptions.NotClaimableException;
@@ -37,6 +37,7 @@ import es.udc.ws.app.xml.XmlCreationOfferDtoConversor;
 import es.udc.ws.app.xml.XmlExceptionConversor;
 import es.udc.ws.app.xml.XmlOfferDtoConversor;
 import es.udc.ws.app.xml.XmlReservationDtoConversor;
+import es.udc.ws.app.xml.XmlUserOfferDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -235,10 +236,10 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InstanceNotFoundException {
 		try {
 			HttpResponse response = Request
-					.Get(getEndpointAddress() + "reservations/search?function=userInfor&user="
+					.Get(getEndpointAddress() + "reservations/search?function=userInfo&user="
 							+ URLEncoder.encode(user, "UTF-8")).execute()
 					.returnResponse();
-			return null;
+			return XmlUserOfferDtoConversor.toOffers(response.getEntity().getContent());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
