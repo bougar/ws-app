@@ -258,5 +258,7 @@ public class Offer {
 			return false;
 		return true;
 	}
+	
+	
 
 }

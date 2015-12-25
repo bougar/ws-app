@@ -114,15 +114,14 @@ public class OfferDto {
 	@Override
 	public String toString() {
 
-		DateFormat reservation = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
-		DateFormat application = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
-		reservation.setCalendar(limitReservationDate);
-		application.setCalendar(limitApplicationDate);
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
 		return "OfferDto [name=" + name + ", description=" + description
-				+ ", limitReservationDate=" + reservation
-				+ ", limitApplicationDate=" + application + ", realPrice="
-				+ realPrice + ", discountedPrice=" + discountedPrice
-				+ ", offerId=" + offerId + ", isValid=" + isValid + ", likes="
-				+ likes + "]";
+				+ ", limitReservationDate="
+				+ formatter.format(limitReservationDate.getTime())
+				+ ", limitApplicationDate="
+				+ formatter.format(limitApplicationDate.getTime())
+				+ ", realPrice=" + realPrice + ", discountedPrice="
+				+ discountedPrice + ", offerId=" + offerId + ", isValid="
+				+ isValid + ", likes=" + likes + "]";
 	}
 }
