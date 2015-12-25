@@ -182,7 +182,7 @@ public class RestClientOfferService implements ClientOfferService {
 		try {
 			HttpResponse response = Request
 					.Get(getEndpointAddress()
-							+ "reservations?function=byOfferId&offerId="
+							+ "reservations/search?function=byOfferId&offerId="
 							+ URLEncoder.encode(Long.toString(offerId), "UTF-8"))
 					.execute().returnResponse();
 			validateStatusCode(HttpStatus.SC_OK, response);
@@ -201,7 +201,7 @@ public class RestClientOfferService implements ClientOfferService {
 		try {
 			HttpResponse response = Request
 					.Get(getEndpointAddress()
-							+ "reservations?function=byUser&email="
+							+ "reservations/search?function=byUser&email="
 							+ URLEncoder.encode(email, "UTF-8")
 							+ "&state="
 							+ URLEncoder.encode(Boolean.toString(state),
@@ -235,7 +235,7 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InstanceNotFoundException {
 		try {
 			HttpResponse response = Request
-					.Get(getEndpointAddress() + "userOffers?user="
+					.Get(getEndpointAddress() + "reservations/search?function=userInfor&user="
 							+ URLEncoder.encode(user, "UTF-8")).execute()
 					.returnResponse();
 			return null;

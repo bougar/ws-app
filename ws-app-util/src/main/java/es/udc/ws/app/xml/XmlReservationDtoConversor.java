@@ -2,6 +2,7 @@ package es.udc.ws.app.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,7 +45,7 @@ public class XmlReservationDtoConversor {
 			SAXBuilder builder = new SAXBuilder();
 			Document document = builder.build(input);
 			Element rootElement = document.getRootElement();
-			if (!"reservationes".equals(rootElement.getName())) {
+			if (!"reservations".equals(rootElement.getName())) {
 				throw new ParsingException("Unrecognized element '"
 						+ rootElement.getName() + "' ('reservations' expected)");
 			}
@@ -101,7 +102,7 @@ public class XmlReservationDtoConversor {
         
         if (reservation.getRequestDate() != null) {
             Element requestDateElement = getRequestDate(reservation
-                    .getRequestDate());
+                    .getRequestDate(),"requestDate");
             reservationElement.addContent(requestDateElement);
         }
         
@@ -118,7 +119,7 @@ public class XmlReservationDtoConversor {
 
     private static ReservationDto toReservation(Element reservationElement)
             throws ParsingException, DataConversionException,
-            NumberFormatException {
+            NumberFormatException, ParseException {
         if (!"reservation".equals(reservationElement.getName())) {
             throw new ParsingException("Unrecognized element '"
                     + reservationElement.getName() + "' ('reservation' expected)");
@@ -140,8 +141,7 @@ public class XmlReservationDtoConversor {
         
         String state = reservationElement.getChildTextTrim("state", XML_NS);
         
-        Calendar requestDate = getRequestDate(reservationElement.getChild(
-                "requestDate", XML_NS));
+        Calendar requestDate = getRequestDate(reservationElement,"requestDate");
         
         String creditCardNumber = reservationElement.getChildTextTrim("creditCardNumber", XML_NS);
         
@@ -155,37 +155,26 @@ public class XmlReservationDtoConversor {
     			reservationPrice);
     }
 
-    private static Calendar getRequestDate(Element requestDateElement)
-            throws DataConversionException {
+    private static Calendar getRequestDate(Element e,String name)
+            throws DataConversionException, ParseException {
 
-        if (requestDateElement == null) {
-            return null;
-        }
-        int day = requestDateElement.getAttribute("day").getIntValue();
-        int month = requestDateElement.getAttribute("month").getIntValue();
-        int year = requestDateElement.getAttribute("year").getIntValue();
-        Calendar requestDate = Calendar.getInstance();
-
-        requestDate.set(Calendar.DAY_OF_MONTH, day);
-        requestDate.set(Calendar.MONTH, Calendar.JANUARY + month - 1);
-        requestDate.set(Calendar.YEAR, year);
-
-        return requestDate;
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(formatter.parse(e.getChildTextNormalize(name, XML_NS)));
+		return cal;
 
     }
 
-    private static Element getRequestDate(Calendar requestDate) {
+    private static Element getRequestDate(Calendar cal, String name) {
 
-        Element requestDateElement = new Element("requestDate", XML_NS);
-        int day = requestDate.get(Calendar.DAY_OF_MONTH);
-        int month = requestDate.get(Calendar.MONTH) - Calendar.JANUARY + 1;
-        int year = requestDate.get(Calendar.YEAR);
-
-        requestDateElement.setAttribute("day", Integer.toString(day));
-        requestDateElement.setAttribute("month", Integer.toString(month));
-        requestDateElement.setAttribute("year", Integer.toString(year));
-
-        return requestDateElement;
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss");
+		Element element = new Element(name, XML_NS);
+		element.setAttribute("type", "xs:dateTime");
+		formatter.format(cal.getTime());
+		element.setText(formatter.format(cal.getTime()));
+		return element;
 
     }
     

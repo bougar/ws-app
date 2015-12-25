@@ -76,10 +76,10 @@ public class XmlOfferDtoConversor {
         }
 	}
 
-	private static OfferDto toOffer(Element e) throws ParsingException {
+	public static OfferDto toOffer(Element e) throws ParsingException {
 		if (!"offer".equals(e.getName()))
 			throw new ParsingException("Unrecognized element '" + e.getName()
-					+ "' ('offermovie' expected)");
+					+ "' ('offerDto' expected)");
 		try {
 			Long offerId = null;
 			Element identifier = e.getChild("offerId", XML_NS);

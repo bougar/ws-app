@@ -222,7 +222,7 @@ public class ReservationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String path = ServletUtils.normalizePath(req.getPathInfo());
-		if (path == null || path.length() == 0) {
+		if (path == null || path.length() == 0 || !path.equals("/search")) {
 			ServletUtils
 					.writeServiceResponse(
 							resp,
