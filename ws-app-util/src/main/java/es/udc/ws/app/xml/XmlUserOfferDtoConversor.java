@@ -13,7 +13,6 @@ import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 
-import es.udc.ws.app.dto.OfferDto;
 import es.udc.ws.app.dto.UserOfferDto;
 
 public class XmlUserOfferDtoConversor {
