@@ -40,6 +40,8 @@ public class OfferServiceClient {
 				System.out.println(clientOfferService.addOffer(offer));
 			} catch (InputValidationException e) {
 				System.err.println(e.getMessage());
+			} catch (Exception e){
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -59,6 +61,8 @@ public class OfferServiceClient {
 				System.err.println(e.getMessage());
 			} catch (NotModifiableOfferException e) {
 				System.err.println(e.getMessage());
+			} catch (Exception e){
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -71,6 +75,8 @@ public class OfferServiceClient {
 			} catch (InstanceNotFoundException e) {
 				System.err.println(e.getMessage());
 			} catch (NotModifiableOfferException e) {
+				System.err.println(e.getMessage());
+			} catch (Exception e){
 				System.err.println(e.getMessage());
 			}
 		}
@@ -85,6 +91,8 @@ public class OfferServiceClient {
 				System.err.println(e.getMessage());
 			} catch (AlreadyInvalidatedException e) {
 				System.err.println(e.getMessage());
+			} catch (Exception e){
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -95,6 +103,8 @@ public class OfferServiceClient {
 			} catch (NumberFormatException e) {
 				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
+				System.err.println(e.getMessage());
+			} catch (Exception e){
 				System.err.println(e.getMessage());
 			}
 		}
@@ -138,6 +148,8 @@ public class OfferServiceClient {
 				System.err.println(e.getMessage());
 			} catch (NotClaimableException e) {
 				System.err.println(e.getMessage());
+			} catch (Exception e){
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -151,6 +163,8 @@ public class OfferServiceClient {
 			} catch (NumberFormatException e) {
 				System.err.println(e.getMessage());
 			} catch (InstanceNotFoundException e) {
+				System.err.println(e.getMessage());
+			} catch (Exception e){
 				System.err.println(e.getMessage());
 			}
 		}
@@ -170,6 +184,8 @@ public class OfferServiceClient {
 				for ( UserOfferDto u : userOffers)
 					System.out.println(u);
 			} catch (InstanceNotFoundException e) {
+				System.err.println(e.getMessage());
+			} catch (Exception e){
 				System.err.println(e.getMessage());
 			}
 		}

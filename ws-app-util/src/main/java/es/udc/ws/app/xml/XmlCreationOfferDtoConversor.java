@@ -45,7 +45,7 @@ public class XmlCreationOfferDtoConversor {
 		offerElement.addContent(limitReservationDate);
 
 		Element limitApplicationDate = calendarToJDOMElement(
-				offer.getLimitReservationDate(), "limitApplicationDate");
+				offer.getLimitApplicationDate(), "limitApplicationDate");
 		offerElement.addContent(limitApplicationDate);
 
 		Element realPrice = new Element("realPrice", XML_NS);

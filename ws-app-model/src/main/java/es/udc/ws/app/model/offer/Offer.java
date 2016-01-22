@@ -5,16 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Offer {
-	
+
 	@Override
 	public String toString() {
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
-		return "[name=" + name + ", description=" + description
-				+ ", realPrice=" + realPrice + ", discountedPrice="
-				+ discountedPrice + ", limitApplicationDate="
+		String str = "name=" + name + "%ndescription=" + description
+				+ "%nrealPrice=" + realPrice + "%ndiscountedPrice="
+				+ discountedPrice + "%nlimitApplicationDate="
 				+ format.format(limitApplicationDate.getTime())
-				+ ", limitReservationDate="
-				+ format.format(limitReservationDate.getTime()) +"]";
+				+ "%nlimitReservationDate="
+				+ format.format(limitReservationDate.getTime());
+		return String.format(str);
 	}
 
 	private String name;
@@ -258,7 +259,5 @@ public class Offer {
 			return false;
 		return true;
 	}
-	
-	
 
 }

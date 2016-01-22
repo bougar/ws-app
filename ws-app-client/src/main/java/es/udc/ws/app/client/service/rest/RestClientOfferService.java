@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
 
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Form;
@@ -162,8 +161,8 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InstanceNotFoundException, NotClaimableException {
 		try {
 			HttpResponse response = Request
-					.Put(getEndpointAddress() + "reservations/"
-							+ +reservationId)
+					.Post(getEndpointAddress() + "reservations/"
+							+ reservationId + "/claimReservation")
 					.bodyForm(Form.form().add("email", email).build())
 					.execute().returnResponse();
 			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
@@ -219,10 +218,11 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InstanceNotFoundException, AlreadyInvalidatedException {
 		try {
 			HttpResponse response = Request
-					.Put(getEndpointAddress() + "offers/"
-							+ +offerId + "?function=invalidate").execute().returnResponse();
+					.Put(getEndpointAddress() + "offers/" + +offerId
+							+ "?function=invalidate").execute()
+					.returnResponse();
 			validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
-		} catch (InstanceNotFoundException | AlreadyInvalidatedException e){
+		} catch (InstanceNotFoundException | AlreadyInvalidatedException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -234,10 +234,12 @@ public class RestClientOfferService implements ClientOfferService {
 			throws InstanceNotFoundException {
 		try {
 			HttpResponse response = Request
-					.Get(getEndpointAddress() + "reservations/search?function=userInfo&user="
+					.Get(getEndpointAddress()
+							+ "reservations/search?function=userInfo&user="
 							+ URLEncoder.encode(user, "UTF-8")).execute()
 					.returnResponse();
-			return XmlUserOfferDtoConversor.toOffers(response.getEntity().getContent());
+			return XmlUserOfferDtoConversor.toOffers(response.getEntity()
+					.getContent());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -319,7 +321,7 @@ public class RestClientOfferService implements ClientOfferService {
 			code = Integer.valueOf(rootElement.getChildTextTrim("internalCode",
 					XmlOfferDtoConversor.XML_NS));
 			input.reset();
-			
+
 		} catch (JDOMException | IOException e) {
 			throw new ParsingException(e);
 		}

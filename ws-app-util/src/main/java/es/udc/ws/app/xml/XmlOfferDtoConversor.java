@@ -130,7 +130,7 @@ public class XmlOfferDtoConversor {
 		offerElement.addContent(limitReservationDate);
 
 		Element limitApplicationDate = calendarToJDOMElement(
-				offer.getLimitReservationDate(), "limitApplicationDate");
+				offer.getLimitApplicationDate(), "limitApplicationDate");
 		offerElement.addContent(limitApplicationDate);
 
 		Element realPrice = new Element("realPrice", XML_NS);
@@ -151,6 +151,7 @@ public class XmlOfferDtoConversor {
 
 		Element isValid = new Element("isValid", XML_NS);
 		isValid.setText(Boolean.toString(offer.isValid()));
+		offerElement.addContent(isValid);
 
 		return offerElement;
 	}

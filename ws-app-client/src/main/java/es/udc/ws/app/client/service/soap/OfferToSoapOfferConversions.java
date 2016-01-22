@@ -18,7 +18,7 @@ public class OfferToSoapOfferConversions {
 		limitReservationDate.setTime(offer.getLimitReservationDate()
 				.toGregorianCalendar().getTime());
 		Calendar limitApplicationDate = Calendar.getInstance();
-		limitApplicationDate.setTime(offer.getLimitReservationDate()
+		limitApplicationDate.setTime(offer.getLimitApplicationDate()
 				.toGregorianCalendar().getTime());
 		return new es.udc.ws.app.dto.CreationOfferDto(offer.getOfferId(),
 				offer.getName(), offer.getDescription(), limitReservationDate,
@@ -63,7 +63,7 @@ public class OfferToSoapOfferConversions {
 		limitReservationDate.setTime(offer.getLimitReservationDate()
 				.toGregorianCalendar().getTime());
 		Calendar limitApplicationDate = Calendar.getInstance();
-		limitApplicationDate.setTime(offer.getLimitReservationDate()
+		limitApplicationDate.setTime(offer.getLimitApplicationDate()
 				.toGregorianCalendar().getTime());
 		return new es.udc.ws.app.dto.OfferDto(offer.getOfferId(),
 				offer.getName(), offer.getDescription(), limitReservationDate,

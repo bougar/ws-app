@@ -1,5 +1,5 @@
 #!/bin/bash
-JAVA=/opt/jdk/bin/java
+JAVA=/opt/jdk1.8.0_05/bin/java
 JAR=./hola.jar
 OPERATIONS=./operaciones
 if [ ! -f $OPERATIONS ]; then

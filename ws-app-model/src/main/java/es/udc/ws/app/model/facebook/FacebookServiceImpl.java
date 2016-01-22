@@ -1,5 +1,8 @@
 package es.udc.ws.app.model.facebook;
 
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;

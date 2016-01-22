@@ -35,124 +35,199 @@ public class ReservationServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String offerIdParameter = req.getParameter("offerId");
-		if (offerIdParameter == null) {
-			ServletUtils
-					.writeServiceResponse(
-							resp,
-							HttpServletResponse.SC_BAD_REQUEST,
-							XmlExceptionConversor
-									.toInputValidationExceptionXml(new InputValidationException(
-											"Invalid Request: "
-													+ "parameter 'offerId' is mandatory")),
-							null);
-			return;
-		}
-		Long offerId;
-		try {
-			offerId = Long.valueOf(offerIdParameter);
-		} catch (NumberFormatException ex) {
-			ServletUtils
-					.writeServiceResponse(
-							resp,
-							HttpServletResponse.SC_BAD_REQUEST,
-							XmlExceptionConversor
-									.toInputValidationExceptionXml(new InputValidationException(
-											"Invalid Request: "
-													+ "parameter 'offerId' is invalid '"
-													+ offerIdParameter + "'")),
-							null);
+		String path = ServletUtils.normalizePath(req.getPathInfo());
+		if (path == null || path.length() == 0) {
 
-			return;
-		}
-		String email = req.getParameter("email");
-		if (email == null) {
-			ServletUtils
-					.writeServiceResponse(
-							resp,
-							HttpServletResponse.SC_BAD_REQUEST,
-							XmlExceptionConversor
-									.toInputValidationExceptionXml(new InputValidationException(
-											"Invalid Request: "
-													+ "parameter 'email' is mandatory")),
-							null);
-			return;
-		}
-		String creditCardNumber = req.getParameter("creditCardNumber");
-		if (creditCardNumber == null) {
-			ServletUtils
-					.writeServiceResponse(
-							resp,
-							HttpServletResponse.SC_BAD_REQUEST,
-							XmlExceptionConversor
-									.toInputValidationExceptionXml(new InputValidationException(
-											"Invalid Request: "
-													+ "parameter 'creditCardNumber' is mandatory")),
-							null);
+			String offerIdParameter = req.getParameter("offerId");
+			if (offerIdParameter == null) {
+				ServletUtils
+						.writeServiceResponse(
+								resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(new InputValidationException(
+												"Invalid Request: "
+														+ "parameter 'offerId' is mandatory")),
+								null);
+				return;
+			}
+			Long offerId;
+			try {
+				offerId = Long.valueOf(offerIdParameter);
+			} catch (NumberFormatException ex) {
+				ServletUtils
+						.writeServiceResponse(
+								resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(new InputValidationException(
+												"Invalid Request: "
+														+ "parameter 'offerId' is invalid '"
+														+ offerIdParameter
+														+ "'")), null);
 
-			return;
-		}
-		Reservation reservation = null;
-		try {
-			OfferServiceFactory.getService().reserveOffer(offerId, email,
-					creditCardNumber);
+				return;
+			}
+			String email = req.getParameter("email");
+			if (email == null) {
+				ServletUtils
+						.writeServiceResponse(
+								resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(new InputValidationException(
+												"Invalid Request: "
+														+ "parameter 'email' is mandatory")),
+								null);
+				return;
+			}
+			String creditCardNumber = req.getParameter("creditCardNumber");
+			if (creditCardNumber == null) {
+				ServletUtils
+						.writeServiceResponse(
+								resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(new InputValidationException(
+												"Invalid Request: "
+														+ "parameter 'creditCardNumber' is mandatory")),
+								null);
 
-			/*
-			 * reserveOffer returns 'long' value, we need 'Reservation' to call
-			 * the 'DtoConversor', there is no method 'findByReservationId' in
-			 * the service, so we obtain the reservation in a dirty way
-			 */
-			List<Reservation> reservations = OfferServiceFactory.getService()
-					.findReservationByOfferId(offerId);
-			for (Reservation r : reservations)
-				if (email.equals(r.getEmail()))
-					reservation = r;
+				return;
+			}
+			Reservation reservation = null;
+			try {
+				OfferServiceFactory.getService().reserveOffer(offerId, email,
+						creditCardNumber);
 
-		} catch (InstanceNotFoundException ex) {
-			ServletUtils
-					.writeServiceResponse(resp,
+				/*
+				 * reserveOffer returns 'long' value, we need 'Reservation' to
+				 * call the 'DtoConversor', there is no method
+				 * 'findByReservationId' in the service, so we obtain the
+				 * reservation in a dirty way
+				 */
+				List<Reservation> reservations = OfferServiceFactory
+						.getService().findReservationByOfferId(offerId);
+				for (Reservation r : reservations)
+					if (email.equals(r.getEmail()))
+						reservation = r;
+
+			} catch (InstanceNotFoundException ex) {
+				ServletUtils.writeServiceResponse(resp,
+						HttpServletResponse.SC_NOT_FOUND,
+						XmlExceptionConversor.toInstanceNotFoundException(ex),
+						null);
+				return;
+			} catch (InputValidationException ex) {
+				ServletUtils
+						.writeServiceResponse(resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(ex),
+								null);
+				return;
+			} catch (AlreadyInvalidatedException ex) {
+				ServletUtils
+						.writeServiceResponse(resp,
+								HttpServletResponse.SC_GONE,
+								XmlExceptionConversor
+										.toAlreadyInvalidatedException(ex),
+								null);
+				return;
+			} catch (AlreadyReservatedException ex) {
+				ServletUtils.writeServiceResponse(resp,
+						HttpServletResponse.SC_GONE,
+						XmlExceptionConversor.toAlreadyReservatedException(ex),
+						null);
+				return;
+			} catch (ReservationTimeExpiredException ex) {
+				ServletUtils.writeServiceResponse(resp,
+						HttpServletResponse.SC_GONE, XmlExceptionConversor
+								.toReservationTimeExpiredException(ex), null);
+				return;
+			}
+
+			ReservationDto reservationDto = ReservationToReservationDtoConversor
+					.toReservationDto(reservation);
+
+			String reservationURL = ServletUtils.normalizePath(req
+					.getRequestURL().toString())
+					+ "/"
+					+ reservation.getReservationId();
+
+			Map<String, String> headers = new HashMap<>(1);
+			headers.put("Location", reservationURL);
+
+			ServletUtils.writeServiceResponse(resp,
+					HttpServletResponse.SC_CREATED,
+					XmlReservationDtoConversor.toResponse(reservationDto),
+					headers);
+		} else {
+			String[] parameters = path.split("/");
+			if (parameters[2].equals("claimReservation")) {
+				String email = req.getParameter("email");
+				if (email == null) {
+					ServletUtils
+							.writeServiceResponse(
+									resp,
+									HttpServletResponse.SC_BAD_REQUEST,
+									XmlExceptionConversor
+											.toInputValidationExceptionXml(new InputValidationException(
+													"Invalid Request: "
+															+ "parameter 'email' is mandatory")),
+									null);
+					return;
+				}
+				String reservationIdAsString = parameters[1];
+				Long reservationId;
+				try {
+					reservationId = Long.valueOf(reservationIdAsString);
+				} catch (NumberFormatException ex) {
+					ServletUtils
+							.writeServiceResponse(
+									resp,
+									HttpServletResponse.SC_BAD_REQUEST,
+									XmlExceptionConversor
+											.toInputValidationExceptionXml(new InputValidationException(
+													"Invalid Request: "
+															+ "invalid reservation id '"
+															+ reservationIdAsString
+															+ "'")), null);
+					return;
+				}
+				try {
+					OfferServiceFactory.getService().claimOffer(reservationId,
+							email);
+
+				} catch (InstanceNotFoundException ex) {
+					ServletUtils.writeServiceResponse(resp,
 							HttpServletResponse.SC_NOT_FOUND,
 							XmlExceptionConversor
 									.toInstanceNotFoundException(ex), null);
-			return;
-		} catch (InputValidationException ex) {
-			ServletUtils.writeServiceResponse(resp,
-					HttpServletResponse.SC_BAD_REQUEST,
-					XmlExceptionConversor.toInputValidationExceptionXml(ex),
-					null);
-			return;
-		} catch (AlreadyInvalidatedException ex) {
-			ServletUtils.writeServiceResponse(resp,
-					HttpServletResponse.SC_GONE,
-					XmlExceptionConversor.toAlreadyInvalidatedException(ex),
-					null);
-			return;
-		} catch (AlreadyReservatedException ex) {
-			ServletUtils.writeServiceResponse(resp,
-					HttpServletResponse.SC_GONE,
-					XmlExceptionConversor.toAlreadyReservatedException(ex),
-					null);
-			return;
-		} catch (ReservationTimeExpiredException ex) {
-			ServletUtils
-					.writeServiceResponse(resp, HttpServletResponse.SC_GONE,
-							XmlExceptionConversor
-									.toReservationTimeExpiredException(ex),
+					return;
+				} catch (NotClaimableException ex) {
+					ServletUtils.writeServiceResponse(resp,
+							HttpServletResponse.SC_GONE,
+							XmlExceptionConversor.toNotClaimableException(ex),
 							null);
-			return;
+					return;
+				}
+				ServletUtils.writeServiceResponse(resp,
+						HttpServletResponse.SC_NO_CONTENT, null, null);
+			}else{
+				ServletUtils
+						.writeServiceResponse(
+								resp,
+								HttpServletResponse.SC_BAD_REQUEST,
+								XmlExceptionConversor
+										.toInputValidationExceptionXml(new InputValidationException(
+												"Invalid Request: "
+														+ "Invalid function")),
+								null);
+				return;
+
+			}
 		}
-
-		ReservationDto reservationDto = ReservationToReservationDtoConversor
-				.toReservationDto(reservation);
-
-		String reservationURL = ServletUtils.normalizePath(req.getRequestURL()
-				.toString()) + "/" + reservation.getReservationId();
-
-		Map<String, String> headers = new HashMap<>(1);
-		headers.put("Location", reservationURL);
-
-		ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_CREATED,
-				XmlReservationDtoConversor.toResponse(reservationDto), headers);
 	}
 
 	@Override

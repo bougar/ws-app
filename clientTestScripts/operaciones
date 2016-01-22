@@ -1,6 +1,6 @@
--addOffer 'Cena para dos' 'Cena con menú' '10/06/2016 17:00' '10/06/2016 19:00' 80 40 10
+-addOffer 'Cena para dos' 'Cena con menú' '10/06/2016 17:00' '31/12/2016 23:59' 80 40 10
 -addOffer 'Casa rural' 'Habitación doble en la casa rural UDC' '15/03/2016 23:59' '31/12/2016 23:59' 100 70 15
--addOffer 'Fisioterapia' 'Bono de dos sesiones de fisioterapia' '1/06/2016 23:59' '30/06/2016 23:59' 60 30 5 
+-addOffer 'Fisioterapia' 'Bono de dos sesiones de fisioterapia' '22/01/2016 15:14' '22/01/2016 15:16' 60 30 5 
 -updateOffer 2 'Casa rural' 'Habitación triple en la casa rural UDC' '01/12/2016 23:59' '31/12/2016 23:59' 150 100 20
 -findOffer 2
 -findOffer 100
@@ -24,3 +24,6 @@
 -reserveOffer 3 'usr2@udc.es' 1111222233334444
 -removeOffer 1
 -removeOffer 3
+
+ 
+ -addOffer 'Cena para dos' 'Cena con menú degustación para dos personas en el restaurante UDC' '10/06/2016 17:00' '31/12/2016 23:59' 80 40 10
