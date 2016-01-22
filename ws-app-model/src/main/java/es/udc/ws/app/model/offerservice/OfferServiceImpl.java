@@ -58,6 +58,8 @@ public class OfferServiceImpl implements OfferService {
 		PropertyValidator.validateTwoDates("limitReservationDate",
 				offer.getLimitReservationDate(),
 				offer.getLimitApplicationDate());
+		PropertyValidator.validateNow("limitReservationDate",
+				offer.getLimitReservationDate());
 		PropertyValidator.validateFloat("realPrice", offer.getRealPrice(), 0,
 				Float.MAX_VALUE);
 		PropertyValidator.validateFloat("discountedPrice",
@@ -78,14 +80,14 @@ public class OfferServiceImpl implements OfferService {
 						.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				connection.setAutoCommit(false);
 				offer.setValid(true);
-				ReturnedOffer returnedOffer = OfferToReturnedOffer.toReturnedOffer(offer);
+				ReturnedOffer returnedOffer = OfferToReturnedOffer
+						.toReturnedOffer(offer);
 				returnedOffer.setLikes(Long.valueOf(0));
 				offer.setFaceBookId(facebook.addOffer(offer));
 
 				/* Do work. */
 				Offer createdOffer = offerDao.create(connection, offer);
 				returnedOffer.setOfferId(createdOffer.getOfferId());
-				
 
 				/* Commit. */
 
@@ -148,8 +150,8 @@ public class OfferServiceImpl implements OfferService {
 								offer.getOfferId());
 				}
 
-				offer.setFaceBookId(facebook.updateOffer(baseOffer.getFaceBookId(),
-						offer));
+				offer.setFaceBookId(facebook.updateOffer(
+						baseOffer.getFaceBookId(), offer));
 
 				/* Do work. */
 				offerDao.update(connection, offer);

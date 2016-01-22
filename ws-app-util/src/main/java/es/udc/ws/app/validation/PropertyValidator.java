@@ -90,6 +90,15 @@ public final class PropertyValidator {
     	}
     	
     }
+    public static void validateNow(String propertyName, Calendar date)
+        	throws InputValidationException{
+        	
+        	if ( (date == null)  || date.before(Calendar.getInstance())){
+        		throw new InputValidationException("Invalid " + propertyName + 
+        				" value must be after actual date");
+        	}
+        	
+        }
     
     public static void validateCreditCard(String propertyValue)
             throws InputValidationException {
