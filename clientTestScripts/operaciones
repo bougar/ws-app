@@ -1,5 +1,4 @@
--addOffer 'Cena para dos' 'Cena con menú degustación para dos personas en el restaurante
-UDC' '10/06/2016 17:00' '31/12/2016 23:59' 80 40 10
+-addOffer 'Cena para dos' 'Cena con menú degustación para dos personas en el restaurante UDC' '10/06/2016 17:00' '31/12/2016 23:59' 80 40 10
 -addOffer 'Casa rural' 'Habitación doble en la casa rural UDC' '15/03/2016 23:59' '31/12/2016 23:59' 100 70 15
 -addOffer 'Fisioterapia' 'Bono de dos sesiones de fisioterapia' '22/01/2016 15:14' '22/01/2016 15:16' 60 30 5 
 -updateOffer 2 'Casa rural' 'Habitación triple en la casa rural UDC' '01/12/2016 23:59' '31/12/2016 23:59' 150 100 20

@@ -115,14 +115,13 @@ public class OfferDto {
 	public String toString() {
 
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy' 'HH:mm");
-		String str = "name=" + name + "%ndescription=" + description
-				+ "%nlimitReservationDate="
+		return "OfferDto [name=" + name + ", description=" + description
+				+ ", limitReservationDate="
 				+ formatter.format(limitReservationDate.getTime())
-				+ "%nlimitApplicationDate="
+				+ ", limitApplicationDate="
 				+ formatter.format(limitApplicationDate.getTime())
-				+ "%nrealPrice=" + realPrice + ", discountedPrice="
-				+ discountedPrice + "%nofferId=" + offerId + "%nisValid="
-				+ isValid + "%nlikes=" + likes;
-		return String.format(str);
+				+ ", realPrice=" + realPrice + ", discountedPrice="
+				+ discountedPrice + ", offerId=" + offerId + ", isValid="
+				+ isValid + ", likes=" + likes + "]";
 	}
 }
